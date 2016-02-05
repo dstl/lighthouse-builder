@@ -1,3 +1,4 @@
 boxes/*
 */.vagrant
 *.swp
+jenkins/files/*_rsa*
