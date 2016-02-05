@@ -18,3 +18,4 @@ yum -y install ansible
 echo "Install jenkins"
 
 ansible-playbook bootstrap.yml
+ansible-playbook configure-jobs.yml

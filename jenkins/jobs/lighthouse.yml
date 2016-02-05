@@ -1,0 +1,11 @@
+
+- job:
+    name: 'lighthouse-build'
+    description: 'Do not edit this job through the web!'
+    display-name: 'Build Lighthouse'
+
+- project:
+    name: lighthouse
+    jobs:
+        - 'lighthouse-build'
+

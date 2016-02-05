@@ -1,0 +1,10 @@
+---
+jenkins_plugins:
+  - git
+  - sonar
+  - ssh
+jenkins_job_builder_config_jenkins_url: http://localhost:8080
+jenkins_job_builder_file_jobs_src: /vagrant/jobs/
+ansible_user: vagrant
+jenkins_job_builder_user_name: '{{ ansible_user }}'
+jenkins_job_builder_user_group: '{{ ansible_user }}'

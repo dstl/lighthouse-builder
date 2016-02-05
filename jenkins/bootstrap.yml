@@ -1,4 +1,6 @@
 - hosts: localhost
   connection: local
+  vars_files:
+    - vars/jenkins.yml
   roles:
-  - geerlingguy.jenkins
+    - geerlingguy.jenkins
