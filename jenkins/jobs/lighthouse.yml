@@ -3,6 +3,11 @@
     name: 'lighthouse-build'
     description: 'Do not edit this job through the web!'
     display-name: 'Build Lighthouse'
+    scm:
+        - git:
+            url: git@github.com:dstl/lighthouse.git
+    builders:
+        - shell: 'bin/jenkins_build.sh'
 
 - project:
     name: lighthouse
