@@ -20,8 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vf.vmx["vhv.enable"] = "TRUE"
         vf.vmx["allowNested"] = "TRUE"
       end
-      srv.vm.provision "file", source: "bootstrap.yml", destination: "bootstrap.yml"
-      srv.vm.provision "shell", path: "bootstrap.sh"
+      srv.vm.provision "shell", inline: "cd /vagrant; ./bootstrap.sh"
     end
   end
 end
