@@ -23,4 +23,32 @@ Go here: https://github.com/settings/tokens/new and create a token with `repo` a
 
 Bootstraps jenkins for the dstl-lighthouse project
 
+## Provision server in AWS 
+
+How to provision a server in aws
+
+cd terraform
+
+create a terraform.tfvars file with your AWS credentials
+
+access_key = "<YOUR AWS ACCESS KEY>"
+secret_key = "<YOUR AWS SECRET ACCESS KEY>"
+
+Then type 
+
+$ terraform apply
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+
+The state of your infrastructure has been saved to the path
+below. This state is required to modify and destroy your
+infrastructure, so keep it safe. To inspect the complete state
+use the `terraform show` command.
+
+State path: terraform.tfstate
+
+Outputs:
+
+  aws_instace_ip = 52.49.140.210
+
 
