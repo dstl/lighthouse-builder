@@ -24,5 +24,12 @@
         - { src: 'ssh_rsa.pub', mode: 'u=rw,g=,o=',   dest: 'github_rsa.pub' }
         - { src: 'ssh_config',  mode: 'u=rw,g=r,o=r', dest: 'config' }
         - { src: 'ssh_hosts',   mode: 'u=rw,g=r,o=r', dest: 'known_hosts' }
+    - name: Configure build radiator
+      copy:
+        src: files/config.xml
+        dest: /var/lib/jenkins/config.xml
+        owner: jenkins
+        group: jenkins
+        mode: "u=rw,g=r,o=r"
       notify:
         - restart jenkins

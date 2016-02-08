@@ -3,6 +3,7 @@ jenkins_plugins:
   - git
   - sonar
   - ssh
+  - build-monitor-plugin
 jenkins_job_builder_config_jenkins_url: http://localhost:8080
 jenkins_job_builder_file_jobs_src: /vagrant/jobs/
 ansible_user: vagrant
