@@ -12,6 +12,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   servers.each do |servers|
     config.vm.define servers["name"] do |srv|
       srv.vm.box = servers["box"]
+      if Vagrant.has_plugin?("vagrant-cachier")
+        srv.cache.scope = :machine
+      end
       srv.vm.network "private_network", ip: servers["ip"]
       srv.vm.provider "virtualbox" do |vb|
         vb.memory = servers["ram"]
