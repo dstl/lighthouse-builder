@@ -1,0 +1,33 @@
+---
+jenkins_plugins:
+  - git
+  - sonar
+  - ssh
+  - build-monitor-plugin
+  - ansicolor
+  - github
+jenkins_job_builder_config_jenkins_url: http://localhost:8080
+jenkins_job_builder_file_jobs_src: /vagrant/jobs/
+ansible_user: vagrant
+jenkins_job_builder_user_name: '{{ ansible_user }}'
+jenkins_job_builder_user_group: '{{ ansible_user }}'
+
+postgresql_databases:
+  - name: lighthouse
+    owner: vagrant
+
+postgresql_users:
+  - name: vagrant
+    pass: vagrant
+    encrypted: no
+  - name: lighthouse
+
+postgresql_user_privileges:
+  - name: lighthouse
+    db: lighthouse
+    priv: "ALL"
+    role_attr_flags: "CREATEDB"
+  - name: vagrant
+    db: lighthouse
+    priv: "ALL"
+    role_attr_flags: "CREATEDB"

@@ -1,0 +1,21 @@
+---
+# Repos defaults
+repositories:
+  centos7:
+    - name: nginx
+      enabled: true
+    - name: epel
+      enabled: true
+    - name: ius
+      enabled: true
+
+
+# Postgres defaults
+postgresql_version: 9.3
+postgresql_encoding: 'UTF-8'
+postgresql_locale: 'en_US.UTF-8'
+postgresql_admin_user: "postgres"
+postgresql_default_auth_method: "trust"
+postgresql_cluster_name: "main"
+postgresql_cluster_reset: false
+postgresql_ext_install_dev_headers: yes

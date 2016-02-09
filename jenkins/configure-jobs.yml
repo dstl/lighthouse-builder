@@ -1,0 +1,13 @@
+- hosts: localhost
+  sudo: true
+  connection: local
+  vars_files:
+    - vars/jenkins.yml
+  roles:
+    - jenkins-job-builder
+  tasks:
+    - name: trigger jobs reload
+      debug: msg="Trigger a handler"
+      changed_when: true
+      notify:
+        - Reload jenkins-jobs

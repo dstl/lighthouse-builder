@@ -1,0 +1,45 @@
+---
+
+language: python
+python: "2.7"
+env:
+  - ROLE_OPTIONS="postgresql_version=9.1 postgresql_shared_buffers=32MB"
+  - ROLE_OPTIONS="postgresql_version=9.2 postgresql_shared_buffers=32MB"
+  - ROLE_OPTIONS="postgresql_version=9.3 postgresql_shared_buffers=32MB"
+  - ROLE_OPTIONS="postgresql_version=9.4 postgresql_shared_buffers=32MB"
+  - ROLE_OPTIONS="postgresql_version=9.5 postgresql_shared_buffers=32MB"
+
+branches:
+  only:
+    - "master"
+
+before_install:
+  # Remove the PostgreSQL installed by Travis
+  - sudo apt-get purge pgdg-keyring '^postgresql.*' -y
+  - sudo apt-get autoremove -y -qq
+  - sudo rm -rf /etc/postgresql
+  - sudo rm -rf /var/lib/postgresql
+  - sudo rm -f /etc/apt/sources.list.d/pgdg-source.list
+  # Install some dependencies
+  - sudo apt-get update -qq -y
+  - sudo apt-get install -qq -y python-apt python-pycurl locales
+  - echo 'en_US.UTF-8 UTF-8' | sudo tee /var/lib/locales/supported.d/local
+
+install:
+  - pip install ansible==1.9.4
+
+script:
+  - echo localhost > inventory
+
+  # Syntax check
+  - ansible-playbook -i inventory tests/playbook.yml --syntax-check
+
+  # Play test
+  - ansible-playbook -i inventory tests/playbook.yml --connection=local --sudo -e "$ROLE_OPTIONS"
+
+  # Idempotence test
+  - ansible-playbook -i inventory tests/playbook.yml --connection=local --sudo -e "$ROLE_OPTIONS" > idempotence_out
+  - ./tests/idempotence_check.sh idempotence_out
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

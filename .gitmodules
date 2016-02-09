@@ -1,0 +1,3 @@
+[submodule "jenkins/roles/jenkins-job-builder"]
+	path = jenkins/roles/jenkins-job-builder
+	url = https://github.com/openstack/ansible-role-jenkins-job-builder.git

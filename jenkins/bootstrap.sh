@@ -15,10 +15,7 @@ echo "Install Ansible"
 
 yum -y install ansible
 
-echo "Install ansible playbook for jenkins"
-
-ansible-galaxy install geerlingguy.jenkins
-
 echo "Install jenkins"
 
 ansible-playbook bootstrap.yml
+ansible-playbook configure-jobs.yml

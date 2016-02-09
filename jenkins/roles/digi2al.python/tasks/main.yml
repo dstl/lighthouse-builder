@@ -1,0 +1,13 @@
+---
+# tasks file for python
+- name: install python software
+  yum: pkg={{item}} state=installed
+  with_items:
+    - gcc
+    - python35u-pip
+    - python35u-devel
+- name: install system pip packages
+  pip: name={{item}} executable=pip3.5
+  with_items:
+    - virtualenv
+    - uwsgi
