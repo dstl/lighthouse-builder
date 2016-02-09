@@ -2,10 +2,22 @@
   connection: local
   vars_files:
     - vars/jenkins.yml
+    - vars/site_specific.yml
   roles:
     - geerlingguy.jenkins
     - digi2al.python
   tasks:
+    - name: Copy Configuration files over
+      template:
+        src: 'templates/{{ item.src }}'
+        dest: '/var/lib/jenkins/{{ item.dest }}'
+        owner: jenkins
+        group: jenkins
+        mode: "u=rw,g=r,o=r"
+      with_items:
+        - { src: 'credentials.xml.j2',          dest: 'credentials.xml' }
+        - { src: 'jenkins_location.xml.j2',     dest: 'jenkins.model.JenkinsLocationConfiguration.xml' }
+        - { src: 'github_configuration.xml.j2', dest: 'github-plugin-configuration.xml' }
     - name: Ensure $JENKINS_HOME/.ssh exists
       file:
         state: directory

@@ -2,3 +2,4 @@ boxes/*
 */.vagrant
 *.swp
 jenkins/files/*_rsa*
+jenkins/vars/site_specific.yml

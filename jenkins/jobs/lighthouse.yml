@@ -7,11 +7,14 @@
         - git:
             url: git@github.com:dstl/lighthouse.git
     builders:
+        - github-notifier
         - shell: |
             export VIRTUALENV_LOCATION="$WORKSPACE/virtualenv"
             $WORKSPACE/bin/jenkins.sh
     wrappers:
         - ansicolor
+    publishers:
+        - github-notifier
 
 - project:
     name: lighthouse

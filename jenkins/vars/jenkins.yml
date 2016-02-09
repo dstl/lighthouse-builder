@@ -5,6 +5,7 @@ jenkins_plugins:
   - ssh
   - build-monitor-plugin
   - ansicolor
+  - github
 jenkins_job_builder_config_jenkins_url: http://localhost:8080
 jenkins_job_builder_file_jobs_src: /vagrant/jobs/
 ansible_user: vagrant
