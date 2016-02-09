@@ -4,3 +4,7 @@
   scm: git
   version: master
   name: digi2al.python
+- src: git@github.com:openstack/ansible-role-jenkins-job-builder.git
+  scm: git
+  version: master
+  name: openstack.jenkins-job-builder
