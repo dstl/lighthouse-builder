@@ -1,0 +1,67 @@
+# CentOS repository setup
+- name: "Setup repositories"
+  template: >
+    src="{{centos_distribution}}/{{repository_list[item['name']|default(item)][centos_distribution]['repo']}}.j2"
+    dest="/etc/yum.repos.d/{{repository_list[item['name']|default(item)][centos_distribution]['repo']}}"
+    owner=root
+    group=root
+    mode=0644
+  when: "item['name']|default(item) in repository_list and centos_distribution in repository_list[item['name']|default(item)] and repository_list[item['name']|default(item)][centos_distribution]['repo'] is defined"
+  with_items: repositories[centos_distribution]|default([])
+  tags:
+    - files
+    - repos
+
+- name: "Setup GPG keys for repositories"
+  copy: >
+    src="{{centos_distribution}}/keys/{{repository_list[item['name']|default(item)][centos_distribution]['key']}}"
+    dest="/etc/pki/rpm-gpg/{{repository_list[item['name']|default(item)][centos_distribution]['key']}}"
+    owner=root
+    group=root
+    mode=0644
+  when: "item['name']|default(item) in repository_list and centos_distribution in repository_list[item['name']|default(item)] and 'key' in repository_list[item['name']|default(item)][centos_distribution]"
+  with_items: repositories[centos_distribution]|default([])
+  tags:
+    - files
+    - repos
+
+- name: "Setup repositories from defined rpms and ensure repo is disabled by default, unless enabled is specified."
+  yum: >
+    name="{{ repository_list[item['name']|default(item)][centos_distribution]['url'] }}"
+    state=present
+  when: "item['name']|default(item) in repository_list and repository_list[item['name']|default(item)][centos_distribution]['url'] is defined and repository_list[item['name']|default(item)][centos_distribution]['url'].endswith('rpm')"
+  with_items: repositories[centos_distribution]|default([])
+  tags:
+    - files
+    - repos
+
+- name: "Ensure repositories from defined rpms are disabled by default, unless specified to be enabled."
+  command: "yum-config-manager --disable {{ item }}"
+  when: "item['name']|default(item) in repository_list and repository_list[item['name']|default(item)][centos_distribution]['url'] is defined and repository_list[item['name']|default(item)][centos_distribution]['url'].endswith('rpm')"
+  with_items: repositories[centos_distribution]|default([])
+  tags:
+    - files
+    - repos
+
+- name: "Setup remote repositories (basic repo)"
+  get_url: >
+    url="{{item}}"
+    dest="/etc/yum.repos.d/{{item | basename}}"
+    owner=root
+    group=root
+    mode=0644
+  when: centos_distribution in remote_repositories and item.endswith('repo')
+  with_items: remote_repositories[centos_distribution]|default([])
+  tags:
+    - files
+    - repos
+
+- name: "Setup remote repositories (rpm repo)"
+  yum: >
+    name="{{item}}"
+    state="present"
+  when: centos_distribution in remote_repositories and item.endswith('rpm')
+  with_items: remote_repositories[centos_distribution]|default([])
+  tags:
+    - files
+    - repos

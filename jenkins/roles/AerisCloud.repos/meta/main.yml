@@ -1,0 +1,20 @@
+galaxy_info:
+  author: Christophe Robin <crobin@wizcorp.jp>
+  description: Manage CentOS yum and Debian apt repositories
+  company: Wizcorp K.K.
+  license: MIT
+  min_ansible_version: 1.9.1
+  platforms:
+    - name: EL
+      versions:
+        - 6
+        - 7
+    - name: Debian
+      versions:
+        - wheezy
+        - jessie
+  categories:
+    - packaging
+    - system
+allow_duplicates: yes
+dependencies: []
