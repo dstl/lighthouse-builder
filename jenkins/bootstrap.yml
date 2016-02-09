@@ -4,6 +4,7 @@
     - vars/jenkins.yml
   roles:
     - geerlingguy.jenkins
+    - digi2al.python
   tasks:
     - name: Ensure $JENKINS_HOME/.ssh exists
       file:

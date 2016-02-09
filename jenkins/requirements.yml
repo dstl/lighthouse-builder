@@ -1,2 +1,6 @@
 ---
 - src: geerlingguy.jenkins
+- src: git@github.com:livestax/dstl-lighthouse-python-role.git
+  scm: git
+  version: master
+  name: digi2al.python
