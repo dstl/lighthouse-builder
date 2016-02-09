@@ -4,7 +4,7 @@
   vars_files:
     - vars/jenkins.yml
   roles:
-    - jenkins-job-builder
+    - openstack.jenkins-job-builder
   tasks:
     - name: trigger jobs reload
       debug: msg="Trigger a handler"
