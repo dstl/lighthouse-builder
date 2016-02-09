@@ -7,9 +7,9 @@
         - git:
             url: git@github.com:dstl/lighthouse.git
     builders:
-        - shell:
-          export VIRTUALENV_LOCATION="$WORKSPACE/virtualenv"
-          $WORKSPACE/bin/jenkins.sh
+        - shell: |
+            export VIRTUALENV_LOCATION="$WORKSPACE/virtualenv"
+            $WORKSPACE/bin/jenkins.sh
 
 - project:
     name: lighthouse
