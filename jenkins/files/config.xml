@@ -35,7 +35,7 @@
       </jobNames>
       <jobFilters/>
       <columns/>
-      <includeRegex>.*</includeRegex>
+      <includeRegex>^(?!.*-pullrequests$).*$</includeRegex>
       <recurse>false</recurse>
       <title>Build Radiator</title>
       <config>
