@@ -18,6 +18,13 @@
         - { src: 'credentials.xml.j2',          dest: 'credentials.xml' }
         - { src: 'jenkins_location.xml.j2',     dest: 'jenkins.model.JenkinsLocationConfiguration.xml' }
         - { src: 'github_configuration.xml.j2', dest: 'github-plugin-configuration.xml' }
+    - name: Ensure /var/run/postgresql exists
+      file:
+        state: directory
+        path: /var/run/postgresql
+        owner: postgres
+        group: postgres
+        mode: "u=rwx,g=rx,o=rx"
     - name: Ensure $JENKINS_HOME/.ssh exists
       file:
         state: directory
