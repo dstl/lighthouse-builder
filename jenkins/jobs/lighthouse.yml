@@ -55,7 +55,7 @@
     builders:
         - github-notifier
         - shell: |
-          echo "Updating Jenkins"
+          echo 'Updating Jenkins'
           cd jenkins
           sudo ./bootstrap.sh
     wrappers:
