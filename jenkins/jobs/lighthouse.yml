@@ -55,8 +55,9 @@
     builders:
         - github-notifier
         - shell: |
-           cd jenkins
-           sudo ./bootstrap.sh
+          echo "Updating Jenkins"
+          cd jenkins
+          sudo ./bootstrap.sh
     wrappers:
         - ansicolor
     publishers:
