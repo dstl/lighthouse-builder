@@ -55,7 +55,8 @@
     builders:
         - github-notifier
         - shell: |
-           sudo jenkins/bootstrap.sh
+           cd jenkins
+           sudo ./bootstrap.sh
     wrappers:
         - ansicolor
     publishers:

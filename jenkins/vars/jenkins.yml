@@ -8,6 +8,7 @@ jenkins_plugins:
   - ansicolor
   - github
   - greenballs
+  - docker-plugin
 
 jenkins_job_builder_config_jenkins_url: http://localhost:8080
 jenkins_job_builder_file_jobs_src: jobs/
