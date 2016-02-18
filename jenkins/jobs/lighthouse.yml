@@ -57,6 +57,7 @@
         - shell: |
             cd jenkins
             sudo ./bootstrap.sh
+            cd -
     wrappers:
         - ansicolor
     publishers:
