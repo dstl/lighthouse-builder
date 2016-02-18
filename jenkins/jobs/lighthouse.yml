@@ -49,13 +49,13 @@
         - git:
             url: git@github.com:livestax/dstl-lighthouse-builder.git
             branches:
-                - origin/master
+                - origin/update-jenkins
     triggers:
         - github
     builders:
         - github-notifier
         - shell: |
-           jenkins/bootstrap.sh
+           sudo jenkins/bootstrap.sh
     wrappers:
         - ansicolor
     publishers:
