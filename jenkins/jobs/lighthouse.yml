@@ -1,4 +1,3 @@
-
 - job:
     name: 'lighthouse-build-pullrequests'
     description: 'Do not edit this job through the web!'
@@ -21,7 +20,6 @@
     publishers:
         - github-notifier
 
-
 - job:
     name: 'lighthouse-build'
     description: 'Do not edit this job through the web!'
@@ -43,8 +41,29 @@
     publishers:
         - github-notifier
 
+- job:
+    name: 'update-jenkins'
+    description: 'Do not edit this job through the web!'
+    display-name: 'Update Jenkins'
+    scm:
+        - git:
+            url: git@github.com:livestax/dstl-lighthouse-builder.git
+            branches:
+                - origin/master
+    triggers:
+        - github
+    builders:
+        - github-notifier
+        - shell: |
+           jenkins/bootstrap.sh
+    wrappers:
+        - ansicolor
+    publishers:
+        - github-notifier
+
 - project:
     name: lighthouse
     jobs:
         - 'lighthouse-build'
         - 'lighthouse-build-pullrequests'
+        - 'update-jenkins'

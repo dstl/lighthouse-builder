@@ -14,5 +14,5 @@ fi
 /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; /bin/yum -y install ansible )
 
 /bin/echo "Running Ansible playbooks"
-/bin/ansible-playbook  bootstrap.yml
+/bin/ansible-playbook bootstrap.yml
 /bin/ansible-playbook configure-jobs.yml
