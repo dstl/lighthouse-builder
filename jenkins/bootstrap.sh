@@ -7,10 +7,10 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-if [[ -f "/opt/site-specific.yml" ]]; then
-  cp /opt/site-specific.yml ./vars/site-specific.yml
+if [[ -f "/opt/site_specific.yml" ]]; then
+  cp /opt/site_specific.yml ./vars/site_specific.yml
 else
-  /bin/echo "/opt/site-specific.yml not found. Exiting." 1>&2
+  /bin/echo "/opt/site_specific.yml not found. Exiting." 1>&2
   exit 1
 fi
 
