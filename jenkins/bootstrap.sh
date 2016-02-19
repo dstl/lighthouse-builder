@@ -14,6 +14,14 @@ else
   exit 1
 fi
 
+if [[ -f "/opt/ssh_rsa" && -f "/opt/ssh_rsa.pub" ]]; then
+  cp /opt/ssh_rsa ./files/ssh_rsa
+  cp /opt/ssh_rsa.pub ./files/ssh_rsa.pub
+else
+  /bin/echo "/opt/ssh_rsa not found. Exiting." 1>&2
+  exit 1
+fi
+
 /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | /bin/bash )
 
 
