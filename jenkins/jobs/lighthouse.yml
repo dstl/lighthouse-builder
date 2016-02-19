@@ -56,7 +56,6 @@
         - github-notifier
         - shell: |
             cd jenkins
-            cp /opt/site-specific.yml ./vars/site-specific.yml
             sudo ./bootstrap.sh
     wrappers:
         - ansicolor

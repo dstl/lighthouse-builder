@@ -7,6 +7,12 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+if [[ -f "/opt/site-specific.yml" ]]; then
+  cp /opt/site-specific.yml ./vars/site-specific.yml
+else
+  /bin/echo "/opt/site-specific.yml not found. Exiting." 1>&2
+  exit 1
+fi
 
 /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | /bin/bash )
 
