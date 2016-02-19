@@ -7,6 +7,20 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+if [[ -f "/opt/site_specific.yml" ]]; then
+  cp /opt/site_specific.yml ./vars/site_specific.yml
+else
+  /bin/echo "/opt/site_specific.yml not found. Exiting." 1>&2
+  exit 1
+fi
+
+if [[ -f "/opt/ssh_rsa" && -f "/opt/ssh_rsa.pub" ]]; then
+  cp /opt/ssh_rsa ./files/ssh_rsa
+  cp /opt/ssh_rsa.pub ./files/ssh_rsa.pub
+else
+  /bin/echo "/opt/ssh_rsa not found. Exiting." 1>&2
+  exit 1
+fi
 
 /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | /bin/bash )
 
@@ -14,5 +28,5 @@ fi
 /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; /bin/yum -y install ansible )
 
 /bin/echo "Running Ansible playbooks"
-/bin/ansible-playbook  bootstrap.yml
+/bin/ansible-playbook bootstrap.yml
 /bin/ansible-playbook configure-jobs.yml
