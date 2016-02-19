@@ -77,7 +77,7 @@
         - github-notifier
         - shell: |
             cd jenkins
-            sudo ./get-rpms.sh
+            sudo ./getrpms.sh
     wrappers:
         - ansicolor
     publishers:
