@@ -57,7 +57,26 @@
         - shell: |
             cd jenkins
             sudo ./bootstrap.sh
-            cd -
+    wrappers:
+        - ansicolor
+    publishers:
+        - github-notifier
+
+- job:
+    name: 'package-rpms'
+    description: 'Do not edit this job through the web!'
+    display-name: 'Package RPMS'
+    scm:
+        - git:
+            url: git@github.com:livestax/dstl-lighthouse-builder.git
+            branches:
+                - origin/update-jenkins
+    triggers:
+        - github
+    builders:
+        - github-notifier
+        - shell: |
+            sudo ./get-rpms.sh
     wrappers:
         - ansicolor
     publishers:
@@ -69,3 +88,4 @@
         - 'lighthouse-build'
         - 'lighthouse-build-pullrequests'
         - 'update-jenkins'
+        - 'package-rpms'
