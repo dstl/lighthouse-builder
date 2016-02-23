@@ -4,21 +4,36 @@ provider "aws" {
     region = "${var.region}"
 }
 
-resource "aws_security_group_rule" "office-ip" {
-    type = "ingress"
-    from_port = 0
-    to_port = 65535
-    protocol = "tcp"
-    cidr_blocks = ["80.87.30.98/32"]
-    security_group_id = "sg-ceda8aaa"
+resource "aws_security_group" "allow_office_ip" {
+  name = "allow_office_ip"
+  description = "Allow all inbound traffic from Metal box factory"
+
+  ingress {
+      from_port = 0
+      to_port = 65535
+      protocol = "tcp"
+      cidr_blocks = ["80.87.30.98/32"]
+  }
+
+  # Full internet access
+  egress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
-resource "aws_instance" "lighthouse-server" {
-    ami = "ami-bff32ccc"
+resource "aws_instance" "lighthouse-app" {
+    ami = "ami-33734044"
     instance_type = "t2.micro"
-    key_name = "rob"
+    key_name = "deploy"
+    security_groups = ["${aws_security_group.allow_office_ip.name}"]
+    tags {
+      Name = "lighthouse-app"
+    }
 }
 
-output "aws_instace_ip" {
-    value = "${aws_instance.lighthouse-server.public_ip}"
+output "aws_instance_ip" {
+    value = "${aws_instance.lighthouse-app.public_ip}"
 }
