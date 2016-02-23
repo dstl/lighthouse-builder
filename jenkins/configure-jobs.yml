@@ -6,6 +6,14 @@
   roles:
     - openstack.jenkins-job-builder
   tasks:
+    - name: create jobs from templates
+      template:
+        dest: "{{ jenkins_job_builder_file_jobs_src }}/{{ item }}"
+        src: "templates/{{ item }}.j2"
+      with_items:
+        - "update-jenkins.yml"
+      notify:
+        - Reload jenkins-jobs
     - name: trigger jobs reload
       debug: msg="Trigger a handler"
       changed_when: true

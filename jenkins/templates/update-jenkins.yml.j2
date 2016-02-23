@@ -1,0 +1,47 @@
+- job:
+    name: 'update-jenkins'
+    description: 'Do not edit this job through the web!'
+    display-name: 'Update Jenkins'
+    scm:
+        - git:
+            url: git@github.com:livestax/dstl-lighthouse-builder.git
+            branches:
+                - {{ jenkins_update_branch }}
+    triggers:
+        - github
+    builders:
+        - github-notifier
+        - shell: |
+            cd jenkins
+            sudo ./bootstrap.sh {{ jenkins_update_target }}
+    wrappers:
+        - ansicolor
+    publishers:
+        - github-notifier
+
+- job:
+    name: 'package-rpms'
+    description: 'Do not edit this job through the web!'
+    display-name: 'Package RPMS'
+    scm:
+        - git:
+            url: git@github.com:livestax/dstl-lighthouse-builder.git
+            branches:
+                - origin/update-jenkins
+    triggers:
+        - github
+    builders:
+        - github-notifier
+        - shell: |
+            cd jenkins
+            sudo ./getrpms.sh
+    wrappers:
+        - ansicolor
+    publishers:
+        - github-notifier
+
+- project:
+    name: jenkins
+    jobs:
+        - 'update-jenkins'
+        - 'package-rpms'

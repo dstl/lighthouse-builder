@@ -13,7 +13,18 @@ link_file() {
 }
 
 prepare_secrets() {
-  link_file /opt/secrets/site_specific.yml ./vars/site_specific.yml
+  local jenkins_update_target="$1"
+
+  if [[ $jenkins_update_target == "--vagrant" ]]; then
+    link_file /opt/secrets/vagrant.site_specific.yml ./vars/site_specific.yml
+  elif [[ $jenkins_update_target == "--preview" ]]; then
+    link_file /opt/secrets/preview.site_specific.yml ./vars/site_specific.yml
+  elif [[ $jenkins_update_target == "--bronze" ]]; then
+    link_file /opt/secrets/site_specific.yml ./vars/site_specific.yml
+  else
+    /bin/echo "Provide an update target: [--vagrant|--preview|--bronze]. Exiting."1>&2
+    exit 1
+  fi
   link_file /opt/secrets/ssh_rsa ./files/ssh_rsa
   link_file /opt/secrets/ssh_rsa.pub ./files/ssh_rsa.pub
 }
@@ -38,6 +49,6 @@ run_playbooks() {
 
 require_root
 
-prepare_secrets
+prepare_secrets "$1"
 install_ansible
 run_playbooks
