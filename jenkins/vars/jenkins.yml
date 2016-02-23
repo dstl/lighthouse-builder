@@ -18,6 +18,8 @@ jenkins_job_builder_file_jobs_group: '{{ jenkins_user }}'
 jenkins_job_builder_file_jobs_owner: '{{ jenkins_user }}'
 jenkins_job_builder_install_method: 'pip'
 
+jenkins_update_branch: master
+
 postgresql_databases:
   - name: lighthouse
     owner: '{{ jenkins_user }}'
