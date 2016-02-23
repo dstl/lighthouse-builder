@@ -1,32 +1,43 @@
 #!/bin/bash
 
-# Make sure only root can run our script
+link_file() {
+  local src="$1"
+  local dest="$2"
 
-if [[ $EUID -ne 0 ]]; then
-   /bin/echo "This script must be run as root" 1>&2
-   exit 1
-fi
+  if [[ -f "$src" ]]; then
+    ln -s -f "$src" "$dest"
+  else
+    /bin/echo "$src not found. Exiting." 1>&2
+    exit 1
+  fi
+}
 
-if [[ -f "/opt/site_specific.yml" ]]; then
-  cp --remove-destination /opt/site_specific.yml ./vars/site_specific.yml
-else
-  /bin/echo "/opt/site_specific.yml not found. Exiting." 1>&2
-  exit 1
-fi
+prepare_secrets() {
+  link_file /opt/secrets/site_specific.yml ./vars/site_specific.yml
+  link_file /opt/secrets/ssh_rsa ./files/ssh_rsa
+  link_file /opt/secrets/ssh_rsa.pub ./files/ssh_rsa.pub
+}
 
-if [[ -f "/opt/ssh_rsa" && -f "/opt/ssh_rsa.pub" ]]; then
-  cp --remove-destination /opt/ssh_rsa ./files/ssh_rsa
-  cp --remove-destination /opt/ssh_rsa.pub ./files/ssh_rsa.pub
-else
-  /bin/echo "/opt/ssh_rsa not found. Exiting." 1>&2
-  exit 1
-fi
+require_root() {
+  if [[ $EUID -ne 0 ]]; then
+    /bin/echo "This script must be run as root" 1>&2
+    exit 1
+  fi
+}
 
-/bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | /bin/bash )
+install_ansible() {
+  /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | /bin/bash )
+  /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; /bin/yum -y install ansible )
+}
 
+run_playbooks() {
+  /bin/echo "Running Ansible playbooks"
+  /bin/ansible-playbook bootstrap.yml
+  /bin/ansible-playbook configure-jobs.yml
+}
 
-/bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; /bin/yum -y install ansible )
+require_root
 
-/bin/echo "Running Ansible playbooks"
-/bin/ansible-playbook bootstrap.yml
-/bin/ansible-playbook configure-jobs.yml
+prepare_secrets
+install_ansible
+run_playbooks
