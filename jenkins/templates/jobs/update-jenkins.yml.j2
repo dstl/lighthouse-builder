@@ -15,7 +15,7 @@
         - github-notifier
         - shell: |
             cd jenkins
-            sudo ./bootstrap.sh {{ jenkins_update_target }}
+            ./bootstrap.sh {{ jenkins_update_target }}
     wrappers:
         - ansicolor
     publishers:
@@ -43,7 +43,7 @@
         - github-notifier
         - shell: |
             cd jenkins
-            sudo ./bootstrap.sh {{ jenkins_update_target }}
+            ./bootstrap.sh {{ jenkins_update_target }}
     wrappers:
         - ansicolor
     publishers:

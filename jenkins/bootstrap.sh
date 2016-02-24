@@ -73,14 +73,11 @@ update_secrets() {
   if override_secrets; then
     rm -rf /opt/secrets
     cp -R ../secrets /opt/secrets
-    chmod u=wr,g=,o= /opt/secrets/*
-  fi
-}
 
-require_root() {
-  if [[ $EUID -ne 0 ]]; then
-    /bin/echo "This script must be run as root" 1>&2
-    exit 1
+    current_user="$(whoami)"
+
+    sudo chmod u=wr,g=,o= /opt/secrets/*
+    sudo chown $current_user /opt/secrets/*
   fi
 }
 
@@ -95,10 +92,9 @@ run_playbooks() {
   /bin/ansible-playbook configure-jobs.yml
 }
 
-require_root
 read_args $@
 
 update_secrets
 prepare_secrets
-install_ansible
+sudo install_ansible
 run_playbooks
