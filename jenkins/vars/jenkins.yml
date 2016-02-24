@@ -16,6 +16,7 @@ jenkins_job_builder_user_name: '{{ jenkins_user }}'
 jenkins_job_builder_user_group: '{{ jenkins_user }}'
 jenkins_job_builder_file_jobs_group: '{{ jenkins_user }}'
 jenkins_job_builder_file_jobs_owner: '{{ jenkins_user }}'
+jenkins_job_builder_install_method: 'pip'
 
 postgresql_databases:
   - name: lighthouse
