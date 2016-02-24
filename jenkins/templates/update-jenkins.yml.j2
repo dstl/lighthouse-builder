@@ -7,6 +7,8 @@
             url: git@github.com:livestax/dstl-lighthouse-builder.git
             branches:
                 - {{ jenkins_update_branch }}
+            submodule:
+                recursive: true
     triggers:
         - github
     builders:
