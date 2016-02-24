@@ -19,7 +19,6 @@ override_secrets() {
 
 read_args() {
   while [[ $# > 0 ]]; do
-    set -xv
     local key="$1"
     case $key in
       --vagrant)
@@ -38,7 +37,6 @@ read_args() {
         /bin/echo "Unknown option $key, ignoring." 1>&2
         shift;;
     esac
-    set +xv
   done
 }
 
