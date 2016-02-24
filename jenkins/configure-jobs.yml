@@ -1,5 +1,5 @@
 - hosts: localhost
-  sudo: true
+  become: true
   connection: local
   vars_files:
     - vars/jenkins.yml
