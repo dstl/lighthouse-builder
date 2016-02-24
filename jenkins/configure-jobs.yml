@@ -9,7 +9,7 @@
   tasks:
     - name: create jobs from templates
       template:
-        dest: "{{ jenkins_job_builder_file_jobs_src }}/{{ item }}"
+        dest: "{{ jenkins_job_builder_file_jobs_dest }}/{{ item }}"
         src: "templates/{{ item }}.j2"
       with_items:
         - "update-jenkins.yml"
