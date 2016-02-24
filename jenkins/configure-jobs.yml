@@ -10,14 +10,10 @@
     - name: create jobs from templates
       template:
         dest: "{{ jenkins_job_builder_file_jobs_dest }}/{{ item }}"
-        src: "templates/{{ item }}.j2"
+        src: "templates/jobs/{{ item }}.j2"
       with_items:
         - "update-jenkins.yml"
         - "lighthouse.yml"
       notify:
-        - Reload jenkins-jobs
-    - name: trigger jobs reload
-      debug: msg="Trigger a handler"
-      changed_when: true
-      notify:
+        - Check jenkins
         - Reload jenkins-jobs

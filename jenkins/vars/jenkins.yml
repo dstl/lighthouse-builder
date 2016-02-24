@@ -11,7 +11,7 @@ jenkins_plugins:
   - docker-plugin
 
 jenkins_job_builder_config_jenkins_url: http://localhost:8080
-jenkins_job_builder_file_jobs_src: jobs/
+jenkins_job_builder_file_jobs_src: ''
 jenkins_job_builder_user_name: '{{ jenkins_user }}'
 jenkins_job_builder_user_group: '{{ jenkins_user }}'
 jenkins_job_builder_file_jobs_group: '{{ jenkins_user }}'

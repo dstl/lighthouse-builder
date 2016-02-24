@@ -52,7 +52,7 @@
                 - origin/master
     builders:
         - shell: |
-            ansible -i {{ inventory_file }} $WORKSPACE/playbook.yml
+            ansible -i {{ lighthouse_inventory_file }} $WORKSPACE/playbook.yml
     wrappers:
         - ansicolor
 
