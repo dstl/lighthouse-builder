@@ -1,5 +1,7 @@
 #!/bin/bash
 
+current_user="$(whoami)"
+
 _is_vagrant=1
 is_vagrant() {
   return $_is_vagrant
@@ -71,10 +73,8 @@ prepare_secrets() {
 
 update_secrets() {
   if override_secrets; then
-    rm -rf /opt/secrets
-    cp -R ../secrets /opt/secrets
-
-    current_user="$(whoami)"
+    sudo rm -rf /opt/secrets
+    sudo cp -R ../secrets /opt/secrets
 
     sudo chmod u=wr,g=,o= /opt/secrets/*
     sudo chown $current_user /opt/secrets/*
@@ -82,8 +82,8 @@ update_secrets() {
 }
 
 install_ansible() {
-  /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | /bin/bash )
-  /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; /bin/yum -y install ansible )
+  /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | sudo /bin/bash )
+  /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; sudo /bin/yum -y install ansible )
 }
 
 run_playbooks() {
@@ -96,5 +96,5 @@ read_args $@
 
 update_secrets
 prepare_secrets
-sudo install_ansible
+install_ansible
 run_playbooks
