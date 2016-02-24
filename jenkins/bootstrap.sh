@@ -73,6 +73,7 @@ update_secrets() {
   if override_secrets; then
     rm -rf /opt/secrets
     cp -R ../secrets /opt/secrets
+    chmod u=wr,g=,o= /opt/secrets/*
   fi
 }
 
