@@ -1,30 +1,44 @@
 #!/bin/bash
 
-is_vagrant=false
-is_preview=false
-is_bronze=false
-override_secrets=false
+_is_vagrant=1
+is_vagrant() {
+  return $_is_vagrant
+}
+_is_preview=1
+is_preview() {
+  return $_is_preview
+}
+_is_bronze=1
+is_bronze() {
+  return $_is_bronze
+}
+_override_secrets=1
+override_secrets() {
+  return $_override_secrets
+}
 
 read_args() {
-  while [[ $# > 1 ]]; do
+  while [[ $# > 0 ]]; do
+    set -xv
     local key="$1"
     case $key in
       --vagrant)
-        is_vagrant=true
+        _is_vagrant=0
         shift;;
       --preview)
-        is_preview=true
+        _is_preview=0
         shift;;
       --bronze)
-        is_bronze=true
+        _is_bronze=0
         shift;;
       --override-secrets)
-        override_secrets=true
+        _override_secrets=0
         shift;;
       *)
         /bin/echo "Unknown option $key, ignoring." 1>&2
         shift;;
     esac
+    set +xv
   done
 }
 
@@ -82,7 +96,7 @@ run_playbooks() {
 }
 
 require_root
-read_args "$@"
+read_args $@
 
 update_secrets
 prepare_secrets
