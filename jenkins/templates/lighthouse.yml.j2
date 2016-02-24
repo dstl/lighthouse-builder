@@ -52,7 +52,7 @@
                 - origin/master
     builders:
         - shell: |
-            exit 1
+            ansible -i {{ inventory_file }} $WORKSPACE/playbook.yml
     wrappers:
         - ansicolor
 
