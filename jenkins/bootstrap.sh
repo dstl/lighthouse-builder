@@ -71,7 +71,8 @@ prepare_secrets() {
 
 update_secrets() {
   if override_secrets; then
-    cp ../secrets /opt/secrets
+    rm -rf /opt/secrets
+    cp -R ../secrets /opt/secrets
   fi
 }
 
