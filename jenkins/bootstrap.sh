@@ -1,5 +1,33 @@
 #!/bin/bash
 
+is_vagrant=false
+is_preview=false
+is_bronze=false
+override_secrets=false
+
+read_args() {
+  while [[ $# > 1 ]]; do
+    local key="$1"
+    case $key in
+      --vagrant)
+        is_vagrant=true
+        shift;;
+      --preview)
+        is_preview=true
+        shift;;
+      --bronze)
+        is_bronze=true
+        shift;;
+      --override-secrets)
+        override_secrets=true
+        shift;;
+      *)
+        /bin/echo "Unknown option $key, ignoring." 1>&2
+        shift;;
+    esac
+  done
+}
+
 link_file() {
   local src="$1"
   local dest="$2"
@@ -15,11 +43,11 @@ link_file() {
 prepare_secrets() {
   local jenkins_update_target="$1"
 
-  if [[ $jenkins_update_target == "--vagrant" ]]; then
+  if is_vagrant; then
     link_file /opt/secrets/vagrant.site_specific.yml ./vars/site_specific.yml
-  elif [[ $jenkins_update_target == "--preview" ]]; then
+  elif is_preview; then
     link_file /opt/secrets/preview.site_specific.yml ./vars/site_specific.yml
-  elif [[ $jenkins_update_target == "--bronze" ]]; then
+  elif is_preview; then
     link_file /opt/secrets/site_specific.yml ./vars/site_specific.yml
   else
     /bin/echo "Provide an update target: [--vagrant|--preview|--bronze]. Exiting."1>&2
@@ -27,6 +55,12 @@ prepare_secrets() {
   fi
   link_file /opt/secrets/ssh_rsa ./files/ssh_rsa
   link_file /opt/secrets/ssh_rsa.pub ./files/ssh_rsa.pub
+}
+
+update_secrets() {
+  if override_secrets; then
+    cp ../secrets /opt/secrets
+  fi
 }
 
 require_root() {
@@ -48,7 +82,9 @@ run_playbooks() {
 }
 
 require_root
+read_args "$@"
 
-prepare_secrets "$1"
+update_secrets
+prepare_secrets
 install_ansible
 run_playbooks
