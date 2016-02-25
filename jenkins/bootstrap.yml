@@ -1,5 +1,6 @@
 - hosts: localhost
   connection: local
+  become: true
   vars_files:
     - vars/jenkins.yml
     - vars/site_specific.yml
@@ -18,6 +19,7 @@
         - { src: 'credentials.xml.j2',          dest: 'credentials.xml' }
         - { src: 'jenkins_location.xml.j2',     dest: 'jenkins.model.JenkinsLocationConfiguration.xml' }
         - { src: 'github_configuration.xml.j2', dest: 'github-plugin-configuration.xml' }
+        - { src: 'vault_password_file.j2',      dest: '.vault_password_file' }
     - name: Ensure /var/run/postgresql exists
       file:
         state: directory

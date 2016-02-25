@@ -3,5 +3,4 @@ boxes/*
 *.swp
 jenkins/files/*_rsa*
 jenkins/vars/site_specific.yml
-terraform.tfvars
 terraform.tfstate*

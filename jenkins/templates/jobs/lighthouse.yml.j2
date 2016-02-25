@@ -42,51 +42,24 @@
         - github-notifier
 
 - job:
-    name: 'update-jenkins'
+    name: 'lighthouse-deploy'
     description: 'Do not edit this job through the web!'
-    display-name: 'Update Jenkins'
+    display-name: 'Deploy Lighthouse'
     scm:
         - git:
-            url: git@github.com:livestax/dstl-lighthouse-builder.git
+            url: git@github.com:livestax/dstl-infrastructure.git
             branches:
                 - origin/master
-    triggers:
-        - github
     builders:
-        - github-notifier
         - shell: |
-            cd jenkins
-            sudo ./bootstrap.sh
+            export ANSIBLE_HOST_KEY_CHECKING=False
+            ansible-playbook -i {{ lighthouse_inventory_file }} $WORKSPACE/playbook.yml
     wrappers:
         - ansicolor
-    publishers:
-        - github-notifier
-
-- job:
-    name: 'package-rpms'
-    description: 'Do not edit this job through the web!'
-    display-name: 'Package RPMS'
-    scm:
-        - git:
-            url: git@github.com:livestax/dstl-lighthouse-builder.git
-            branches:
-                - origin/update-jenkins
-    triggers:
-        - github
-    builders:
-        - github-notifier
-        - shell: |
-            cd jenkins
-            sudo ./getrpms.sh
-    wrappers:
-        - ansicolor
-    publishers:
-        - github-notifier
 
 - project:
     name: lighthouse
     jobs:
         - 'lighthouse-build'
         - 'lighthouse-build-pullrequests'
-        - 'update-jenkins'
-        - 'package-rpms'
+        - 'lighthouse-deploy'

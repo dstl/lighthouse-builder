@@ -1,13 +1,19 @@
 - hosts: localhost
-  sudo: true
+  become: true
   connection: local
   vars_files:
     - vars/jenkins.yml
+    - vars/site_specific.yml
   roles:
     - openstack.jenkins-job-builder
   tasks:
-    - name: trigger jobs reload
-      debug: msg="Trigger a handler"
-      changed_when: true
+    - name: create jobs from templates
+      template:
+        dest: "{{ jenkins_job_builder_file_jobs_dest }}/{{ item }}"
+        src: "templates/jobs/{{ item }}.j2"
+      with_items:
+        - "update-jenkins.yml"
+        - "lighthouse.yml"
       notify:
+        - Check jenkins
         - Reload jenkins-jobs

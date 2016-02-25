@@ -23,16 +23,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vf.vmx["vhv.enable"] = "TRUE"
         vf.vmx["allowNested"] = "TRUE"
       end
-      srv.vm.provision "file",
-        source: "../secrets/ssh_rsa",
-        destination: "/tmp/secrets/ssh_rsa"
-      srv.vm.provision "file",
-        source: "../secrets/ssh_rsa.pub",
-        destination: "/tmp/secrets/ssh_rsa.pub"
-      srv.vm.provision "file",
-        source: "../secrets/vagrant.site_specific.yml",
-        destination: "/tmp/secrets/site_specific.yml"
-      srv.vm.provision "shell", inline: "sudo mv /tmp/secrets/* /opt"
+      srv.vm.synced_folder "../secrets", "/tmp/secrets"
+      srv.vm.provision "shell", inline: "sudo mv /tmp/secrets /opt/secrets"
       srv.vm.provision "shell", inline: "cd /vagrant; ./bootstrap.sh"
     end
   end
