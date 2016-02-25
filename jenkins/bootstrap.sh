@@ -8,15 +8,15 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [[ -f "/opt/site_specific.yml" ]]; then
-  cp /opt/site_specific.yml ./vars/site_specific.yml
+  cp --remove-destination /opt/site_specific.yml ./vars/site_specific.yml
 else
   /bin/echo "/opt/site_specific.yml not found. Exiting." 1>&2
   exit 1
 fi
 
 if [[ -f "/opt/ssh_rsa" && -f "/opt/ssh_rsa.pub" ]]; then
-  cp /opt/ssh_rsa ./files/ssh_rsa
-  cp /opt/ssh_rsa.pub ./files/ssh_rsa.pub
+  cp --remove-destination /opt/ssh_rsa ./files/ssh_rsa
+  cp --remove-destination /opt/ssh_rsa.pub ./files/ssh_rsa.pub
 else
   /bin/echo "/opt/ssh_rsa not found. Exiting." 1>&2
   exit 1
