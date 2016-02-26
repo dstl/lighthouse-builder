@@ -20,8 +20,8 @@ resource "aws_security_group" "allow_office_ip" {
   }
   # SSH access from inside AWS
   ingress {
-    from_port   = 22
-    to_port     = 22
+    from_port   = 0
+    to_port     = 65535
     protocol    = "tcp"
     cidr_blocks = ["172.31.0.0/16"]
   }
