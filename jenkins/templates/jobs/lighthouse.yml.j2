@@ -52,6 +52,8 @@
                 - origin/master
     triggers:
         - github
+        - reverse:
+            jobs: 'lighthouse-build'
     builders:
         - shell: |
             export ANSIBLE_HOST_KEY_CHECKING=False
