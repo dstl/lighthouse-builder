@@ -50,6 +50,8 @@
             url: git@github.com:livestax/dstl-infrastructure.git
             branches:
                 - origin/master
+    triggers:
+        - github
     builders:
         - shell: |
             export ANSIBLE_HOST_KEY_CHECKING=False
