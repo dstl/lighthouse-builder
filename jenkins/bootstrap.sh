@@ -1,5 +1,6 @@
 #!/bin/bash
 
+result=0
 current_user="$(whoami)"
 
 _is_vagrant=1
@@ -89,7 +90,9 @@ install_ansible() {
 run_playbooks() {
   /bin/echo "Running Ansible playbooks"
   /bin/ansible-playbook bootstrap.yml
+  (( result += $? ))
   /bin/ansible-playbook configure-jobs.yml
+  (( result += $? ))
 }
 
 read_args $@
@@ -98,3 +101,5 @@ update_secrets
 prepare_secrets
 install_ansible
 run_playbooks
+
+exit $result
