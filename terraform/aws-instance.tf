@@ -28,12 +28,17 @@ resource "aws_instance" "lighthouse-app" {
     ami = "ami-33734044"
     instance_type = "t2.micro"
     key_name = "deploy"
+    availability_zone = "${var.availability_zone}"
     security_groups = ["${aws_security_group.allow_office_ip.name}"]
     tags {
       Name = "lighthouse-app"
     }
 }
 
-output "aws_instance_ip" {
+output "internal_ip" {
+    value = "${aws_instance.lighthouse-app.private_ip}"
+}
+
+output "external_ip" {
     value = "${aws_instance.lighthouse-app.public_ip}"
 }
