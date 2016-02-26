@@ -8,13 +8,20 @@ resource "aws_security_group" "allow_office_ip" {
   name = "allow_office_ip"
   description = "Allow all inbound traffic from Metal box factory"
 
+  # Full ingress from the Office
   ingress {
       from_port = 0
       to_port = 65535
       protocol = "tcp"
       cidr_blocks = ["80.87.30.98/32"]
   }
-
+  # SSH access from inside AWS
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["172.31.0.0/16"]
+  }
   # Full internet access
   egress {
       from_port = 0
