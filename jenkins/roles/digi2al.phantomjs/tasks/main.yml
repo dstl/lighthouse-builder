@@ -1,0 +1,9 @@
+---
+- name: install phantomjs dependencies
+  yum:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - "fontconfig"
+    - "freetype"
+
