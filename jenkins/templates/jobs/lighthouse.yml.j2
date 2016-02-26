@@ -62,6 +62,27 @@
     wrappers:
         - ansicolor
 
+- job:
+    name: 'lighthouse-acceptance-test'
+    description: 'Do not edit this job through the web!'
+    display-name: 'Acceptance Test Lighthouse'
+    scm:
+        - git:
+            url: git@github.com:dstl/lighthouse.git
+            branches:
+                - origin/master
+    triggers:
+        - reverse:
+            jobs: 'lighthouse-deploy'
+            result: 'success'
+    builders:
+        - shell: |
+            export LIGHTHOUSE_HOST="{{ lighthouse_ip }}:{{lighthouse_port}}"
+            $WORKSPACE/bin/acceptance-test.sh
+    wrappers:
+        - ansicolor
+
+
 - project:
     name: lighthouse
     jobs:
