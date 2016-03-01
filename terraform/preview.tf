@@ -13,14 +13,11 @@ resource "aws_security_group" "allow_office_ip" {
       from_port = 0
       to_port = 65535
       protocol = "tcp"
-      cidr_blocks = ["80.87.30.98/32"]
-  }
-  # SSH access from inside AWS
-  ingress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["172.31.0.0/16"]
+      cidr_blocks = [
+        "80.87.30.98/32",
+        "146.80.161.125/32",
+        "172.31.0.0/16"
+      ]
   }
   # Full internet access
   egress {
@@ -40,6 +37,22 @@ resource "aws_instance" "lighthouse-app" {
     tags {
       Name = "lighthouse-app"
     }
+}
+
+resource "aws_eip" "lighthouse-public-ip" {
+  instance = "${aws_instance.lighthouse-app.id}"
+}
+
+resource "aws_route53_zone" "primary" {
+  name = "lighthouse.pw"
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = "${aws_route53_zone.primary.zone_id}"
+  name = "www.lighthouse.pw"
+  type = "A"
+  ttl = "60"
+  records = ["${aws_eip.lighthouse-public-ip.public_ip}"]
 }
 
 output "internal_ip" {
