@@ -78,7 +78,7 @@
     builders:
         - shell: |
             export PATH="/usr/local/bin:$PATH"
-            export LIGHTHOUSE_HOST="{{ lighthouse_ip }}:{{lighthouse_port}}"
+            export LIGHTHOUSE_HOST="{{ lighthouse_host }}"
             $WORKSPACE/bin/acceptance-test.sh
     wrappers:
         - ansicolor

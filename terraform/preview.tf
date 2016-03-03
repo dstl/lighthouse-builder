@@ -16,7 +16,8 @@ resource "aws_security_group" "allow_office_ip" {
       cidr_blocks = [
         "80.87.30.98/32",
         "146.80.161.125/32",
-        "172.31.0.0/16"
+        "172.31.0.0/16",
+        "52.48.28.61/0"
       ]
   }
   # Full internet access
