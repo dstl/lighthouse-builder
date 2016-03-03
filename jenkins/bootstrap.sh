@@ -85,6 +85,7 @@ update_secrets() {
 install_ansible() {
   /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | sudo /bin/bash )
   /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; sudo /bin/yum -y install ansible )
+  sudo pip install --upgrade ansible
 }
 
 run_playbooks() {
