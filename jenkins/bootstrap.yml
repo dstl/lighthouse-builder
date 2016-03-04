@@ -9,6 +9,11 @@
     - digi2al.python
     - digi2al.phantomjs
   tasks:
+    - name: Ensure Jenkins can sudo
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'Defaults requiretty'
+        state: absent
     - name: Copy Configuration files over
       template:
         src: 'templates/{{ item.src }}'

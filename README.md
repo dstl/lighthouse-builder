@@ -52,3 +52,10 @@ With our folder rsynced across we can now ssh in and run the bootstrap:
 
 The bootstrap takes a few minutes. Then jenkins should be available at
 [ci.lighthouse.pw].
+
+## Update Jenkins
+
+It's important (vitally important) to update jenkins through the internal update
+job before trying to run any other jobs.
+
+Run the Update Jenkins job from the dashboard.
