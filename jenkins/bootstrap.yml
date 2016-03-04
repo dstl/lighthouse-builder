@@ -12,7 +12,7 @@
     - name: Ensure Jenkins can sudo
       lineinfile:
         dest: /etc/sudoers
-        line: 'Defaults requiretty'
+        regexp: 'Defaults\s+requiretty'
         state: absent
     - name: Copy Configuration files over
       template:
