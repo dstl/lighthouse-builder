@@ -14,10 +14,10 @@ resource "aws_security_group" "allow_office_ip" {
       to_port = 65535
       protocol = "tcp"
       cidr_blocks = [
-        "80.87.30.98/32",    # Metal Box Factory
-        "146.80.161.125/32", # Client
-        "172.31.0.0/16",     # Internal amazon IP range (for api/ssh access)
-        "52.48.28.61/32"     # External amazon IP (for jenkins access)
+        "${var.office_ip}/32", # Metal Box Factory
+        "${var.client_ip}/32", # Client
+        "172.31.0.0/16",       # Internal amazon IP range (for api/ssh access)
+        "52.48.28.61/32"       # External amazon IP (for jenkins access)
       ]
   }
   # Full internet access
@@ -28,6 +28,7 @@ resource "aws_security_group" "allow_office_ip" {
       cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
 
 resource "aws_instance" "lighthouse-app" {
     ami = "ami-33734044"

@@ -1,3 +1,5 @@
+variable "office_ip" {}
+variable "client_ip" {}
 variable "access_key" {}
 variable "secret_key" {}
 variable "region" {
