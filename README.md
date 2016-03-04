@@ -48,7 +48,7 @@ With our folder rsynced across we can now ssh in and run the bootstrap:
 
     > ssh -i secrets/preview.deploy.pem centos@ci.lighthouse.pw
     centos@ci > cd /tmp/bootstrap/jenkins
-    centos@ci > nohup ./bootstrap --preview --override-secrets > bootstrap.log 2>&1 &
+    centos@ci > ./bootstrap.sh --preview --override-secrets
 
-The bootstrap takes a few minutes so using nohup we can disconnect from the VM
-and check in on it after a coffee.
+The bootstrap takes a few minutes. Then jenkins should be available at
+[ci.lighthouse.pw].
