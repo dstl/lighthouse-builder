@@ -18,7 +18,8 @@ resource "aws_security_group" "allow_office_ip" {
         "${var.client_ip}/32", # Client
         "${var.robs_ip}/32",   # Robs IP
         "172.31.0.0/16",       # Internal amazon IP range (for api/ssh access)
-        "52.48.28.61/32"       # External amazon IP (for jenkins access)
+        "${var.jenkins_ip}/32",# External amazon IP (for jenkins access)
+        "${var.github_ip}/22"
       ]
   }
   # Full internet access

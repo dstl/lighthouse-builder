@@ -1,6 +1,8 @@
 variable "office_ip" {}
 variable "client_ip" {}
+variable "jenkins_ip" {}
 variable "robs_ip" {}
+variable "github_ip" {}
 variable "access_key" {}
 variable "secret_key" {}
 variable "region" {
