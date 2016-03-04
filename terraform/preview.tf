@@ -14,10 +14,10 @@ resource "aws_security_group" "allow_office_ip" {
       to_port = 65535
       protocol = "tcp"
       cidr_blocks = [
-        "80.87.30.98/32",
-        "146.80.161.125/32",
-        "172.31.0.0/16",
-        "52.48.28.61/0"
+        "80.87.30.98/32",    # Metal Box Factory
+        "146.80.161.125/32", # Client
+        "172.31.0.0/16",     # Internal amazon IP range (for api/ssh access)
+        "52.48.28.61/0"      # External amazon IP (for jenkins access)
       ]
   }
   # Full internet access
