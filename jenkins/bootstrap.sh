@@ -77,12 +77,9 @@ update_secrets() {
     sudo rm -rf /opt/secrets
     sudo cp -R ../secrets /opt/secrets
 
-    # So we can use extglob options
-    shopt -s extglob
-
-    # Don't chmod .pem files
-    sudo chmod u=wr,g=wr,o=r /opt/secrets/*!(*.pem)
-    sudo chmod u=wr,g=,o= /opt/secrets/*.pem
+    # Don't chmod .png files to be restricted
+    sudo chmod u=wr,g=,o= /opt/secrets/*
+    sudo chmod u=wr,g=wr,o=r /opt/secrets/*.png
     sudo chown $current_user /opt/secrets/*
   fi
 }
