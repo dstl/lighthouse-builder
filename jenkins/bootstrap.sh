@@ -79,8 +79,9 @@ update_secrets() {
 
     # Don't chmod .png files to be restricted
     sudo chmod u=wr,g=,o= /opt/secrets/*
-    sudo chmod u=wr,g=wr,o=r /opt/secrets/*.png
-    sudo chown $current_user /opt/secrets/*
+    sudo chown -R $current_user /opt/secrets/*
+    sudo find /opt/secrets -name '*assets' -exec chmod 770 {} \;
+    sudo find /opt/secrets -name '*.png' -exec chmod 660 {} \;
   fi
 }
 
