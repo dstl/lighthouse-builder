@@ -14,6 +14,7 @@
         - github-notifier
         - shell: |
             export VIRTUALENV_LOCATION="$WORKSPACE/virtualenv"
+            export DOWNLOAD_LOCATION="{{ jenkins_pypi_dist_location }}"
             $WORKSPACE/bin/jenkins.sh
     wrappers:
         - ansicolor
@@ -35,6 +36,7 @@
         - github-notifier
         - shell: |
             export VIRTUALENV_LOCATION="$WORKSPACE/virtualenv"
+            export DOWNLOAD_LOCATION="{{ jenkins_pypi_dist_location }}"
             $WORKSPACE/bin/jenkins.sh
     wrappers:
         - ansicolor
@@ -81,6 +83,7 @@
         - shell: |
             export PATH="/usr/local/bin:$PATH"
             export LIGHTHOUSE_HOST="{{ lighthouse_host }}"
+            export DOWNLOAD_LOCATION="{{ jenkins_pypi_dist_location }}"
             $WORKSPACE/bin/acceptance-test.sh
     wrappers:
         - ansicolor
