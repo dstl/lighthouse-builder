@@ -62,7 +62,7 @@ prepare_secrets() {
     link_file /opt/secrets/vagrant.site_specific.yml ./vars/site_specific.yml
   elif is_preview; then
     link_file /opt/secrets/preview.site_specific.yml ./vars/site_specific.yml
-  elif is_preview; then
+  elif is_bronze; then
     link_file /opt/secrets/site_specific.yml ./vars/site_specific.yml
   else
     /bin/echo "Provide an update target: [--vagrant|--preview|--bronze]. Exiting."1>&2
