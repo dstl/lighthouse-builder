@@ -76,13 +76,13 @@ update_secrets() {
   if override_secrets; then
     sudo rm -rf /opt/secrets
     sudo cp -R ../secrets /opt/secrets
-
-    # Don't chmod .png files to be restricted
-    sudo chown -R $current_user /opt/secrets/*
-    sudo chmod u=wr,g=,o= /opt/secrets/*
-    sudo find /opt/secrets -name '*assets' -exec chmod 770 {} \;
-    sudo find /opt/secrets -name '*.png' -exec chmod 660 {} \;
   fi
+
+  # Don't chmod .png files to be restricted
+  sudo chown -R $current_user /opt/secrets/*
+  sudo chmod u=wr,g=,o= /opt/secrets/*
+  sudo find /opt/secrets -name '*assets' -exec chmod 770 {} \;
+  sudo find /opt/secrets -name '*.png' -exec chmod 660 {} \;
 }
 
 install_ansible() {
