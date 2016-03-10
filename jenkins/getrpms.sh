@@ -1,4 +1,8 @@
 #!/bin/bash
 
-/bin/mkdir -p RPMS
-/bin/yum -y -q reinstall --downloadonly --downloaddir=RPMS python35u python35u-pip python35u-devel python35u-setuptools python35u-libs
+for DIST in CentOS Redhat
+do
+  mkdir -p ${WORKSPACE}/stable/$DIST/7/x86_64/
+  rsync -avH --numeric-ids --delete --exclude 'debug*' --exclude 'repo*' rsync://lon.mirror.rackspace.com/ius/stable/${DIST}/7/x86_64/ ${WORKSPACE}/stable/${DIST}/7/x86_64/
+  createrepo ${WORKSPACE}/stable/$DIST/7/x86_64/
+done
