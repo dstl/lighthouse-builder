@@ -24,8 +24,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vf.vmx["allowNested"] = "TRUE"
       end
       srv.vm.synced_folder "../secrets", "/tmp/secrets"
-      srv.vm.provision "shell", inline: "sudo mv /tmp/secrets /opt/secrets"
-      srv.vm.provision "shell", inline: "cd /vagrant; ./bootstrap.sh"
+      srv.vm.provision "shell", inline: "sudo rsync -a /tmp/secrets /opt/secrets"
+      srv.vm.provision "shell", inline: "cd /vagrant; ./bootstrap.sh --vagrant"
     end
   end
 end

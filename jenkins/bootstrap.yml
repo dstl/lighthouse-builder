@@ -40,6 +40,11 @@
         owner: jenkins
         group: jenkins
         mode: "u=rwx,g=,o="
+    - name: Ensure dist folder exists
+      file:
+        state: directory
+        path: "/opt/dist"
+        mode: "u=rwx,g=rwx,o=rwx"
     - name: Install ssh creds
       copy:
         src: 'files/{{ item.src }}'
