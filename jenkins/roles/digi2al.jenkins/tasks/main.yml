@@ -1,2 +1,3 @@
 ---
 - include: sudo.yml
+- include: ssh.yml

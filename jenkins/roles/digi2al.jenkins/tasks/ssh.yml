@@ -1,0 +1,20 @@
+---
+- name: Ensure $JENKINS_HOME/.ssh exists
+  file:
+    state: directory
+    path: /var/lib/jenkins/.ssh
+    owner: jenkins
+    group: jenkins
+    mode: "u=rwx,g=,o="
+- name: Install ssh creds
+  copy:
+    src: '{{ item.src }}'
+    dest: '/var/lib/jenkins/.ssh/{{ item.dest }}'
+    owner: jenkins
+    group: jenkins
+    mode: "{{ item.mode }}"
+  with_items:
+    - { src: 'ssh_rsa',     mode: 'u=rw,g=,o=',   dest: 'github_rsa' }
+    - { src: 'ssh_rsa.pub', mode: 'u=rw,g=,o=',   dest: 'github_rsa.pub' }
+    - { src: 'ssh_config',  mode: 'u=rw,g=r,o=r', dest: 'config' }
+    - { src: 'ssh_hosts',   mode: 'u=rw,g=r,o=r', dest: 'known_hosts' }
