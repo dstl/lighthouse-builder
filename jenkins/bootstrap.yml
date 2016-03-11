@@ -9,6 +9,7 @@
     - digi2al.jenkins
     - digi2al.python
     - digi2al.phantomjs
+    - digi2al.dependencies
   tasks:
     - name: Ensure /var/run/postgresql exists
       file:
@@ -17,8 +18,3 @@
         owner: postgres
         group: postgres
         mode: "u=rwx,g=rx,o=rx"
-    - name: Ensure dist folder exists
-      file:
-        state: directory
-        path: "/opt/dist"
-        mode: "u=rwx,g=rwx,o=rwx"
