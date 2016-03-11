@@ -42,7 +42,8 @@ method:
     > rsync --recursive \
             -e 'ssh -i secrets/preview.deploy.pem' \
             . \
-            centos@ci.lighthouse.pw:/tmp/bootstrap
+            centos@ci.lighthouse.pw:/tmp/bootstrap \
+            --exclude-from "rsync_exclude.txt"
 
 With our folder rsynced across we can now ssh in and run the bootstrap:
 
