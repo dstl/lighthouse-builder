@@ -6,14 +6,10 @@
     - vars/site_specific.yml
   roles:
     - geerlingguy.jenkins
+    - digi2al.jenkins
     - digi2al.python
     - digi2al.phantomjs
   tasks:
-    - name: Ensure Jenkins can sudo
-      lineinfile:
-        dest: /etc/sudoers
-        regexp: 'Defaults\s+requiretty'
-        state: absent
     - name: Copy Configuration files over
       template:
         src: 'templates/{{ item.src }}'
@@ -57,13 +53,6 @@
         - { src: 'ssh_rsa.pub', mode: 'u=rw,g=,o=',   dest: 'github_rsa.pub' }
         - { src: 'ssh_config',  mode: 'u=rw,g=r,o=r', dest: 'config' }
         - { src: 'ssh_hosts',   mode: 'u=rw,g=r,o=r', dest: 'known_hosts' }
-    - name: Add Jenkins to sudo
-      copy:
-        src: files/jenkins.sudo
-        dest: /etc/sudoers.d/jenkins
-        owner: root
-        group: root
-        mode: "u=r,g=r,o=r"
     - name: Configure build radiator
       copy:
         src: files/config.xml

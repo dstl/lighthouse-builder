@@ -1,0 +1,13 @@
+---
+- name: Ensure Jenkins can sudo
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: 'Defaults\s+requiretty'
+    state: absent
+- name: Add Jenkins to sudo
+  copy:
+    src: files/jenkins.sudo
+    dest: /etc/sudoers.d/jenkins
+    owner: root
+    group: root
+    mode: "u=r,g=r,o=r"
