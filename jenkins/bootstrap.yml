@@ -10,18 +10,6 @@
     - digi2al.python
     - digi2al.phantomjs
   tasks:
-    - name: Copy Configuration files over
-      template:
-        src: 'templates/{{ item.src }}'
-        dest: '/var/lib/jenkins/{{ item.dest }}'
-        owner: jenkins
-        group: jenkins
-        mode: "u=rw,g=r,o=r"
-      with_items:
-        - { src: 'credentials.xml.j2',          dest: 'credentials.xml' }
-        - { src: 'jenkins_location.xml.j2',     dest: 'jenkins.model.JenkinsLocationConfiguration.xml' }
-        - { src: 'github_configuration.xml.j2', dest: 'github-plugin-configuration.xml' }
-        - { src: 'vault_password_file.j2',      dest: '.vault_password_file' }
     - name: Ensure /var/run/postgresql exists
       file:
         state: directory
@@ -34,12 +22,3 @@
         state: directory
         path: "/opt/dist"
         mode: "u=rwx,g=rwx,o=rwx"
-    - name: Configure build radiator
-      copy:
-        src: files/config.xml
-        dest: /var/lib/jenkins/config.xml
-        owner: jenkins
-        group: jenkins
-        mode: "u=rw,g=r,o=r"
-      notify:
-        - restart jenkins
