@@ -6,6 +6,7 @@
     - vars/site_specific.yml
   roles:
     - geerlingguy.jenkins
+    - openstack.jenkins-job-builder
     - digi2al.jenkins
     - digi2al.python
     - digi2al.phantomjs

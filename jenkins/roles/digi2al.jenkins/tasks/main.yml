@@ -2,3 +2,4 @@
 - include: sudo.yml
 - include: ssh.yml
 - include: config.yml
+- include: jobs.yml

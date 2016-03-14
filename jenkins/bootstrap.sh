@@ -95,8 +95,6 @@ run_playbooks() {
   /bin/echo "Running Ansible playbooks"
   /bin/ansible-playbook bootstrap.yml
   (( result += $? ))
-  /bin/ansible-playbook configure-jobs.yml
-  (( result += $? ))
 }
 
 read_args $@
