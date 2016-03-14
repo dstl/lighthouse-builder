@@ -13,7 +13,7 @@
     - { src: 'vault_password_file.j2',      dest: '.vault_password_file' }
 - name: Configure build radiator
   copy:
-    src: files/config.xml
+    src: config.xml
     dest: /var/lib/jenkins/config.xml
     owner: jenkins
     group: jenkins

@@ -6,7 +6,7 @@
     state: absent
 - name: Add Jenkins to sudo
   copy:
-    src: files/jenkins.sudo
+    src: jenkins.sudo
     dest: /etc/sudoers.d/jenkins
     owner: root
     group: root
