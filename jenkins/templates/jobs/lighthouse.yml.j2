@@ -32,6 +32,9 @@
                 - origin/master
     triggers:
         - github
+        - reverse:
+            jobs: 'update-jenkins'
+            result: 'success'
     builders:
         - github-notifier
         - shell: |
