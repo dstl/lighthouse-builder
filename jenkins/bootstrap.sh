@@ -43,48 +43,6 @@ read_args() {
   done
 }
 
-link_file() {
-  local src="$1"
-  local dest="$2"
-
-  if [[ -f "$src" ]]; then
-    ln -s -f "$src" "$dest"
-  else
-    /bin/echo "$src not found. Exiting." 1>&2
-    exit 1
-  fi
-}
-
-prepare_secrets() {
-  local jenkins_update_target="$1"
-
-  if is_vagrant; then
-    link_file /opt/secrets/vagrant.site_specific.yml ./vars/site_specific.yml
-  elif is_preview; then
-    link_file /opt/secrets/preview.site_specific.yml ./vars/site_specific.yml
-  elif is_bronze; then
-    link_file /opt/secrets/site_specific.yml ./vars/site_specific.yml
-  else
-    /bin/echo "Provide an update target: [--vagrant|--preview|--bronze]. Exiting."1>&2
-    exit 1
-  fi
-  link_file /opt/secrets/ssh_rsa ./files/ssh_rsa
-  link_file /opt/secrets/ssh_rsa.pub ./files/ssh_rsa.pub
-}
-
-update_secrets() {
-  if override_secrets; then
-    sudo rm -rf /opt/secrets
-    sudo cp -R ../secrets /opt/secrets
-  fi
-
-  # Don't chmod .png files to be restricted
-  sudo chown -R $current_user /opt/secrets/*
-  sudo chmod u=wr,g=,o= /opt/secrets/*
-  sudo find /opt/secrets -name '*assets' -exec chmod 770 {} \;
-  sudo find /opt/secrets -name '*.png' -exec chmod 660 {} \;
-}
-
 install_ansible() {
   /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | sudo /bin/bash )
   /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; sudo /bin/yum -y install ansible )
@@ -93,14 +51,12 @@ install_ansible() {
 
 run_playbooks() {
   /bin/echo "Running Ansible playbooks"
-  /bin/ansible-playbook bootstrap.yml
+  /bin/ansible-playbook bootstrap.yml -i $ansible
   (( result += $? ))
 }
 
 read_args $@
 
-update_secrets
-prepare_secrets
 install_ansible
 run_playbooks
 
