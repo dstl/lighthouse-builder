@@ -1,0 +1,6 @@
+---
+- name: Ensure dist folder exists
+  file:
+    state: directory
+    path: "/opt/dist"
+    mode: "u=rwx,g=rwx,o=rwx"

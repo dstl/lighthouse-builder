@@ -1,0 +1,12 @@
+---
+- include: sudo.yml
+- include: ssh.yml
+- include: config.yml
+- include: jobs.yml
+- name: Ensure /var/run/postgresql exists
+  file:
+    state: directory
+    path: /var/run/postgresql
+    owner: postgres
+    group: postgres
+    mode: "u=rwx,g=rx,o=rx"
