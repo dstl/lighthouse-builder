@@ -2,7 +2,7 @@
 secrets_location: '../secrets'
 jenkins_url: 'http://10.1.1.10:8080/'
 github_api_url: 'https://api.github.com'
-jenkins_update_target: '--vagrant --override-secrets'
+jenkins_update_target: '--vagrant'
 lighthouse_inventory_file: '../secrets/vagrant.inventory'
 lighthouse_host: 'www.lighthouse.pw'
 lighthouse_port: '8080'
