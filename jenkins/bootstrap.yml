@@ -1,6 +1,5 @@
 - hosts: jenkins
-  connection: local
-  become: true
+  sudo: true
   vars_files:
     - vars/jenkins.yml
     - "{{ secrets_vars }}"
