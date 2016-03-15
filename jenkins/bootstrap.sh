@@ -2,45 +2,32 @@
 
 result=0
 current_user="$(whoami)"
-
-_is_vagrant=1
-is_vagrant() {
-  return $_is_vagrant
-}
-_is_preview=1
-is_preview() {
-  return $_is_preview
-}
-_is_bronze=1
-is_bronze() {
-  return $_is_bronze
-}
-_override_secrets=1
-override_secrets() {
-  return $_override_secrets
-}
+inventory_file='/tmp/bootstrap-inventory'
+environment=''
 
 read_args() {
   while [[ $# > 0 ]]; do
     local key="$1"
     case $key in
       --vagrant)
-        _is_vagrant=0
+        environment='vagrant'
         shift;;
       --preview)
-        _is_preview=0
+        environment='preview'
         shift;;
       --bronze)
-        _is_bronze=0
-        shift;;
-      --override-secrets)
-        _override_secrets=0
+        environment='bronze'
         shift;;
       *)
-        /bin/echo "Unknown option $key, ignoring." 1>&2
+        /bin/echo "Unknown option $key, Exiting." 1>&2
+        exit 1
         shift;;
     esac
   done
+  if [[ -z $environment ]]; then
+    /bin/echo "No environment provided, Exiting." 1>&2
+    exit 1
+  fi
 }
 
 install_ansible() {
@@ -49,15 +36,26 @@ install_ansible() {
   sudo pip install --upgrade ansible
 }
 
+render_inventory() {
+  cat >$inventory_file << EOL
+[jenkins]
+localhost ansible_connection=local
+
+[$environment:children]
+jenkins
+EOL
+}
+
 run_playbooks() {
   /bin/echo "Running Ansible playbooks"
-  /bin/ansible-playbook bootstrap.yml -i $ansible
+  /bin/ansible-playbook bootstrap.yml -i $inventory_file
   (( result += $? ))
 }
 
 read_args $@
 
 install_ansible
+render_inventory
 run_playbooks
 
 exit $result
