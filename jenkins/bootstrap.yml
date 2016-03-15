@@ -7,6 +7,7 @@
   roles:
     - geerlingguy.jenkins
     - openstack.jenkins-job-builder
+    - octarine.postgresql
     - digi2al.jenkins
     - digi2al.python
     - digi2al.phantomjs
