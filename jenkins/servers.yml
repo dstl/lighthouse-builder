@@ -3,3 +3,7 @@
   box: box-cutter/centos72
   ip: 10.1.1.10
   ram: 1024
+  playbook: bootstrap.yml
+  groups:
+    - vagrant
+    - jenkins

@@ -14,7 +14,7 @@
     group: jenkins
     mode: "{{ item.mode }}"
   with_items:
-    - { src: 'ssh_rsa',     mode: 'u=rw,g=,o=',   dest: 'github_rsa' }
-    - { src: 'ssh_rsa.pub', mode: 'u=rw,g=,o=',   dest: 'github_rsa.pub' }
+    - { src: '{{ secrets_location }}/ssh_rsa',     mode: 'u=rw,g=,o=',   dest: 'github_rsa' }
+    - { src: '{{ secrets_location }}/ssh_rsa.pub', mode: 'u=rw,g=,o=',   dest: 'github_rsa.pub' }
     - { src: 'ssh_config',  mode: 'u=rw,g=r,o=r', dest: 'config' }
     - { src: 'ssh_hosts',   mode: 'u=rw,g=r,o=r', dest: 'known_hosts' }

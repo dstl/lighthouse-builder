@@ -1,9 +1,9 @@
-- hosts: localhost
+- hosts: jenkins
   connection: local
   become: true
   vars_files:
     - vars/jenkins.yml
-    - vars/site_specific.yml
+    - "{{ secrets_vars }}"
   roles:
     - geerlingguy.jenkins
     - openstack.jenkins-job-builder
