@@ -7,3 +7,4 @@ lighthouse_inventory_file: '../secrets/vagrant.inventory'
 lighthouse_host: 'www.lighthouse.pw'
 lighthouse_port: '8080'
 secrets_vars: '../secrets/vagrant.site_specific.yml'
+notify_github: no

@@ -23,8 +23,10 @@
             ./bootstrap.sh {{ jenkins_update_target }}
     wrappers:
         - ansicolor
+{% if notify_github %}
     publishers:
         - github-notifier
+{% endif %}
 
 - job:
     name: 'package-rpms'
@@ -42,8 +44,10 @@
             sudo ./getrpms.sh
     wrappers:
         - ansicolor
+{% if notify_github %}
     publishers:
         - github-notifier
+{% endif %}
 
 - project:
     name: jenkins
