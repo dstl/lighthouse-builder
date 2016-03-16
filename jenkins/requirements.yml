@@ -1,13 +1,5 @@
 ---
 - src: geerlingguy.jenkins
-- src: git@github.com:livestax/dstl-lighthouse-python-role.git
-  scm: git
-  version: master
-  name: digi2al.python
-- src: git@github.com:livestax/dstl-lighthouse-phantomjs-role.git
-  scm: git
-  version: master
-  name: digi2al.phantomjs
 - src: git@github.com:openstack/ansible-role-jenkins-job-builder.git
   scm: git
   version: master
