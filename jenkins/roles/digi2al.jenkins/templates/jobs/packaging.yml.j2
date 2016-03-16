@@ -17,8 +17,10 @@
             $WORKSPACE/bin/pip-download.sh
     wrappers:
         - ansicolor
+{% if notify_github %}
     publishers:
         - github-notifier
+{% endif %}
 
 - project:
     name: packaging

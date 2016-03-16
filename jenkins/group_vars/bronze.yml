@@ -5,3 +5,4 @@ github_api_url: 'https://api.github.com'
 jenkins_update_target: '--bronze'
 lighthouse_port: '80'
 lighthouse_inventory_file: '/opt/secrets/bronze.inventory'
+notify_github: no
