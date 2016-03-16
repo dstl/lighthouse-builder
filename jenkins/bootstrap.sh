@@ -2,87 +2,32 @@
 
 result=0
 current_user="$(whoami)"
-
-_is_vagrant=1
-is_vagrant() {
-  return $_is_vagrant
-}
-_is_preview=1
-is_preview() {
-  return $_is_preview
-}
-_is_bronze=1
-is_bronze() {
-  return $_is_bronze
-}
-_override_secrets=1
-override_secrets() {
-  return $_override_secrets
-}
+inventory_file='/tmp/bootstrap-inventory'
+environment=''
 
 read_args() {
   while [[ $# > 0 ]]; do
     local key="$1"
     case $key in
       --vagrant)
-        _is_vagrant=0
+        environment='vagrant'
         shift;;
       --preview)
-        _is_preview=0
+        environment='preview'
         shift;;
       --bronze)
-        _is_bronze=0
-        shift;;
-      --override-secrets)
-        _override_secrets=0
+        environment='bronze'
         shift;;
       *)
-        /bin/echo "Unknown option $key, ignoring." 1>&2
+        /bin/echo "Unknown option $key, Exiting." 1>&2
+        exit 1
         shift;;
     esac
   done
-}
-
-link_file() {
-  local src="$1"
-  local dest="$2"
-
-  if [[ -f "$src" ]]; then
-    ln -s -f "$src" "$dest"
-  else
-    /bin/echo "$src not found. Exiting." 1>&2
+  if [[ -z $environment ]]; then
+    /bin/echo "No environment provided, Exiting." 1>&2
     exit 1
   fi
-}
-
-prepare_secrets() {
-  local jenkins_update_target="$1"
-
-  if is_vagrant; then
-    link_file /opt/secrets/vagrant.site_specific.yml ./vars/site_specific.yml
-  elif is_preview; then
-    link_file /opt/secrets/preview.site_specific.yml ./vars/site_specific.yml
-  elif is_bronze; then
-    link_file /opt/secrets/site_specific.yml ./vars/site_specific.yml
-  else
-    /bin/echo "Provide an update target: [--vagrant|--preview|--bronze]. Exiting."1>&2
-    exit 1
-  fi
-  link_file /opt/secrets/ssh_rsa ./files/ssh_rsa
-  link_file /opt/secrets/ssh_rsa.pub ./files/ssh_rsa.pub
-}
-
-update_secrets() {
-  if override_secrets; then
-    sudo rm -rf /opt/secrets
-    sudo cp -R ../secrets /opt/secrets
-  fi
-
-  # Don't chmod .png files to be restricted
-  sudo chown -R $current_user /opt/secrets/*
-  sudo chmod u=wr,g=,o= /opt/secrets/*
-  sudo find /opt/secrets -name '*assets' -exec chmod 770 {} \;
-  sudo find /opt/secrets -name '*.png' -exec chmod 660 {} \;
 }
 
 install_ansible() {
@@ -91,17 +36,26 @@ install_ansible() {
   sudo pip install --upgrade ansible
 }
 
+render_inventory() {
+  cat >$inventory_file << EOL
+[jenkins]
+localhost ansible_connection=local
+
+[$environment:children]
+jenkins
+EOL
+}
+
 run_playbooks() {
   /bin/echo "Running Ansible playbooks"
-  /bin/ansible-playbook bootstrap.yml
+  /bin/ansible-playbook bootstrap.yml -i $inventory_file
   (( result += $? ))
 }
 
 read_args $@
 
-update_secrets
-prepare_secrets
 install_ansible
+render_inventory
 run_playbooks
 
 exit $result

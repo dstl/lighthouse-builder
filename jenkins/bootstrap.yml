@@ -1,12 +1,12 @@
-- hosts: localhost
-  connection: local
-  become: true
+- hosts: jenkins
+  sudo: true
   vars_files:
     - vars/jenkins.yml
-    - vars/site_specific.yml
+    - "{{ secrets_vars }}"
   roles:
     - geerlingguy.jenkins
     - openstack.jenkins-job-builder
+    - octarine.postgresql
     - digi2al.jenkins
     - digi2al.python
     - digi2al.phantomjs

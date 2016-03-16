@@ -8,24 +8,34 @@ require 'yaml'
 # Read YAML file with box details
 servers = YAML.load_file('servers.yml')
 
+groups = {}
+servers.each do |server|
+  server['groups'].each do |group|
+    groups[group] ||= []
+    groups[group].push(server['name'])
+  end
+end
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  servers.each do |servers|
-    config.vm.define servers["name"] do |srv|
-      srv.vm.box = servers["box"]
+  servers.each do |server|
+    config.vm.define server["name"] do |srv|
+      srv.vm.box = server["box"]
       if Vagrant.has_plugin?("vagrant-cachier")
         srv.cache.scope = :machine
       end
-      srv.vm.network "private_network", ip: servers["ip"]
+      srv.vm.network "private_network", ip: server["ip"]
       srv.vm.provider "virtualbox" do |vb|
-        vb.memory = servers["ram"]
+        vb.memory = server["ram"]
       end
       srv.vm.provider "vmware_fusion" do |vf|
         vf.vmx["vhv.enable"] = "TRUE"
         vf.vmx["allowNested"] = "TRUE"
       end
-      srv.vm.synced_folder "../secrets", "/tmp/secrets"
-      srv.vm.provision "shell", inline: "sudo rsync -a /tmp/secrets/ /opt/secrets/"
-      srv.vm.provision "shell", inline: "cd /vagrant; ./bootstrap.sh --vagrant"
+      srv.vm.synced_folder "../.", "/vagrant"
+      srv.vm.provision "ansible" do |ansible|
+        ansible.playbook = server["playbook"]
+        ansible.groups = groups
+      end
     end
   end
 end

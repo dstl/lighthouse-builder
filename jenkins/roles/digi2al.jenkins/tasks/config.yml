@@ -1,7 +1,7 @@
 ---
 - name: Copy Configuration files over
   template:
-    src: 'templates/{{ item.src }}'
+    src: '{{ item.src }}'
     dest: '/var/lib/jenkins/{{ item.dest }}'
     owner: jenkins
     group: jenkins
