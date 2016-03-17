@@ -1,5 +1,8 @@
-Vagrant.require_version ">= 1.6.0"
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+Vagrant.require_version ">= 1.6.0"
 VAGRANTFILE_API_VERSION = "2"
 
 # Require YAML module
@@ -20,10 +23,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   servers.each do |server|
     config.vm.define server["name"] do |srv|
       srv.vm.box = server["box"]
+      srv.vm.network "private_network", ip: server["ip"]
+      srv.vm.hostname = server["host"]
+
+      server["mounts"].each do |mount|
+        path = ENV[mount["envvar"]]
+        if path
+          srv.vm.synced_folder path, mount["target"], type: 'nfs',
+            mount_options: ['rsize=8192', 'wsize=8192']
+        else
+          puts "#{mount["envvar"]} not set"
+          puts "To share the app into the VM set it in your ~/.bashrc"
+          puts "export #{mount["envvar"]}=~/Projects/dtsl-lighthouse"
+        end
+      end
+
       if Vagrant.has_plugin?("vagrant-cachier")
         srv.cache.scope = :machine
       end
-      srv.vm.network "private_network", ip: server["ip"]
       srv.vm.provider "virtualbox" do |vb|
         vb.memory = server["ram"]
       end
