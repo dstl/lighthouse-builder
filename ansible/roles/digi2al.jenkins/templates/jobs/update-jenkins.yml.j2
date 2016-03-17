@@ -19,7 +19,7 @@
     builders:
         - github-notifier
         - shell: |
-            cd jenkins
+            cd ansible
             ./bootstrap.sh {{ jenkins_update_target }}
     wrappers:
         - ansicolor
@@ -40,7 +40,7 @@
     builders:
         - github-notifier
         - shell: |
-            cd jenkins
+            cd ansible
             sudo ./getrpms.sh
     wrappers:
         - ansicolor
