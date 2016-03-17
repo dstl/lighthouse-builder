@@ -1,0 +1,17 @@
+[uwsgi]
+chdir={{ lighthouse_location }}
+uid = {{ lighthouse_user }}
+gid = {{ uwsgi_group }}
+module=lighthouse.wsgi:application
+home={{ lighthouse_virtualenv_location }}
+master=True
+pidfile=/tmp/lighthouse-master.pid
+vacuum=True
+max-requests=5000
+daemonize={{ uwsgi_log_dir }}/lighthouse.log
+http={{ lighthouse_host }}:{{ lighthouse_port }}
+socket={{ uwsgi_socket_dir }}/lighthouse.socket
+touch-reload={{ lighthouse_location }}/.git/refs/heads/{{ lighthouse_version }}
+env=LIGHTHOUSE_DEBUG=False
+env=LIGHTHOUSE_SECRET_KEY={{ lighthouse_secret_key }}
+env=LIGHTHOUSE_ALLOWED_HOSTS={{ lighthouse_hostname }}

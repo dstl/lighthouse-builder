@@ -1,0 +1,50 @@
+---
+- name: uwsgi | Create the uwsgi groups
+  group:
+    name: "{{ item }}"
+  with_items:
+    - "{{ uwsgi_group }}"
+    - "{{ uwsgi_vassal_group }}"
+- name: uwsgi | Create emperor user
+  user:
+    name: "{{ uwsgi_user }}"
+    group: "{{ uwsgi_group }}"
+    comment: "UWSGI Emperor"
+- name: uwsgi | Create configuration directory
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: 'u=rwx,g=rwx,o=rx'
+    owner: "{{ uwsgi_user }}"
+    group: "{{ uwsgi_group }}"
+  with_items:
+    - "{{ uwsgi_log_dir }}"
+    - "{{ uwsgi_run_dir }}"
+    - "{{ uwsgi_socket_dir }}"
+- name: uwsgi | Create vassal directory
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: 'u=rwx,g=rwx,o=rx'
+    owner: "{{ uwsgi_user }}"
+    group: "{{ uwsgi_vassal_group }}"
+  with_items:
+    - "{{ uwsgi_vassal_dir }}"
+- name: uwsgi | Configure the Emperor
+  template:
+    src: emperor.ini.j2
+    dest: "{{ uwsgi_emperor_conf }}"
+  notify:
+    - restart emperor
+- name: uwsgi | Define systemd service
+  template:
+    src: emperor.service.j2
+    dest: /etc/systemd/system/emperor.service
+  notify:
+    - reload systemd
+    - restart emperor
+- name: uwsgi | Start UWSGI service
+  service:
+    name: emperor
+    state: started
+    enabled: yes

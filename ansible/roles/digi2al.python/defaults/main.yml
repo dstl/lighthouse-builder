@@ -1,0 +1,10 @@
+---
+uwsgi_run_dir: '/etc/uwsgi'
+uwsgi_emperor_conf: '/etc/uwsgi/emperor.ini'
+uwsgi_vassal_dir: '/etc/uwsgi/vassals'
+uwsgi_log_dir: '/var/log/uwsgi'
+uwsgi_socket_dir: '/var/run/uwsgi'
+uwsgi_user: 'uwsgi-emperor'
+uwsgi_group: 'uwsgi-emperor'
+uwsgi_vassal_group: 'uwsgi-vassal'
+nginx_conf_dir: '/etc/nginx/conf.d'

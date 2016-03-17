@@ -12,3 +12,8 @@
   with_items:
     - virtualenv
     - uwsgi
+- include: uwsgi.yml
+- include: nginx.yml
+- name: Disable SELinux
+  selinux:
+    state: disabled
