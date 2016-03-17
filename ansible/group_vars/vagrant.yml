@@ -10,4 +10,4 @@ secrets_vars: '../secrets/vagrant.site_specific.yml'
 notify_github: no
 lighthouse_nginx_host: 0.0.0.0
 lighthouse_hostname: 'lighthouse.dev'
-lighthouse_secrets_infra_vars: '../secrets/vagrant.infra_vars.yml'
+lighthouse_assets_path: '../secrets/silver-assets'

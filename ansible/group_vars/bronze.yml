@@ -6,4 +6,4 @@ jenkins_update_target: '--bronze'
 lighthouse_port: '80'
 lighthouse_inventory_file: '/opt/secrets/bronze.inventory'
 notify_github: no
-lighthouse_secrets_infra_vars: '../secrets/bronze.infra_vars.yml'
+lighthouse_assets_path: '../secrets/bronze-assets'
