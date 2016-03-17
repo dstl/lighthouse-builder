@@ -48,7 +48,7 @@ method:
 With our folder rsynced across we can now ssh in and run the bootstrap:
 
     > ssh -i secrets/preview.deploy.pem centos@ci.lighthouse.pw
-    centos@ci > cd /tmp/bootstrap/jenkins
+    centos@ci > cd /tmp/bootstrap/ansible
     centos@ci > ./bootstrap.sh --preview --override-secrets
 
 The bootstrap takes a few minutes. Then jenkins should be available at
