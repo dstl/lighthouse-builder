@@ -11,3 +11,22 @@
     - digi2al.python
     - digi2al.phantomjs
     - digi2al.dependencies
+- hosts: development
+  sudo: true
+  vars_files:
+    - vars/lighthouse.yml
+    - vars/secrets.yml
+    - "{{ lighthouse_secrets_infra_vars }}"
+  roles:
+    - digi2al.python
+    - bennojoy.openldap_server
+    - digi2al.phantomjs
+- hosts: lighthouse-app-server
+  sudo: true
+  vars_files:
+    - vars/lighthouse.yml
+    - vars/secrets.yml
+    - "{{ lighthouse_secrets_infra_vars }}"
+  roles:
+    - digi2al.python
+    - dstl.lighthouse
