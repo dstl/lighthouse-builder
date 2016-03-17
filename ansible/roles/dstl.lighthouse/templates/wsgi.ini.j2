@@ -9,7 +9,7 @@ pidfile=/tmp/lighthouse-master.pid
 vacuum=True
 max-requests=5000
 daemonize={{ uwsgi_log_dir }}/lighthouse.log
-http={{ lighthouse_host }}:{{ lighthouse_port }}
+http={{ lighthouse_uwsgi_host }}:{{ lighthouse_uwsgi_port }}
 socket={{ uwsgi_socket_dir }}/lighthouse.socket
 touch-reload={{ lighthouse_location }}/.git/refs/heads/{{ lighthouse_version }}
 env=LIGHTHOUSE_DEBUG=False

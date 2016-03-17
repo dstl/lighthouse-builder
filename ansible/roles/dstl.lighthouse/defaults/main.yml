@@ -7,9 +7,9 @@ lighthouse_location: "/opt/dstl/lighthouse/app"
 lighthouse_virtualenv_location: "/opt/dstl/lighthouse/virtualenv"
 lighthouse_download_location: "/opt/dist/pypi"
 lighthouse_internet_access: '/bin/true'
-lighthouse_port: 8080
-lighthouse_host: 127.0.0.1
-lighthouse_nginx_host: 127.0.0.1
+lighthouse_uwsgi_port: 8080
+lighthouse_uwsgi_host: 127.0.0.1
+lighthouse_nginx_proxy_host: 127.0.0.1
 lighthouse_user: 'lighthouse'
 lighthouse_group: 'lighthouse'
 lighthouse_hostname: 'lighthouse.dev'

@@ -10,4 +10,4 @@
       target: /opt/lighthouse
   groups:
     - vagrant
-    - jenkins
+    - development
