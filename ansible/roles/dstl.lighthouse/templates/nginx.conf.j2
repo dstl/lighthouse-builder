@@ -2,6 +2,11 @@ server {
   listen 80;
   server_name {{ lighthouse_hostname }};
 
+  location /static {
+    alias {{ lighthouse_static_location }};
+    autoindex on;
+  }
+
   location / {
     proxy_set_header X-Forwarded-Host $host;
     proxy_set_header X-Forwarded-Server $host;

@@ -23,7 +23,7 @@
     path: "{{ lighthouse_static_location }}"
     state: directory
     owner: "{{ lighthouse_user }}"
-    group: "{{ lighthouse_group }}"
+    group: "{{ uwsgi_group }}"
     mode: "u=rwx,g=rwx,o=rx"
   become: yes
 - name: "VirtualEnv | Setup virtualenv"
@@ -37,3 +37,11 @@
     chdir: "{{ lighthouse_location }}"
   become: yes
   become_user: "{{ lighthouse_user }}"
+- name: "Assets | Ensure Nginx has permissions on the assets"
+  file:
+    path: "{{ lighthouse_static_location }}"
+    state: directory
+    owner: "{{ lighthouse_user }}"
+    group: "{{ uwsgi_group }}"
+    recurse: yes
+  become: yes
