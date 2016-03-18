@@ -4,7 +4,7 @@
   host: lighthouse.dev
   ip: 10.1.1.10
   ram: 1024
-  playbook: bootstrap.yml
+  playbook: playbook.yml
   mounts:
     - envvar: DSTL_LIGHTHOUSE
       target: /opt/lighthouse
