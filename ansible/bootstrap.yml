@@ -16,7 +16,6 @@
   vars_files:
     - vars/lighthouse.yml
     - "{{ secrets_vars }}"
-    - vars/secrets.yml
   roles:
     - digi2al.python
     - bennojoy.openldap_server
@@ -26,7 +25,7 @@
   vars_files:
     - vars/lighthouse.yml
     - "{{ secrets_vars }}"
-    - vars/secrets.yml
+    - ../secrets/all.secrets.yml
   roles:
     - digi2al.python
     - dstl.lighthouse
