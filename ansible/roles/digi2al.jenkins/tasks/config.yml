@@ -1,0 +1,21 @@
+---
+- name: Copy Configuration files over
+  template:
+    src: '{{ item.src }}'
+    dest: '/var/lib/jenkins/{{ item.dest }}'
+    owner: jenkins
+    group: jenkins
+    mode: 'u=rw,g=r,o=r'
+  with_items:
+    - { src: 'credentials.xml.j2',          dest: 'credentials.xml' }
+    - { src: 'jenkins_location.xml.j2',     dest: 'jenkins.model.JenkinsLocationConfiguration.xml' }
+    - { src: 'github_configuration.xml.j2', dest: 'github-plugin-configuration.xml' }
+- name: Configure build radiator
+  copy:
+    src: config.xml
+    dest: /var/lib/jenkins/config.xml
+    owner: jenkins
+    group: jenkins
+    mode: "u=rw,g=r,o=r"
+  notify:
+    - restart jenkins

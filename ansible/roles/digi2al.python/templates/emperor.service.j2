@@ -1,0 +1,16 @@
+[Unit]
+Description=uWSGI Emperor
+After=syslog.target
+
+[Service]
+ExecStart=/usr/bin/uwsgi --ini {{ uwsgi_emperor_conf }}
+# Requires systemd version 211 or newer
+RuntimeDirectory={{ uwsgi_run_dir }}
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

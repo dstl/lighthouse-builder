@@ -1,0 +1,11 @@
+---
+secrets_location: '../secrets'
+jenkins_url: 'http://10.1.1.10:8080/'
+github_api_url: 'https://api.github.com'
+jenkins_update_target: '--vagrant'
+lighthouse_inventory_file: '../secrets/vagrant.inventory'
+lighthouse_host: 'www.lighthouse.pw'
+secrets_vars: '../secrets/vagrant.site_specific.yml'
+notify_github: no
+lighthouse_hostname: 'lighthouse.dev'
+lighthouse_assets_path: '../secrets/silver-assets'

@@ -1,6 +1,6 @@
 boxes/*
 */.vagrant
 *.swp
-jenkins/files/*_rsa*
-jenkins/vars/site_specific.yml
+ansible/files/*_rsa*
+ansible/vars/site_specific.yml
 terraform.tfstate*

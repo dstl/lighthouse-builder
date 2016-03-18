@@ -1,0 +1,8 @@
+---
+secrets_location: '/opt/secrets'
+secrets_vars: '/opt/secrets/site_specific.yml'
+github_api_url: 'https://api.github.com'
+jenkins_update_target: '--bronze'
+lighthouse_inventory_file: '/opt/secrets/bronze.inventory'
+notify_github: no
+lighthouse_assets_path: '../secrets/bronze-assets'

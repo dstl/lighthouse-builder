@@ -1,0 +1,30 @@
+---
+- name: "Git | Clone the app repo"
+  git:
+    repo: "{{ lighthouse_repo }}"
+    version: "{{ lighthouse_version }}"
+    dest: "{{ lighthouse_location }}"
+    accept_hostkey: True
+    key_file: "{{ lighthouse_home }}/.ssh/lighthouse_rsa"
+    force: yes
+  become: yes
+  become_user: "{{ lighthouse_user }}"
+- name: "Logo | Copy logo to lighthouse"
+  copy:
+    src: "{{ lighthouse_assets_path }}/logo.png"
+    dest: "{{ lighthouse_location }}/static/assets/logo.png"
+    mode: 'u=rw,g=r,o='
+    owner: "{{ lighthouse_user }}"
+    group: "{{ lighthouse_group }}"
+  become: yes
+  become_user: "{{ lighthouse_user }}"
+- name: "VirtualEnv | Setup virtualenv"
+  shell: >
+    VIRTUALENV_LOCATION={{ lighthouse_virtualenv_location }}
+    DOWNLOAD_LOCATION={{ lighthouse_download_location }}
+    INTERNET_ACCESS={{ lighthouse_internet_access }}
+    ./bin/deploy.sh
+  args:
+    chdir: "{{ lighthouse_location }}"
+  become: yes
+  become_user: "{{ lighthouse_user }}"

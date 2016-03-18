@@ -1,0 +1,22 @@
+---
+- name: "Service | Create the wsgi config for lighthouse"
+  template:
+    src: wsgi.ini.j2
+    dest: "{{ uwsgi_vassal_dir }}/lighthouse.ini"
+    owner: "{{ lighthouse_user }}"
+    group: "{{ uwsgi_group }}"
+  become: yes
+- name: "Nginx | Configure Nginx to serve Lighthouse"
+  template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_conf_dir }}/lighthouse.conf"
+    owner: "{{ lighthouse_user }}"
+    group: "{{ uwsgi_group }}"
+- name: "Refresh Nginx"
+  command: /bin/true
+  notify:
+    - restart nginx
+- name: "Tigger uwsgi reload"
+  file:
+    path: "{{ lighthouse_location }}/.git/refs/heads/{{ lighthouse_version }}"
+    state: touch

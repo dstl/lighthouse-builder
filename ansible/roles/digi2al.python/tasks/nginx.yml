@@ -1,0 +1,21 @@
+---
+- name: "Install Nginx"
+  yum:
+    pkg: nginx
+    state: installed
+- name: Add the Nginx user to uwsgi
+  user:
+    name: nginx
+    groups: "{{ uwsgi_group }},nginx"
+    append: yes
+- name: Delete default nginx configs
+  file:
+    path: "{{nginx_conf_dir}}/{{ item }}"
+    state: absent
+  with_items:
+    - "default.conf"
+    - "example_ssl.conf"
+- name: "Start Nginx"
+  service:
+    name: nginx
+    state: started

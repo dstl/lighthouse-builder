@@ -1,0 +1,31 @@
+- hosts: jenkins
+  sudo: true
+  vars_files:
+    - vars/jenkins.yml
+    - "{{ secrets_vars }}"
+  roles:
+    - geerlingguy.jenkins
+    - openstack.jenkins-job-builder
+    - octarine.postgresql
+    - digi2al.jenkins
+    - digi2al.python
+    - digi2al.phantomjs
+    - digi2al.dependencies
+- hosts: development
+  sudo: true
+  vars_files:
+    - vars/lighthouse.yml
+    - "{{ secrets_vars }}"
+  roles:
+    - digi2al.python
+    - bennojoy.openldap_server
+    - digi2al.phantomjs
+- hosts: lighthouse-app-server
+  sudo: true
+  vars_files:
+    - vars/lighthouse.yml
+    - "{{ secrets_vars }}"
+    - ../secrets/all.secrets.yml
+  roles:
+    - digi2al.python
+    - dstl.lighthouse

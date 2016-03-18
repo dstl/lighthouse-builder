@@ -1,0 +1,33 @@
+---
+- name: User | Create lighthouse group
+  group:
+    name: "{{ lighthouse_group }}"
+- name: "User | Create the dstl directory"
+  file:
+    state: directory
+    path: "/opt/dstl"
+- name: "User | Create the lighthouse user"
+  user:
+    name: "{{ lighthouse_group }}"
+    groups: "{{ lighthouse_user }}"
+    home: "{{ lighthouse_home }}"
+  become: yes
+- name: "SSH | Create the lighthouse user directories"
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: 'u=rwx,g=rwx,o=rx'
+    owner: "{{ lighthouse_user }}"
+    group: "{{ lighthouse_group }}"
+  with_items:
+    - "{{ lighthouse_home }}"
+    - "{{ lighthouse_home }}/.ssh/"
+- name: "SSH | Ensure ssh key exists"
+  copy:
+    content: "{{ lighthouse_ssh_privatekey }}"
+    dest: "{{ lighthouse_home }}/.ssh/lighthouse_rsa"
+    mode: 'u=rw,g=,o='
+    owner: "{{ lighthouse_user }}"
+    group: "{{ lighthouse_group }}"
+  become: yes
+  become_user: "{{ lighthouse_user }}"

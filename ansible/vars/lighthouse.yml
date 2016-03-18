@@ -1,0 +1,24 @@
+---
+openldap_server_domain_name: lighthouse.dstl
+openldap_server_rootpw: dstl2016lighthouse
+openldap_server_enable_ssl: false
+
+postgresql_databases:
+  - name: lighthouse
+    owner: vagrant
+
+postgresql_users:
+  - name: vagrant
+    pass: vagrant
+    encrypted: no
+  - name: lighthouse
+
+postgresql_user_privileges:
+  - name: lighthouse
+    db: lighthouse
+    priv: "ALL"
+    role_attr_flags: "CREATEDB"
+  - name: vagrant
+    db: lighthouse
+    priv: "ALL"
+    role_attr_flags: "CREATEDB"

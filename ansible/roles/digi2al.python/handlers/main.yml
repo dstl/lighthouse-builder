@@ -1,0 +1,12 @@
+---
+- name: restart emperor
+  service:
+    name: emperor
+    state: restarted
+- name: reload systemd
+  shell: systemctl daemon-reload
+  sudo: true
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
