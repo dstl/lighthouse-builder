@@ -56,7 +56,7 @@
     display-name: 'Deploy Lighthouse'
     scm:
         - git:
-            url: git@github.com:livestax/dstl-infrastructure.git
+            url: git@github.com:dstl/lighthouse-builder.git
             branches:
                 - origin/master
             submodule:
@@ -69,7 +69,8 @@
     builders:
         - shell: |
             export ANSIBLE_HOST_KEY_CHECKING=False
-            ansible-playbook -i {{ lighthouse_inventory_file }} $WORKSPACE/playbook.yml
+            cd ansible
+            ansible-playbook -i {{ lighthouse_inventory_file }} $WORKSPACE/ansible/playbook.yml
     wrappers:
         - ansicolor
 

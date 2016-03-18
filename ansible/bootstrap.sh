@@ -48,7 +48,7 @@ EOL
 
 run_playbooks() {
   /bin/echo "Running Ansible playbooks"
-  /bin/ansible-playbook bootstrap.yml -i $inventory_file
+  /bin/ansible-playbook playbook.yml -i $inventory_file
   (( result += $? ))
 }
 
