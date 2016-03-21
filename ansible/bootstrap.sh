@@ -4,6 +4,7 @@ result=0
 current_user="$(whoami)"
 inventory_file='/tmp/bootstrap-inventory'
 environment=''
+app='jenkins'
 
 read_args() {
   while [[ $# > 0 ]]; do
@@ -17,6 +18,12 @@ read_args() {
         shift;;
       --bronze)
         environment='bronze'
+        shift;;
+      --jenkins)
+        app='jenkins'
+        shift;;
+      --lighthouse)
+        app='lighthouse-app-server'
         shift;;
       *)
         /bin/echo "Unknown option $key, Exiting." 1>&2
@@ -38,11 +45,11 @@ install_ansible() {
 
 render_inventory() {
   cat >$inventory_file << EOL
-[jenkins]
+[${app}]
 localhost ansible_connection=local
 
 [$environment:children]
-jenkins
+${app}
 EOL
 }
 
