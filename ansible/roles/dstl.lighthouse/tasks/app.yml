@@ -18,13 +18,30 @@
     group: "{{ lighthouse_group }}"
   become: yes
   become_user: "{{ lighthouse_user }}"
+- name: "Assets | Set up a static directory"
+  file:
+    path: "{{ lighthouse_static_location }}"
+    state: directory
+    owner: "{{ lighthouse_user }}"
+    group: "{{ uwsgi_group }}"
+    mode: "u=rwx,g=rwx,o=rx"
+  become: yes
 - name: "VirtualEnv | Setup virtualenv"
   shell: >
     VIRTUALENV_LOCATION={{ lighthouse_virtualenv_location }}
     DOWNLOAD_LOCATION={{ lighthouse_download_location }}
     INTERNET_ACCESS={{ lighthouse_internet_access }}
+    LIGHTHOUSE_STATIC_ROOT={{ lighthouse_static_location }}
     ./bin/deploy.sh
   args:
     chdir: "{{ lighthouse_location }}"
   become: yes
   become_user: "{{ lighthouse_user }}"
+- name: "Assets | Ensure Nginx has permissions on the assets"
+  file:
+    path: "{{ lighthouse_static_location }}"
+    state: directory
+    owner: "{{ lighthouse_user }}"
+    group: "{{ uwsgi_group }}"
+    recurse: yes
+  become: yes
