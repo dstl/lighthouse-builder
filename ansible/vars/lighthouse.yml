@@ -3,6 +3,9 @@ openldap_server_domain_name: lighthouse.dstl
 openldap_server_rootpw: dstl2016lighthouse
 openldap_server_enable_ssl: false
 
+git_packages:
+  - git2u
+
 postgresql_databases:
   - name: lighthouse
     owner: vagrant

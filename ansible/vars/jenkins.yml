@@ -10,6 +10,9 @@ jenkins_plugins:
   - greenballs
   - docker-plugin
 
+git_packages:
+  - git2u
+
 jenkins_job_builder_config_jenkins_url: http://localhost:8080
 jenkins_job_builder_file_jobs_src: ''
 jenkins_job_builder_user_name: '{{ jenkins_user }}'
