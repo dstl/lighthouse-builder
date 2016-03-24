@@ -4,6 +4,7 @@
     - vars/jenkins.yml
     - "{{ secrets_vars }}"
   roles:
+    - digi2al.migration
     - geerlingguy.jenkins
     - openstack.jenkins-job-builder
     - octarine.postgresql
@@ -27,5 +28,6 @@
     - "{{ secrets_vars }}"
     - ../secrets/all.secrets.yml
   roles:
+    - digi2al.migration
     - digi2al.python
     - dstl.lighthouse

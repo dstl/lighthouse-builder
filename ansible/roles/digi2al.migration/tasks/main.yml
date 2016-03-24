@@ -1,0 +1,8 @@
+---
+- name: Uninstall old packages
+  yum:
+    name: "{{ item }}"
+    state: removed
+  with_items:
+    - git
+    - git-svn
