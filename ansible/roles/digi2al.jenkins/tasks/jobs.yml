@@ -2,7 +2,7 @@
 - name: create jobs from templates
   template:
     dest: "{{ jenkins_job_builder_file_jobs_dest }}/{{ item }}"
-    src: "templates/jobs/{{ item }}.j2"
+    src: "jobs/{{ item }}.j2"
   with_items:
     - "update-jenkins.yml"
     - "lighthouse.yml"
