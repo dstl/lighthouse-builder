@@ -14,3 +14,6 @@ variable "availability_zone" {
 variable "rhel_box" {
     default = "ami-8b8c57f8"
 }
+variable "centos_box" {
+    default = "ami-33734044"
+}
