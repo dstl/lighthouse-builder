@@ -32,7 +32,7 @@ resource "aws_security_group" "allow_office_ip" {
 }
 
 resource "aws_instance" "jenkins-ci" {
-    ami = "ami-33734044"
+    ami = "${var.rhel_box}"
     instance_type = "t2.micro"
     key_name = "deploy"
     availability_zone = "${var.availability_zone}"
@@ -43,7 +43,7 @@ resource "aws_instance" "jenkins-ci" {
 }
 
 resource "aws_instance" "lighthouse-app" {
-    ami = "ami-33734044"
+    ami = "${var.rhel_box}"
     instance_type = "t2.micro"
     key_name = "deploy"
     availability_zone = "${var.availability_zone}"

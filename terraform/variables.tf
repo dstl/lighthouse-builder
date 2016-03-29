@@ -11,3 +11,6 @@ variable "region" {
 variable "availability_zone" {
     default = "eu-west-1a"
 }
+variable "rhel_box" {
+    default = "ami-8b8c57f8"
+}
