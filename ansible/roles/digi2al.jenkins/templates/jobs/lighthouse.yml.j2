@@ -69,6 +69,7 @@
     builders:
         - shell: |
             export ANSIBLE_HOST_KEY_CHECKING=False
+            chmod 'u=rw,g=,o=' secrets/preview.deploy.pem
             cd ansible
             ansible-playbook -i {{ lighthouse_inventory_file }} $WORKSPACE/ansible/playbook.yml
     wrappers:
