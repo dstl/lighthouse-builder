@@ -1,10 +1,10 @@
 ---
 secrets_location: '../secrets'
 secrets_vars: '../secrets/preview.site_specific.yml'
-jenkins_url: 'http://ci.lighthouse.pw:8080/'
+jenkins_url: 'http://ci.redhat.lighthouse.pw:8080/'
 github_api_url: 'https://api.github.com'
 jenkins_update_target: '--preview'
-lighthouse_host: 'www.lighthouse.pw'
+lighthouse_host: 'www.redhat.lighthouse.pw'
 lighthouse_inventory_file: '../secrets/preview.inventory'
-lighthouse_hostname: 'www.lighthouse.pw'
+lighthouse_hostname: 'www.redhat.lighthouse.pw'
 lighthouse_assets_path: '../secrets/preview-assets'
