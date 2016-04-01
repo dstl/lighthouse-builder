@@ -28,17 +28,17 @@ resource "aws_eip" "redhat-lighthouse-public-ip" {
   instance = "${aws_instance.redhat-lighthouse-app.id}"
 }
 
-resource "aws_route53_record" "ci_redhat" {
+resource "aws_route53_record" "ci" {
   zone_id = "${aws_route53_zone.primary.zone_id}"
-  name = "ci.redhat.lighthouse.pw"
+  name = "ci.lighthouse.pw"
   type = "A"
   ttl = "60"
   records = ["${aws_eip.redhat-jenkins-public-ip.public_ip}"]
 }
 
-resource "aws_route53_record" "www_redhat" {
+resource "aws_route53_record" "www" {
   zone_id = "${aws_route53_zone.primary.zone_id}"
-  name = "www.redhat.lighthouse.pw"
+  name = "www.lighthouse.pw"
   type = "A"
   ttl = "60"
   records = ["${aws_eip.redhat-lighthouse-public-ip.public_ip}"]

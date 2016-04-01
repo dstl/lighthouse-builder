@@ -31,38 +31,6 @@ resource "aws_security_group" "allow_office_ip" {
   }
 }
 
-resource "aws_eip" "jenkins-public-ip" {
-  instance = "${aws_instance.redhat-jenkins-ci.id}"
-}
-
-resource "aws_eip" "lighthouse-public-ip" {
-  instance = "${aws_instance.redhat-lighthouse-app.id}"
-}
-
 resource "aws_route53_zone" "primary" {
   name = "lighthouse.pw"
-}
-
-resource "aws_route53_record" "ci" {
-  zone_id = "${aws_route53_zone.primary.zone_id}"
-  name = "ci.lighthouse.pw"
-  type = "A"
-  ttl = "60"
-  records = ["${aws_eip.redhat-jenkins-public-ip.public_ip}"]
-}
-
-resource "aws_route53_record" "www" {
-  zone_id = "${aws_route53_zone.primary.zone_id}"
-  name = "www.lighthouse.pw"
-  type = "A"
-  ttl = "60"
-  records = ["${aws_eip.redhat-lighthouse-public-ip.public_ip}"]
-}
-
-output "internal_ip" {
-    value = "${aws_instance.redhat-lighthouse-app.private_ip}"
-}
-
-output "external_ip" {
-    value = "${aws_instance.redhat-lighthouse-app.public_ip}"
 }
