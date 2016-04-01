@@ -31,60 +31,6 @@ resource "aws_security_group" "allow_office_ip" {
   }
 }
 
-resource "aws_instance" "jenkins-ci" {
-    ami = "${var.centos_box}"
-    instance_type = "t2.micro"
-    key_name = "deploy"
-    availability_zone = "${var.availability_zone}"
-    security_groups = ["${aws_security_group.allow_office_ip.name}"]
-    tags {
-      Name = "jenkins-ci"
-    }
-}
-
-resource "aws_instance" "lighthouse-app" {
-    ami = "${var.centos_box}"
-    instance_type = "t2.micro"
-    key_name = "deploy"
-    availability_zone = "${var.availability_zone}"
-    security_groups = ["${aws_security_group.allow_office_ip.name}"]
-    tags {
-      Name = "lighthouse-app"
-    }
-}
-
-resource "aws_eip" "jenkins-public-ip" {
-  instance = "${aws_instance.jenkins-ci.id}"
-}
-
-resource "aws_eip" "lighthouse-public-ip" {
-  instance = "${aws_instance.lighthouse-app.id}"
-}
-
 resource "aws_route53_zone" "primary" {
   name = "lighthouse.pw"
-}
-
-resource "aws_route53_record" "ci" {
-  zone_id = "${aws_route53_zone.primary.zone_id}"
-  name = "ci.lighthouse.pw"
-  type = "A"
-  ttl = "60"
-  records = ["${aws_eip.jenkins-public-ip.public_ip}"]
-}
-
-resource "aws_route53_record" "www" {
-  zone_id = "${aws_route53_zone.primary.zone_id}"
-  name = "www.lighthouse.pw"
-  type = "A"
-  ttl = "60"
-  records = ["${aws_eip.lighthouse-public-ip.public_ip}"]
-}
-
-output "internal_ip" {
-    value = "${aws_instance.lighthouse-app.private_ip}"
-}
-
-output "external_ip" {
-    value = "${aws_instance.lighthouse-app.public_ip}"
 }
