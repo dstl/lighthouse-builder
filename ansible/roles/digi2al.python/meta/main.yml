@@ -16,4 +16,3 @@ galaxy_info:
 
 dependencies:
   - { role: octarine.postgresql }
-  - { role: AerisCloud.repos }

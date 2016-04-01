@@ -1,0 +1,22 @@
+---
+- name: 'Setup repositories'
+  copy:
+    src: "redhat7/repos/{{ item }}"
+    dest: "/etc/yum.repos.d/{{ item }}"
+    owner: 'root'
+    group: 'root'
+    mode: 'u=rw,g=r,o=r'
+  with_items:
+    - 'ius.repo'
+    - 'epel.repo'
+    - 'nginx.repo'
+- name: 'Setup GPG keys'
+  copy:
+    src: "redhat7/keys/{{ item }}"
+    dest: "/etc/pki/rpm-gpg/{{ item }}"
+    owner: 'root'
+    group: 'root'
+    mode: 'u=rw,g=r,o=r'
+  with_items:
+    - 'IUS-COMMUNITY-GPG-KEY'
+    - 'RPM-GPG-KEY-EPEL-7'
