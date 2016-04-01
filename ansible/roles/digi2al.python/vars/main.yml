@@ -1,14 +1,4 @@
 ---
-# Repos defaults
-repositories:
-  centos7:
-    - name: nginx
-      enabled: true
-    - name: epel
-      enabled: true
-    - name: ius
-      enabled: true
-
 
 # Postgres defaults
 postgresql_version: 9.3
