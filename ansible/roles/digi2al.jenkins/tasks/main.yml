@@ -3,6 +3,7 @@
 - include: ssh.yml
 - include: config.yml
 - include: jobs.yml
+- include: service.yml
 - name: Ensure /var/run/postgresql exists
   file:
     state: directory

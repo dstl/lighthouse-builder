@@ -1,0 +1,25 @@
+---
+- name: "Nginx | Ensure the CI static directory exists"
+  file:
+    state: directory
+    path: "{{ lighthouse_ci_static_dest_path }}"
+    owner: "jenkins"
+    group: "{{ uwsgi_group }}"
+    mode: "u=rwx,g=rx,o=r"
+- name: "Nginx | Copy template over for refresh template"
+  template:
+    src: refresh-template.html.j2
+    dest: "{{ lighthouse_ci_static_dest_path }}/index.html"
+    owner: "jenkins"
+    group: "{{ uwsgi_group }}"
+    mode: 'u=rw,g=r,o=r'
+- name: "Nginx | Configure Nginx to serve Jenkins"
+  template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_conf_dir }}/jenkins.conf"
+    owner: "jenkins"
+    group: "{{ uwsgi_group }}"
+- name: "Refresh Nginx"
+  command: /bin/true
+  notify:
+    - restart nginx
