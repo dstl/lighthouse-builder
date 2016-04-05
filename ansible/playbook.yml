@@ -4,7 +4,7 @@
     - vars/jenkins.yml
     - "{{ secrets_vars }}"
   roles:
-    - digi2al.repos
+    - digi2al.dependencies
     - digi2al.migration
     - geerlingguy.jenkins
     - openstack.jenkins-job-builder
@@ -19,7 +19,7 @@
     - vars/lighthouse.yml
     - "{{ secrets_vars }}"
   roles:
-    - digi2al.repos
+    - digi2al.dependencies
     - digi2al.python
     - bennojoy.openldap_server
     - digi2al.phantomjs
@@ -30,7 +30,7 @@
     - "{{ secrets_vars }}"
     - ../secrets/all.secrets.yml
   roles:
-    - digi2al.repos
+    - digi2al.dependencies
     - digi2al.migration
     - digi2al.python
     - dstl.lighthouse
