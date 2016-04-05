@@ -1,0 +1,6 @@
+---
+- name: Rsync dependencies from remote server
+  synchronize:
+    src: "{{ remote_repo_location }}/"
+    dest: "{{ local_repo_location }}/"
+    mode: pull

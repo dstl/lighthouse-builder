@@ -1,0 +1,19 @@
+---
+- name: Install repotrack
+  yum:
+    name: yum-utils
+
+- name: Collect installed package names
+  shell: 'yum -q list installed | tail -n +2 | cut -d "." -f 1'
+  register: installed_packages
+
+- name: Package all installed RPMs
+  shell: "repotrack -p {{ remote_repo_location }}/yum {{ item }}"
+  with_items: "{{ installed_packages.stdout_lines }}"
+  when: "{{ super_deep_rpm_download }}"
+
+- name: Package installed RPMs
+  shell: "yumdownloader -q --destdir {{ remote_repo_location }}/yum {{ item }}"
+  args:
+    creates: "{{ remote_repo_location }}/yum/{{ item }}*.rpm"
+  with_items: "{{ installed_packages.stdout_lines }}"

@@ -14,3 +14,15 @@
 
 - include: repos/redhat.yml
   when: "ansible_distribution == 'RedHat' and ansible_distribution_major_version|int == 7"
+
+- name: Distribute dependencies
+  include: packages/distribute.yml
+  when: "{{ distribute_dependencies }}"
+
+- name: Package RPMs
+  include: packages/package_rpms.yml
+  when: "{{ package_rpms }}"
+
+- name: Collect dependencies
+  include: packages/collect.yml
+  when: "{{ collect_dependencies }}"
