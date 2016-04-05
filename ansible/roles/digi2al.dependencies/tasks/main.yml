@@ -2,8 +2,12 @@
 - name: Ensure dist folder exists
   file:
     state: directory
-    path: "/opt/dist"
+    path: "{{ item }}"
     mode: "u=rwx,g=rwx,o=rwx"
+  with_items:
+    - /opt/dist
+    - /opt/dist/yum
+    - /opt/dist/pypi
 
 - include: repos/centos.yml
   when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version|int == 7"

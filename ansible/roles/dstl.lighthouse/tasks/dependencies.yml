@@ -1,9 +1,4 @@
 ---
-- name: "Ensure the dist folder exists"
-  file:
-    state: directory
-    path: "{{ lighthouse_download_location }}"
-    mode: "u=rwx,g=rwx,o=rwx"
 - name: "Rsync Pip dependencies over to the client"
   synchronize:
     dest: "{{ lighthouse_download_location }}"
