@@ -1,0 +1,5 @@
+---
+- name: 'Delete other repos'
+  file:
+    path: /etc/yum.repos.d/*
+    state: absent
