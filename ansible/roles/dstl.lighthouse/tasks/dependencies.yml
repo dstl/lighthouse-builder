@@ -1,6 +1,0 @@
----
-- name: "Rsync Pip dependencies over to the client"
-  synchronize:
-    dest: "{{ lighthouse_download_location }}"
-    src: "{{ jenkins_pypi_dist_location }}"
-  when: not lighthouse_internet_access
