@@ -1,0 +1,4 @@
+---
+package_rpms: yes
+collect_dependencies: yes
+distribute_dependencies: no

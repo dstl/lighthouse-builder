@@ -34,3 +34,11 @@
     - digi2al.migration
     - digi2al.python
     - dstl.lighthouse
+- hosts: package-dependencies
+  sudo: true
+  vars_files:
+    - vars/package_dependencies.yml
+    - "{{ secrets_vars }}"
+    - ../secrets/all.secrets.yml
+  roles:
+    - digi2al.dependencies
