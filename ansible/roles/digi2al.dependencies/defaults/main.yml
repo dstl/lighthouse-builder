@@ -6,3 +6,4 @@ package_rpms: no
 collect_dependencies: no
 distribute_dependencies: no
 super_deep_rpm_download: no
+create_repo_during_package: no

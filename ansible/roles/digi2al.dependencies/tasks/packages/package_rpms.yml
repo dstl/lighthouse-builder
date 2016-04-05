@@ -1,7 +1,10 @@
 ---
-- name: Install repotrack
+- name: Install packages used in packaging
   yum:
-    name: yum-utils
+    name: "{{ item }}"
+  with_items:
+    - yum-utils
+    - createrepo
 
 - name: Collect installed package names
   shell: 'yum -q list installed | tail -n +2 | cut -d "." -f 1'
@@ -17,3 +20,7 @@
   args:
     creates: "{{ remote_repo_location }}/yum/{{ item }}*.rpm"
   with_items: "{{ installed_packages.stdout_lines }}"
+
+- name: Create a yum repo
+  shell: "createrepo {{ remote_repo_location }}/yum"
+  when: "{{ create_repo_during_package }}"
