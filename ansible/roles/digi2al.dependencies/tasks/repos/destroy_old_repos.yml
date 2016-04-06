@@ -1,0 +1,12 @@
+---
+
+- find:
+    path: "/etc/yum.repos.d"
+    pattern: "*.repo"
+  register: files
+
+- name: 'Delete other repos'
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ files.files }}"

@@ -9,11 +9,17 @@
     - /opt/dist/yum
     - /opt/dist/pypi
 
+- include: repos/destroy_old_repos.yml
+  when: "{{ destroy_existing_repos }} or {{ distribute_dependencies }}"
+
 - include: repos/centos.yml
-  when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version|int == 7"
+  when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version|int == 7 and not distribute_dependencies"
 
 - include: repos/redhat.yml
-  when: "ansible_distribution == 'RedHat' and ansible_distribution_major_version|int == 7"
+  when: "ansible_distribution == 'RedHat' and ansible_distribution_major_version|int == 7 and not distribute_dependencies"
+
+- include: repos/local.yml
+  when: "{{ distribute_dependencies }}"
 
 - name: Distribute dependencies
   include: packages/distribute.yml
