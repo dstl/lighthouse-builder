@@ -1,6 +1,6 @@
 ---
-remote_repo_location: /opt/dist
-local_repo_location: /opt/dist
+remote_repo_location: /opt/dist/
+local_repo_location: /opt/dist/
 
 destroy_existing_repos: no
 
