@@ -1,0 +1,5 @@
+---
+- name: Force PostgreSQL to not install it's repo
+  set_fact:
+    postgresql_manage_repository: no
+  when: "{{ distribute_dependencies }} or {{ destroy_existing_repos }}"
