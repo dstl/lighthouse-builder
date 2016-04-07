@@ -8,3 +8,7 @@
   set_fact:
     jenkins_manage_repository: no
   when: "{{ distribute_dependencies }} or {{ destroy_existing_repos }}"
+
+- name: Force phantomjs to download to /opt/dist
+  set_fact:
+    phantomjs_download_location: /opt/dist/tars
