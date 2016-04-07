@@ -9,3 +9,4 @@ jenkins_plugins:
   - sonar
   - ssh
 jenkins_url_prefix: ""
+jenkins_manage_repository: yes
