@@ -18,8 +18,8 @@
 
 - get_url:
     url: "{{ phantomjs_url }}"
-    dest: "/tmp/phantomjs.tar.bz2"
-    force: true
+    dest: "{{ phantomjs_download_location }}/phantomjs.tar.bz2" 
+    checksum: "sha256:86dd9a4bf4aee45f1a84c9f61cf1947c1d6dce9b9e8d2a907105da7852460d2f"
   when: "not phantomjs.installed or phantomjs.version != '{{ phantomjs_version }}'"
 
 - name: install bzip for tar (centos only)

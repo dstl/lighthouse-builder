@@ -10,3 +10,4 @@ phantomjs_url: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-
 # See https://github.com/ariya/phantomjs/issues/10904 for more details.
 phantomjs_install_libfontconfig: true
 
+phantomjs_download_location: /tmp
