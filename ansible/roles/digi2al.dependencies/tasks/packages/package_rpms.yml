@@ -7,19 +7,10 @@
     - createrepo
 
 - name: Collect installed package names
-  shell: 'rpm -qa --queryformat "%{name}\n" | sort | grep --invert-match "gpg-pubkey"'
-  register: installed_packages
+  shell: 'rpm -qa --queryformat "%{name}\n" | sort | grep --invert-match "gpg-pubkey" > {{ remote_repo_location }}/pkg_list'
 
-- name: Package all installed RPMs
-  shell: "repotrack -p {{ remote_repo_location }}/yum {{ item }}"
-  with_items: "{{ installed_packages.stdout_lines }}"
-  when: "{{ super_deep_rpm_download }}"
-
-- name: Package installed RPMs
-  shell: "yumdownloader -q --destdir {{ remote_repo_location }}/yum {{ item }}"
-  args:
-    creates: "{{ remote_repo_location }}/yum/{{ item }}*.rpm"
-  with_items: "{{ installed_packages.stdout_lines }}"
+- name: Download all installed RPMs
+  shell: "yumdownloader --destdir {{ remote_repo_location }}/yum $(<{{ remote_repo_location }}/pkg_list)"
 
 - name: Create a yum repo
   shell: "createrepo {{ remote_repo_location }}/yum"
