@@ -8,3 +8,5 @@ uwsgi_user: 'uwsgi-emperor'
 uwsgi_group: 'uwsgi-emperor'
 uwsgi_vassal_group: 'uwsgi-vassal'
 nginx_conf_dir: '/etc/nginx/conf.d'
+
+pip_extra_args: ''

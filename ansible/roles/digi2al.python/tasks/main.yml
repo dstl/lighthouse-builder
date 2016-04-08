@@ -11,6 +11,7 @@
   pip:
     name: "{{item}}"
     executable: pip3.5
+    extra_args: "{{ pip_extra_args }}"
   with_items:
     - virtualenv
     - uwsgi
