@@ -11,6 +11,7 @@
   yum:
     name: "{{ postgresql_yum_repository_url }}"
     state: present
+  when: "{{ postgresql_manage_repository }}"
 
 - name: PostgreSQL | Make sure the dependencies are installed
   yum:

@@ -12,13 +12,13 @@
     id: "{{ postgresql_apt_key_id }}"
     url: "{{ postgresql_apt_key_url }}"
     state: present
-  when: postgresql_apt_key_url and postgresql_apt_key_id
+  when: postgresql_apt_key_url and postgresql_apt_key_id and postgresql_manage_repository
 
 - name: PostgreSQL | Add PostgreSQL repository
   apt_repository:
     repo: "{{ postgresql_apt_repository }}"
     state: present
-  when: postgresql_apt_repository
+  when: postgresql_apt_repository and postgresql_manage_repository
 
 - name: PostgreSQL | Add PostgreSQL repository preferences
   template:

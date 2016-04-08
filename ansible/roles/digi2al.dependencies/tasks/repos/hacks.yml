@@ -1,0 +1,10 @@
+---
+- name: Force PostgreSQL to not install it's repo
+  set_fact:
+    postgresql_manage_repository: no
+  when: "{{ distribute_dependencies }} or {{ destroy_existing_repos }}"
+
+- name: Force jenkins to install from /opt/dist
+  set_fact:
+    jenkins_manage_repository: no
+  when: "{{ distribute_dependencies }} or {{ destroy_existing_repos }}"

@@ -6,11 +6,13 @@
   get_url:
     url: "{{ jenkins_repo_url }}"
     dest: /etc/yum.repos.d/jenkins.repo
+  when: "{{ jenkins_manage_repository }}"
 
 - name: Add Jenkins repo GPG key.
   rpm_key:
     state: present
     key: "{{ jenkins_repo_key_url }}"
+  when: "{{ jenkins_manage_repository }}"
 
 - name: Ensure Jenkins is installed.
   yum: pkg=jenkins state=installed

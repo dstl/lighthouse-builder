@@ -7,7 +7,7 @@
     - createrepo
 
 - name: Collect installed package names
-  shell: 'yum -q list installed | tail -n +2 | cut -d "." -f 1'
+  shell: 'rpm -qa --queryformat "%{name}\n" | sort | grep --invert-match "gpg-pubkey"'
   register: installed_packages
 
 - name: Package all installed RPMs
