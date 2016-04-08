@@ -15,3 +15,9 @@
 - name: Create a yum repo
   shell: "createrepo {{ remote_repo_location }}/yum"
   when: "{{ create_repo_during_package }}"
+
+- name: Ensure ansible installed pips are packaged
+  shell: 'pip3.5 download --dest "{{ remote_repo_location }}/pypi" {{ item }}'
+  with_items:
+    - uwsgi
+    - virtualenv
