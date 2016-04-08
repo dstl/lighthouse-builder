@@ -29,9 +29,9 @@
   include: packages/distribute.yml
   when: "{{ distribute_dependencies }}"
 
-- name: Package RPMs
-  include: packages/package_rpms.yml
-  when: "{{ package_rpms }}"
+- name: Package dependencies
+  include: packages/package.yml
+  when: "{{ package_dependencies }}"
 
 - name: Collect dependencies
   include: packages/collect.yml

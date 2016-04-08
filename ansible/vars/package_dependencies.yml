@@ -1,5 +1,5 @@
 ---
-package_rpms: yes
+package_dependencies: yes
 collect_dependencies: yes
 distribute_dependencies: no
 create_repo_during_package: yes
