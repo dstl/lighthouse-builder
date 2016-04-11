@@ -4,7 +4,7 @@ local_repo_location: /opt/dist/
 
 destroy_existing_repos: no
 
-package_rpms: no
+package_dependencies: no
 collect_dependencies: no
 distribute_dependencies: no
 super_deep_rpm_download: no

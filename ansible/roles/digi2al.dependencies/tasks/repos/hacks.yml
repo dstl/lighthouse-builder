@@ -12,3 +12,13 @@
 - name: Force phantomjs to download to /opt/dist
   set_fact:
     phantomjs_download_location: /opt/dist/tars
+
+- name: Force ansible pip commands to use /opt/dist
+  set_fact:
+    pip_extra_args: '--find-links="{{ remote_repo_location }}/pypi" --no-index'
+  when: "{{ distribute_dependencies }}"
+
+- name: Force pip to not try to download python libs
+  set_fact:
+    lighthouse_internet_access: /bin/false
+  when: "{{ distribute_dependencies }}"

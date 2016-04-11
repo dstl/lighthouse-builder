@@ -8,7 +8,10 @@
     - python35u-pip
     - python35u-devel
 - name: install system pip packages
-  pip: name={{item}} executable=pip3.5
+  pip:
+    name: "{{item}}"
+    executable: pip3.5
+    extra_args: "{{ pip_extra_args }}"
   with_items:
     - virtualenv
     - uwsgi
