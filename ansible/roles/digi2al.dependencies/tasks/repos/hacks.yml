@@ -17,3 +17,8 @@
   set_fact:
     pip_extra_args: '--find-links="{{ remote_repo_location }}/pypi" --no-index'
   when: "{{ distribute_dependencies }}"
+
+- name: Force pip to not try to download python libs
+  set_fact:
+    lighthouse_internet_access: /bin/false
+  when: "{{ distribute_dependencies }}"
