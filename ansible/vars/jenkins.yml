@@ -1,4 +1,7 @@
 ---
+builder_repo: git@github.com:dstl/lighthouse-builder.git
+builder_version: origin/master
+
 jenkins_user: jenkins
 jenkins_plugins:
   - git
@@ -22,8 +25,6 @@ jenkins_job_builder_file_jobs_owner: '{{ jenkins_user }}'
 jenkins_job_builder_install_method: 'pip'
 
 jenkins_pypi_dist_location: '/opt/dist/pypi'
-
-jenkins_update_branch: origin/master
 
 postgresql_databases:
   - name: lighthouse

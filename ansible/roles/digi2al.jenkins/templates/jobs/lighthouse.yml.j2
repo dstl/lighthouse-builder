@@ -56,9 +56,9 @@
     display-name: 'Deploy Lighthouse'
     scm:
         - git:
-            url: git@github.com:dstl/lighthouse-builder.git
+            url: {{ builder_repo }}
             branches:
-                - origin/master
+                - {{ builder_version }}
             submodule:
                 recursive: true
     triggers:
