@@ -25,3 +25,7 @@ postgresql_user_privileges:
     db: lighthouse
     priv: "ALL"
     role_attr_flags: "CREATEDB"
+
+dependencies_git_repos:
+  - name: lighthouse
+    src: /opt/dstl/lighthouse/app

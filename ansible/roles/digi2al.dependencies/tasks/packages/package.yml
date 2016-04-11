@@ -21,3 +21,9 @@
   with_items:
     - uwsgi
     - virtualenv
+
+- name: Package git repos
+  shell: "cp -r {{ item.src }} /opt/dist/git/{{ item.name }}"
+  args:
+    creates: "/opt/dist/git/{{ item.name }}"
+  with_items: "{{ dependencies_git_repos }}"
