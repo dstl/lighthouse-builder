@@ -1,3 +1,14 @@
 ---
 package_dependencies: yes
 create_repo_during_package: yes
+
+# Lighthouse repo details
+package_lighthouse_repo: yes
+lighthouse_repo: 'git@github.com:dstl/lighthouse.git'
+lighthouse_version: 'origin/master'
+lighthouse_home: '/opt/dstl/lighthouse'
+
+# Builder repo details
+package_builder_repo: yes
+builder_repo: 'git@github.com:dstl/lighthouse-builder.git'
+builder_version: 'origin/master'
