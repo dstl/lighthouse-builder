@@ -23,8 +23,22 @@
     - virtualenv
   when: "{{ package_dependencies }}"
 
-- name: Package git repos
-  shell: "cp -r {{ item.src }} /opt/dist/git/{{ item.name }}"
-  args:
-    creates: "/opt/dist/git/{{ item.name }}"
-  with_items: "{{ dependencies_git_repos }}"
+- name: Clone lighthouse git repo
+  git:
+    repo: "{{ lighthouse_repo }}"
+    version: "{{ lighthouse_version }}"
+    dest: "/opt/dist/git/lighthouse"
+    accept_hostkey: True
+    key_file: "{{ lighthouse_home }}/.ssh/lighthouse_rsa"
+    force: yes
+  when: "{{ package_lighthouse_repo }}"
+
+- name: Clone builder git repo
+  git:
+    repo: "{{ builder_repo }}"
+    version: "{{ builder_version }}"
+    dest: "/opt/dist/git/lighthouse-builder"
+    accept_hostkey: True
+    key_file: "/var/lib/jenkins/.ssh/ssh_rsa"
+    force: yes
+  when: "{{ package_builder_repo }}"
