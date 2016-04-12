@@ -26,4 +26,5 @@
 - name: Force git repos to use local repos instead
   set_fact:
     lighthouse_repo: /opt/dist/git/lighthouse
+    builder_repo: /opt/dist/git/lighthouse-builder
   when: "{{ distribute_dependencies }}"

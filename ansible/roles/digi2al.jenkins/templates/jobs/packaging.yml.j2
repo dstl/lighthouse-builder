@@ -4,9 +4,9 @@
     display-name: 'Package Pip dependencies'
     scm:
         - git:
-            url: git@github.com:dstl/lighthouse.git
+            url: {{ lighthouse_repo }}
             branches:
-                - origin/master
+                - {{ lighthouse_version }}
     triggers:
         - github
     builders:

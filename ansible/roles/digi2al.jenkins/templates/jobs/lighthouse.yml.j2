@@ -4,9 +4,9 @@
     display-name: 'Build Lighthouse PRs'
     scm:
         - git:
-            url: git@github.com:dstl/lighthouse.git
+            url: {{ lighthouse_repo }}
             branches:
-                - origin/master
+                - {{ lighthouse_version }}
             choosing-strategy: inverse
     triggers:
         - github
@@ -29,9 +29,9 @@
     display-name: 'Build Lighthouse'
     scm:
         - git:
-            url: git@github.com:dstl/lighthouse.git
+            url:  {{ lighthouse_repo }}
             branches:
-                - origin/master
+                - {{ lighthouse_version }}
     triggers:
         - github
         - reverse:
@@ -81,9 +81,9 @@
     display-name: 'Acceptance Test Lighthouse'
     scm:
         - git:
-            url: git@github.com:dstl/lighthouse.git
+            url: {{ lighthouse_repo }}
             branches:
-                - origin/master
+                - {{ lighthouse_version }}
     triggers:
         - reverse:
             jobs: 'lighthouse-deploy'
