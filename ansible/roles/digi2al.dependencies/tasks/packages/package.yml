@@ -21,6 +21,7 @@
   with_items:
     - uwsgi
     - virtualenv
+  when: "{{ package_dependencies }}"
 
 - name: Package git repos
   shell: "cp -r {{ item.src }} /opt/dist/git/{{ item.name }}"
