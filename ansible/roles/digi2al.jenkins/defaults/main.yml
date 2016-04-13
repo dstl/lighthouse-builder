@@ -1,2 +1,6 @@
 ---
 notify_github: yes
+builder_repo: 'git@github.com:dstl/lighthouse-builder.git'
+builder_version: 'origin/master'
+lighthouse_repo: 'git@github.com:dstl/lighthouse.git'
+lighthouse_version: 'origin/master'
