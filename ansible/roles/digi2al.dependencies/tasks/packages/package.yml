@@ -21,6 +21,7 @@
   with_items:
     - uwsgi
     - virtualenv
+    - pip
   when: "{{ package_dependencies }}"
 
 - name: Ensure ansible installed pips are packaged
@@ -28,6 +29,7 @@
   with_items:
     - jenkins-job-builder
     - pbr
+    - pip
   when: "{{ package_dependencies }}"
 
 - name: Clone lighthouse git repo
