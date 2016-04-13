@@ -23,6 +23,13 @@
     - virtualenv
   when: "{{ package_dependencies }}"
 
+- name: Ensure ansible installed pips are packaged
+  shell: 'pip2.7 download --dest "{{ remote_repo_location }}/pypi" {{ item }}'
+  with_items:
+    - jenkins-job-builder
+    - pbr
+  when: "{{ package_dependencies }}"
+
 - name: Clone lighthouse git repo
   git:
     repo: "{{ lighthouse_repo }}"
