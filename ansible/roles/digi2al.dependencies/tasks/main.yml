@@ -21,9 +21,6 @@
 - include: repos/redhat.yml
   when: "ansible_distribution == 'RedHat' and ansible_distribution_major_version|int == 7 and not distribute_dependencies"
 
-- name: Hack other modules so they don't do yum things
-  include: repos/hacks.yml
-
 - include: repos/local.yml
   when: "{{ distribute_dependencies }}"
 
@@ -38,3 +35,6 @@
 - name: Collect dependencies
   include: packages/collect.yml
   when: "{{ collect_dependencies }}"
+
+- name: Hack other modules so they don't do yum things
+  include: repos/hacks.yml
