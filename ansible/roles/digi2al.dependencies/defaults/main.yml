@@ -12,3 +12,4 @@ create_repo_during_package: no
 
 package_lighthouse_repo: no
 package_builder_repo: no
+package_jenkins_plugins: no

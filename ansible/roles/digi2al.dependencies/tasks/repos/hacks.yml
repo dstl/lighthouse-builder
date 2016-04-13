@@ -28,3 +28,8 @@
     lighthouse_repo: /opt/dist/git/lighthouse
     builder_repo: /opt/dist/git/lighthouse-builder
   when: "{{ distribute_dependencies }}"
+
+- name: Force jenkins to install plugins from /opt/dist
+  set_fact:
+    jenkins_plugins: "{{jenkins_plugins | map('regex_replace', '(.*)', '/opt/dist/jpi/\\1.jpi') | list}}"
+  when: "{{ distribute_dependencies }}"

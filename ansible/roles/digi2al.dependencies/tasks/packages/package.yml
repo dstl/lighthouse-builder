@@ -42,3 +42,8 @@
     key_file: "/var/lib/jenkins/.ssh/github_rsa"
     force: yes
   when: "{{ package_builder_repo }}"
+
+- name: Package jenkins plugins
+  shell: "cp /var/lib/jenkins/plugins/{{ item }}.jpi /opt/dist/jpi/{{ item }}.jpi"
+  with_items: "{{ jenkins_plugins }}"
+  when: "{{ package_jenkins_plugins }}"

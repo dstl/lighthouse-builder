@@ -10,3 +10,5 @@ lighthouse_home: '/opt/dstl/lighthouse'
 
 # Builder repo details
 package_builder_repo: yes
+
+package_jenkins_plugins: yes
