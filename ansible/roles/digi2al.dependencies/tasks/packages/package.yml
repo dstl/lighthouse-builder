@@ -29,7 +29,7 @@
     version: "{{ lighthouse_version }}"
     dest: "/opt/dist/git/lighthouse"
     accept_hostkey: True
-    key_file: "{{ lighthouse_home }}/.ssh/lighthouse_rsa"
+    key_file: "/var/lib/jenkins/.ssh/github_rsa"
     force: yes
   when: "{{ package_lighthouse_repo }}"
 
@@ -39,6 +39,11 @@
     version: "{{ builder_version }}"
     dest: "/opt/dist/git/lighthouse-builder"
     accept_hostkey: True
-    key_file: "/var/lib/jenkins/.ssh/ssh_rsa"
+    key_file: "/var/lib/jenkins/.ssh/github_rsa"
     force: yes
   when: "{{ package_builder_repo }}"
+
+- name: Package jenkins plugins
+  shell: "cp /var/lib/jenkins/plugins/{{ item }}.jpi /opt/dist/jpi/{{ item }}.jpi"
+  with_items: "{{ jenkins_plugins }}"
+  when: "{{ package_jenkins_plugins }}"
