@@ -46,6 +46,7 @@
 - hosts: package-dependencies
   sudo: true
   vars_files:
+    - vars/jenkins.yml
     - vars/package_dependencies.yml
     - "{{ secrets_vars }}"
     - ../secrets/all.secrets.yml

@@ -10,5 +10,3 @@ lighthouse_home: '/opt/dstl/lighthouse'
 
 # Builder repo details
 package_builder_repo: yes
-builder_repo: 'git@github.com:dstl/lighthouse-builder.git'
-builder_version: 'origin/master'
