@@ -16,6 +16,7 @@
 - name: Force ansible pip commands to use /opt/dist
   set_fact:
     pip_extra_args: '--find-links="{{ remote_repo_location }}/pypi" --no-index'
+    jenkins_job_builder_pip_extra_args: '--find-links="{{ remote_repo_location }}/pypi" --no-index'
   when: "{{ distribute_dependencies }}"
 
 - name: Force pip to not try to download python libs

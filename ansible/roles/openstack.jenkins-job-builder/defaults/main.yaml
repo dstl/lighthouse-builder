@@ -53,3 +53,7 @@ jenkins_job_builder_package_name: python-jenkins-job-builder
 # handlers/main.yaml
 jenkins_job_builder_handler_check_delay: 10
 jenkins_job_builder_handler_check_retries: 3
+
+
+
+jenkins_job_builder_pip_extra_args: ''

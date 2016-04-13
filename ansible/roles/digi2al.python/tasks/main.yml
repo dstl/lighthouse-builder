@@ -7,6 +7,15 @@
     - gcc-c++
     - python35u-pip
     - python35u-devel
+- name: Update pip
+  pip:
+    name: pip
+    executable: "{{ item }}"
+    state: latest
+    extra_args: "{{ pip_extra_args }}"
+  with_items:
+    - pip3.5
+    - pip2.7
 - name: install system pip packages
   pip:
     name: "{{item}}"
