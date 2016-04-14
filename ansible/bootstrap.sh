@@ -68,6 +68,7 @@ prepare_repo() {
 
 install_ansible() {
   /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; sudo /bin/yum -y install ansible )
+  /bin/rpm -q --quiet python-pip || ( /bin/echo "Install Pip" ; sudo /bin/yum -y install python-pip )
   sudo pip install --upgrade ansible $extra_pip_args
 }
 
