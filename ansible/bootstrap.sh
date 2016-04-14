@@ -7,6 +7,8 @@ environment=''
 app='jenkins'
 use_dist=false
 
+extra_pip_args=''
+
 read -d '' local_repo << EOF
 [local]
 name=Local repo at /opt/dist/yum
@@ -37,6 +39,7 @@ read_args() {
         shift;;
       --use-dist)
         use_dist=true
+        extra_pip_args="--find-links=/opt/dist/pypi --no-index"
         shift;;
       *)
         /bin/echo "Unknown option $key, Exiting." 1>&2
@@ -65,7 +68,7 @@ prepare_repo() {
 
 install_ansible() {
   /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; sudo /bin/yum -y install ansible )
-  sudo pip install --upgrade ansible
+  sudo pip install --upgrade ansible $extra_pip_args
 }
 
 render_inventory() {
