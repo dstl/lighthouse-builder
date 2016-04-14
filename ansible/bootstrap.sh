@@ -5,6 +5,16 @@ current_user="$(whoami)"
 inventory_file='/tmp/bootstrap-inventory'
 environment=''
 app='jenkins'
+use_dist=false
+
+read -d '' local_repo << EOF
+[local]
+name=Local repo at /opt/dist/yum
+baseurl=file:///opt/dist/yum
+enabled=1
+gpgcheck=0
+protect=1
+EOF
 
 read_args() {
   while [[ $# > 0 ]]; do
@@ -25,6 +35,9 @@ read_args() {
       --lighthouse)
         app='lighthouse-app-server'
         shift;;
+      --use-dist)
+        use_dist=true
+        shift;;
       *)
         /bin/echo "Unknown option $key, Exiting." 1>&2
         exit 1
@@ -37,8 +50,20 @@ read_args() {
   fi
 }
 
+prepare_repo() {
+  if $use_dist; then
+    /bin/echo "Using local repo at /opt/dist"
+    sudo rm -f /etc/yum.repos.d/*.repo
+    sudo tee /etc/yum.repos.d/local.repo <<< "$local_repo"
+  else
+    /bin/rpm -q --quiet ius-release || (
+      /bin/echo "Install IUS repo"
+      /bin/curl -s https://setup.ius.io/ | sudo /bin/bash
+    )
+  fi
+}
+
 install_ansible() {
-  /bin/rpm -q --quiet ius-release || ( /bin/echo "Install IUS repo" ; /bin/curl -s https://setup.ius.io/ | sudo /bin/bash )
   /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; sudo /bin/yum -y install ansible )
   sudo pip install --upgrade ansible
 }
@@ -61,6 +86,7 @@ run_playbooks() {
 
 read_args $@
 
+prepare_repo
 install_ansible
 render_inventory
 run_playbooks
