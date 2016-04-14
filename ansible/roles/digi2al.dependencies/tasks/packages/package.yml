@@ -30,6 +30,7 @@
     - jenkins-job-builder
     - pbr
     - pip
+    - ansible
   when: "{{ package_dependencies }}"
 
 - name: Clone lighthouse git repo
