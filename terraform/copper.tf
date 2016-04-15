@@ -29,10 +29,6 @@ resource "aws_security_group" "copper_lockdown" {
   }
 }
 
-resource "aws_route53_zone" "copper" {
-  name = "copper.lighthouse.pw"
-}
-
 resource "aws_instance" "copper-jenkins" {
   ami = "${var.rhel_box}"
   instance_type = "t2.micro"
@@ -64,7 +60,7 @@ resource "aws_eip" "copper-jenkins-public-ip" {
 }
 
 resource "aws_route53_record" "ci_copper" {
-  zone_id = "${aws_route53_zone.copper.zone_id}"
+  zone_id = "${aws_route53_zone.primary.zone_id}"
   name = "ci.copper.lighthouse.pw"
   type = "A"
   ttl = "60"
@@ -72,7 +68,7 @@ resource "aws_route53_record" "ci_copper" {
 }
 
 resource "aws_route53_record" "www_copper" {
-  zone_id = "${aws_route53_zone.copper.zone_id}"
+  zone_id = "${aws_route53_zone.primary.zone_id}"
   name = "www.copper.lighthouse.pw"
   type = "A"
   ttl = "60"
