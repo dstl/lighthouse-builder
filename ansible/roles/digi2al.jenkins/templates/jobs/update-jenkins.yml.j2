@@ -29,9 +29,9 @@
 {% endif %}
 
 - job:
-    name: 'package-rpms'
+    name: 'package-dependencies'
     description: 'Do not edit this job through the web!'
-    display-name: 'Package RPMS'
+    display-name: 'Package Dependencies'
     scm:
         - git:
             url: {{ builder_repo }}
@@ -41,7 +41,9 @@
         - github-notifier
         - shell: |
             cd ansible
-            sudo ./getrpms.sh
+            export LIGHTHOUSE_IP="{{ lighthouse_ip }}"
+            export ENVIRONMENT="{{ environment }}"
+            sudo ./package_dependencies.sh
     wrappers:
         - ansicolor
 {% if notify_github %}
