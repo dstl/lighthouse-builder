@@ -14,11 +14,11 @@ resource "aws_security_group" "allow_office_ip" {
       to_port = 65535
       protocol = "tcp"
       cidr_blocks = [
-        "${var.office_ip}/32", # Metal Box Factory
-        "${var.client_ip}/32", # Client
-        "${var.robs_ip}/32",   # Robs IP
-        "172.31.0.0/16",       # Internal amazon IP range (for api/ssh access)
-        "${var.jenkins_ip}/32",# External amazon IP (for jenkins access)
+        "${var.office_ip}/32",
+        "${var.client_ip}/32",
+        "${var.robs_ip}/32",
+        "${var.amazon_internal_ip_range}/16",
+        "${var.jenkins_ip}/32",
         "${var.github_ip}/22"
       ]
   }
