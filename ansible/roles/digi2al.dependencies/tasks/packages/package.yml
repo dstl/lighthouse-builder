@@ -1,4 +1,11 @@
 ---
+- name: Ensure any existing packages are owned by ansible user
+  file:
+    path: "/opt/dist"
+    recurse: yes
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
 - name: Install packages used in packaging
   yum:
     name: "{{ item }}"
