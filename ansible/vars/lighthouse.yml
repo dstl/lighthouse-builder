@@ -8,7 +8,7 @@ git_packages:
 
 postgresql_databases:
   - name: lighthouse
-    owner: vagrant
+    owner: lighthouse
 
 postgresql_users:
   - name: vagrant
