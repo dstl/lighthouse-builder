@@ -11,6 +11,7 @@
 
 - name: Download all installed RPMs
   shell: "yumdownloader --destdir {{ remote_repo_location }}/yum $(<{{ remote_repo_location }}/pkg_list)"
+  become: yes
 
 - name: Create a yum repo
   shell: "createrepo {{ remote_repo_location }}/yum"
