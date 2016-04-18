@@ -31,6 +31,11 @@ read_args() {
       --bronze)
         environment='bronze'
         shift;;
+      --copper)
+        environment='copper'
+        use_dist=true
+        extra_pip_args="--find-links=/opt/dist/pypi --no-index"
+        shift;;
       --jenkins)
         app='jenkins'
         shift;;

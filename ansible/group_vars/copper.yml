@@ -17,3 +17,4 @@ jenkins_internal_url: 'http://0.0.0.0:8080/'
 notify_github: no
 
 distribute_dependencies: yes
+lighthouse_internet_access: '/bin/false'
