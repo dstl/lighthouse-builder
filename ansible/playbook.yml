@@ -44,7 +44,6 @@
     - digi2al.dependencies
   become: yes
 - hosts: package-dependencies
-  sudo: true
   vars_files:
     - vars/jenkins.yml
     - vars/package_dependencies.yml

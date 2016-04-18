@@ -4,6 +4,8 @@
     state: directory
     path: "{{ item }}"
     mode: "u=rwx,g=rwx,o=rwx"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
   with_items:
     - /opt/dist
     - /opt/dist/yum
