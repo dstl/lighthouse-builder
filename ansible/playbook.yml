@@ -42,7 +42,6 @@
     - ../secrets/all.secrets.yml
   roles:
     - digi2al.dependencies
-  become: yes
 - hosts: package-dependencies
   vars_files:
     - vars/jenkins.yml
