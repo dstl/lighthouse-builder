@@ -17,7 +17,7 @@
   yum:
     pkg: epel-release
     state: installed
-  when: jenkins_job_builder_install_method == 'git' or jenkins_job_builder_install_method == 'pip'
+  when: (jenkins_job_builder_install_method == 'git' or jenkins_job_builder_install_method == 'pip') and jenkins_job_builder_manage_repository
 
 - name: Ensure build dependencies are installed.
   yum:

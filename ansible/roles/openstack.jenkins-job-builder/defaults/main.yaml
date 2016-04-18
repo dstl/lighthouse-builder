@@ -57,3 +57,4 @@ jenkins_job_builder_handler_check_retries: 3
 
 
 jenkins_job_builder_pip_extra_args: ''
+jenkins_job_builder_manage_repository: yes
