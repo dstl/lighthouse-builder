@@ -51,3 +51,11 @@ output "lighthouse_redhat_internal_ip" {
 output "lighthouse_redhat_external_ip" {
     value = "${aws_instance.redhat-lighthouse-app.public_ip}"
 }
+
+output "jenkins_redhat_internal_ip" {
+    value = "${aws_instance.redhat-jenkins-ci.private_ip}"
+}
+
+output "jenkins_redhat_external_ip" {
+    value = "${aws_instance.redhat-jenkins-ci.public_ip}"
+}

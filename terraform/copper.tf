@@ -76,7 +76,7 @@ resource "aws_route53_record" "www_copper" {
 }
 
 output "copper_lighthouse_external_ip" {
-  value = "${aws_instance.copper-lighthouse.private_ip}"
+  value = "${aws_instance.copper-lighthouse.public_ip}"
 }
 
 output "copper_lighthouse_internal_ip" {
@@ -84,7 +84,7 @@ output "copper_lighthouse_internal_ip" {
 }
 
 output "copper_jenkins_external_ip" {
-  value = "${aws_instance.copper-jenkins.private_ip}"
+  value = "${aws_instance.copper-jenkins.public_ip}"
 }
 
 output "copper_jenkins_internal_ip" {
