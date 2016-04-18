@@ -43,7 +43,7 @@
             cd ansible
             export LIGHTHOUSE_IP="{{ lighthouse_ip }}"
             export ENVIRONMENT="{{ environment }}"
-            sudo ./package_dependencies.sh
+            ./package_dependencies.sh
     wrappers:
         - ansicolor
 {% if notify_github %}
