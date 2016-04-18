@@ -5,6 +5,7 @@
     recurse: yes
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
+  become: yes
 
 - name: Install packages used in packaging
   yum:
