@@ -42,9 +42,11 @@
     builders:
         - github-notifier
         - shell: |
-            cd ansible
+            export ANSIBLE_HOST_KEY_CHECKING=False
+            chmod 'u=rw,g=,o=' secrets/preview.deploy.pem
             export LIGHTHOUSE_IP="{{ lighthouse_ip }}"
             export ENVIRONMENT="{{ environment }}"
+            cd ansible
             ./package_dependencies.sh
     wrappers:
         - ansicolor
