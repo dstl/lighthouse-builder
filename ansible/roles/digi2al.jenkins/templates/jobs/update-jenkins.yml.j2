@@ -37,6 +37,8 @@
             url: {{ builder_repo }}
             branches:
                 - {{ builder_version }}
+            submodule:
+                recursive: true
     builders:
         - github-notifier
         - shell: |
