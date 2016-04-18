@@ -1,4 +1,5 @@
 ---
+environment: 'preview'
 secrets_location: '../secrets'
 secrets_vars: '../secrets/preview.site_specific.yml'
 jenkins_url: 'http://ci.lighthouse.pw:8080/'
