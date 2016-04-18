@@ -13,10 +13,6 @@
   shell: "yumdownloader --destdir {{ remote_repo_location }}/yum $(<{{ remote_repo_location }}/pkg_list)"
   become: yes
 
-- name: Create a yum repo
-  shell: "createrepo {{ remote_repo_location }}/yum"
-  when: "{{ create_repo_during_package }}"
-
 - name: Ensure ansible installed pips are packaged
   shell: 'pip3.5 download --dest "{{ remote_repo_location }}/pypi" {{ item }}'
   with_items:
@@ -58,3 +54,14 @@
   shell: "cp /var/lib/jenkins/plugins/{{ item }}.jpi /opt/dist/jpi/{{ item }}.jpi"
   with_items: "{{ jenkins_plugins }}"
   when: "{{ package_jenkins_plugins }}"
+
+- name: Ensure packages are owned by ansible user
+  file:
+    path: "/opt/dist"
+    recurse: yes
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Create a yum repo
+  shell: "createrepo {{ remote_repo_location }}/yum"
+  when: "{{ create_repo_during_package }}"

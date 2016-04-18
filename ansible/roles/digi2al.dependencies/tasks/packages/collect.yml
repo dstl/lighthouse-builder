@@ -1,10 +1,4 @@
 ---
-- name: Ensure packages are owned by ansible user
-  file:
-    path: "/opt/dist"
-    recurse: yes
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
 - name: Rsync dependencies from remote server
   synchronize:
     src: "{{ remote_repo_location }}/"
