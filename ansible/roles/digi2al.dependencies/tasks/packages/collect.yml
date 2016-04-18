@@ -9,4 +9,6 @@
   synchronize:
     src: "{{ remote_repo_location }}/"
     dest: "{{ local_repo_location }}/"
+    rsync_opts:
+      - "--omit-dir-times"
     mode: pull
