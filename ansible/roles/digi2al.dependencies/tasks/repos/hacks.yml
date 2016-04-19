@@ -3,7 +3,7 @@
   set_fact:
     postgresql_manage_repository: no
     jenkins_manage_repository: no
-    jenkins_manage_repository: no
+    jenkins_job_builder_manage_repository: no
   when: "{{ distribute_dependencies }} or {{ destroy_existing_repos }}"
 
 - name: Force phantomjs to download to /opt/dist
