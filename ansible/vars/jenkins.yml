@@ -4,14 +4,18 @@ builder_version: origin/master
 
 jenkins_user: jenkins
 jenkins_plugins:
+  - scm-api
+  - git-client
+  - jquery
+  - token-macro
+  - plain-credentials
+  - github-api
   - git
   - sonar
   - ssh
   - build-monitor-plugin
   - ansicolor
   - github
-  - greenballs
-  - docker-plugin
 
 git_packages:
   - git2u
