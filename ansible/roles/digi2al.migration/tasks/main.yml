@@ -6,3 +6,11 @@
   with_items:
     - git
     - git-svn
+
+- name: Remove old git repo clones
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - /opt/dist/git/lighthouse-builder
+    - /opt/dist/git/lighthouse
