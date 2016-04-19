@@ -15,7 +15,9 @@
     triggers:
         - github
     builders:
+{% if notify_github %}
         - github-notifier
+{% endif %}
         - shell: |
             export VIRTUALENV_LOCATION="$WORKSPACE/virtualenv"
             export DOWNLOAD_LOCATION="{{ jenkins_pypi_dist_location }}"
@@ -46,7 +48,9 @@
             jobs: 'update-jenkins'
             result: 'success'
     builders:
+{% if notify_github %}
         - github-notifier
+{% endif %}
         - shell: |
             export VIRTUALENV_LOCATION="$WORKSPACE/virtualenv"
             export DOWNLOAD_LOCATION="{{ jenkins_pypi_dist_location }}"

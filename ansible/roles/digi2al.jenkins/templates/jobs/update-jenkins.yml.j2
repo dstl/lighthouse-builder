@@ -21,7 +21,9 @@
     triggers:
         - github
     builders:
+{% if notify_github %}
         - github-notifier
+{% endif %}
         - shell: |
             cd ansible
             ./bootstrap.sh {{ jenkins_update_target }}
@@ -48,7 +50,9 @@
                 recursive: true
 {% endif %}
     builders:
+{% if notify_github %}
         - github-notifier
+{% endif %}
         - shell: |
             export ANSIBLE_HOST_KEY_CHECKING=False
             chmod 'u=rw,g=,o=' secrets/preview.deploy.pem
