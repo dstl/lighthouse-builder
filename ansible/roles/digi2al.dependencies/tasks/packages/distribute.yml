@@ -4,3 +4,11 @@
     src: "{{ local_repo_location }}/"
     dest: "{{ remote_repo_location }}/"
     mode: push
+
+- name: Ensure dependencies are owned by ansible user
+  file:
+    path: "{{ remote_repo_location }}"
+    recurse: yes
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: yes
