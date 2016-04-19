@@ -59,7 +59,9 @@
   when: "{{ package_builder_repo }}"
 
 - name: Package jenkins plugins
-  shell: "cp /var/lib/jenkins/plugins/{{ item }}.jpi /opt/dist/jpi/{{ item }}.jpi"
+  get_url:
+    url: "https://updates.jenkins-ci.org/latest/{{ item }}.hpi"
+    dest: "/opt/dist/jpi/{{ item }}.hpi"
   with_items: "{{ jenkins_plugins }}"
   when: "{{ package_jenkins_plugins }}"
 

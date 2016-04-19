@@ -29,5 +29,5 @@
 
 - name: Force jenkins to install plugins from /opt/dist
   set_fact:
-    jenkins_plugins: "{{jenkins_plugins | map('regex_replace', '(.*)', '/opt/dist/jpi/\\1.jpi') | list}}"
+    jenkins_plugins: "{{jenkins_plugins | map('regex_replace', '(.*)', '/opt/dist/jpi/\\1.hpi') | list}}"
   when: "{{ distribute_dependencies }}"
