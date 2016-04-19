@@ -11,8 +11,8 @@
     - /opt/dist/yum
     - /opt/dist/pypi
     - /opt/dist/tars
-    - /opt/dist/git
     - /opt/dist/jpi
+    - /opt/dist/workspaces
 
 - include: repos/destroy_old_repos.yml
   when: "{{ destroy_existing_repos }} or {{ distribute_dependencies }}"
