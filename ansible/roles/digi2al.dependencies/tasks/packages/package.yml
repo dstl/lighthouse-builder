@@ -46,6 +46,7 @@
     accept_hostkey: True
     key_file: "/var/lib/jenkins/.ssh/github_rsa"
     force: yes
+    bare: yes
   when: "{{ package_lighthouse_repo }}"
 
 - name: Clone builder git repo
@@ -53,6 +54,17 @@
     repo: "{{ builder_repo }}"
     version: "{{ builder_version }}"
     dest: "/opt/dist/git/lighthouse-builder"
+    accept_hostkey: True
+    key_file: "/var/lib/jenkins/.ssh/github_rsa"
+    force: yes
+    bare: yes
+  when: "{{ package_builder_repo }}"
+
+- name: Clone bootstrap git repo
+  git:
+    repo: "{{ builder_repo }}"
+    version: "{{ builder_version }}"
+    dest: "/opt/dist/bootstrap"
     accept_hostkey: True
     key_file: "/var/lib/jenkins/.ssh/github_rsa"
     force: yes
