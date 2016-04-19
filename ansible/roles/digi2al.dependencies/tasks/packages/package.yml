@@ -38,6 +38,17 @@
     - ansible
   when: "{{ package_dependencies }}"
 
+- name: Clone lighthouse git repo
+  git:
+    repo: "{{ lighthouse_repo }}"
+    version: "{{ lighthouse_version }}"
+    dest: "/opt/dist/git/lighthouse"
+    accept_hostkey: True
+    key_file: "/var/lib/jenkins/.ssh/github_rsa"
+    force: yes
+    bare: yes
+  when: "{{ package_lighthouse_repo }}"
+
 - name: Clone lighthouse git repo in to workspaces
   git:
     repo: "{{ lighthouse_repo }}"
