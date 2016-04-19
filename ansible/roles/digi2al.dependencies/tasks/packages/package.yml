@@ -38,26 +38,32 @@
     - ansible
   when: "{{ package_dependencies }}"
 
-- name: Clone lighthouse git repo
+- name: Clone lighthouse git repo in to workspaces
   git:
     repo: "{{ lighthouse_repo }}"
     version: "{{ lighthouse_version }}"
-    dest: "/opt/dist/git/lighthouse"
+    dest: "{{ item }}"
     accept_hostkey: True
     key_file: "/var/lib/jenkins/.ssh/github_rsa"
     force: yes
-    bare: yes
+  with_items:
+    - /opt/dist/workspaces/lighthouse-build-pullrequests
+    - /opt/dist/workspaces/lighthouse-build
+    - /opt/dist/workspaces/lighthouse-acceptance-test
   when: "{{ package_lighthouse_repo }}"
 
 - name: Clone builder git repo
   git:
     repo: "{{ builder_repo }}"
     version: "{{ builder_version }}"
-    dest: "/opt/dist/git/lighthouse-builder"
+    dest: "{{ item }}"
     accept_hostkey: True
     key_file: "/var/lib/jenkins/.ssh/github_rsa"
     force: yes
-    bare: yes
+  with_items:
+    - /opt/dist/workspaces/lighthouse-deploy
+    - /opt/dist/workspaces/update-jenkins
+    - /opt/dist/workspaces/package-dependencies
   when: "{{ package_builder_repo }}"
 
 - name: Clone bootstrap git repo

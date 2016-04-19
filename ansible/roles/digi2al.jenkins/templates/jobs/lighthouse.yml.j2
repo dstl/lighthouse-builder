@@ -2,12 +2,16 @@
     name: 'lighthouse-build-pullrequests'
     description: 'Do not edit this job through the web!'
     display-name: 'Build Lighthouse PRs'
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/lighthouse-build-pullrequests
+{% else %}
     scm:
         - git:
             url: {{ lighthouse_repo }}
             branches:
                 - {{ lighthouse_version }}
             choosing-strategy: inverse
+{% endif %}
     triggers:
         - github
     builders:
@@ -27,11 +31,15 @@
     name: 'lighthouse-build'
     description: 'Do not edit this job through the web!'
     display-name: 'Build Lighthouse'
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/lighthouse-build
+{% else %}
     scm:
         - git:
             url:  {{ lighthouse_repo }}
             branches:
                 - {{ lighthouse_version }}
+{% endif %}
     triggers:
         - github
         - reverse:
@@ -54,6 +62,9 @@
     name: 'lighthouse-deploy'
     description: 'Do not edit this job through the web!'
     display-name: 'Deploy Lighthouse'
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/lighthouse-deploy
+{% else %}
     scm:
         - git:
             url: {{ builder_repo }}
@@ -61,6 +72,7 @@
                 - {{ builder_version }}
             submodule:
                 recursive: true
+{% endif %}
     triggers:
         - github
         - reverse:
@@ -79,11 +91,15 @@
     name: 'lighthouse-acceptance-test'
     description: 'Do not edit this job through the web!'
     display-name: 'Acceptance Test Lighthouse'
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/lighthouse-acceptance-test
+{% else %}
     scm:
         - git:
             url: {{ lighthouse_repo }}
             branches:
                 - {{ lighthouse_version }}
+{% endif %}
     triggers:
         - reverse:
             jobs: 'lighthouse-deploy'

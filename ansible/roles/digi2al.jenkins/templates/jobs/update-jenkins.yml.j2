@@ -7,6 +7,9 @@
             name: BRANCH
             default: {{ builder_version }}
             description: "The branch you want to update from."
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/update-jenkins
+{% else %}
     scm:
         - git:
             url: {{ builder_repo }}
@@ -14,6 +17,7 @@
                 - "${BRANCH}"
             submodule:
                 recursive: true
+{% endif %}
     triggers:
         - github
     builders:
@@ -32,6 +36,9 @@
     name: 'package-dependencies'
     description: 'Do not edit this job through the web!'
     display-name: 'Package Dependencies'
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/package-dependencies
+{% else %}
     scm:
         - git:
             url: {{ builder_repo }}
@@ -39,6 +46,7 @@
                 - {{ builder_version }}
             submodule:
                 recursive: true
+{% endif %}
     builders:
         - github-notifier
         - shell: |

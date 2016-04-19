@@ -23,8 +23,8 @@
 
 - name: Force git repos to use local repos instead
   set_fact:
-    lighthouse_repo: /opt/dist/git/lighthouse
-    builder_repo: /opt/dist/git/lighthouse-builder
+    lighthouse_repo: /opt/dist/git/lighthouse.git
+    builder_repo: /opt/dist/git/lighthouse-builder.git
   when: "{{ distribute_dependencies }}"
 
 - name: Force jenkins to install plugins from /opt/dist
