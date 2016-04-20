@@ -1,4 +1,10 @@
 ---
+- name: Ensure Rsync can sudo
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: 'Defaults\s+requiretty'
+    state: absent
+
 - name: Rsync dependencies to remote server
   synchronize:
     src: "{{ local_repo_location }}/"
