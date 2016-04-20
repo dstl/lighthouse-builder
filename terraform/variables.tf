@@ -2,6 +2,7 @@ variable "office_ip" {}
 variable "client_ip" {}
 variable "jenkins_ip" {}
 variable "copper_jenkins_ip" {}
+variable "copper_lighthouse_ip" {}
 variable "robs_ip" {}
 variable "github_ip" {}
 variable "amazon_internal_ip_range" {}

@@ -25,6 +25,7 @@ resource "aws_security_group" "copper_lockdown" {
       "${var.client_ip}/32",
       "${var.copper_jenkins_ip}/32",
       "${var.amazon_internal_ip_range}/16",
+      "${var.copper_lighthouse_ip}/32",
     ]
   }
 }
