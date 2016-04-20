@@ -4,10 +4,12 @@ builder_version: origin/master
 
 jenkins_user: jenkins
 jenkins_plugins:
+  - icon-shim
   - scm-api
   - git-client
   - jquery
   - token-macro
+  - credentials
   - plain-credentials
   - github-api
   - git
