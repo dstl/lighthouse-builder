@@ -17,5 +17,3 @@
     owner: jenkins
     group: jenkins
     mode: "u=rw,g=r,o=r"
-  notify:
-    - restart jenkins
