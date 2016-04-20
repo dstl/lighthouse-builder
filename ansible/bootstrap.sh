@@ -78,6 +78,7 @@ install_ansible() {
 }
 
 render_inventory() {
+  sudo rm "$inventory_file"
   cat >$inventory_file << EOL
 [${app}]
 localhost ansible_connection=local ansible_user=$(whoami)

@@ -6,6 +6,7 @@ environment="${ENVIRONMENT}"
 inventory_file='/tmp/package-inventory'
 
 render_inventory() {
+  sudo rm "$inventory_file"
   cat >$inventory_file << EOL
 [package-lighthouse]
 ${lighthouse_ip} ansible_ssh_private_key_file=../secrets/preview.deploy.pem ansible_ssh_user=ec2-user
