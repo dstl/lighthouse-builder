@@ -80,7 +80,7 @@ install_ansible() {
 render_inventory() {
   cat >$inventory_file << EOL
 [${app}]
-localhost ansible_connection=local
+localhost ansible_connection=local ansible_user=$(whoami)
 
 [$environment:children]
 ${app}

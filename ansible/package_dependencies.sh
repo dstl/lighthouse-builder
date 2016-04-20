@@ -11,7 +11,7 @@ render_inventory() {
 ${lighthouse_ip} ansible_ssh_private_key_file=../secrets/preview.deploy.pem ansible_ssh_user=ec2-user
 
 [package-dependencies]
-localhost ansible_connection=local
+localhost ansible_connection=local ansible_user=$(whoami)
 
 [${environment}:children]
 package-lighthouse
