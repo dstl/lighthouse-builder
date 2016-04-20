@@ -49,6 +49,17 @@
     bare: yes
   when: "{{ package_lighthouse_repo }}"
 
+- name: Clone builder git repo
+  git:
+    repo: "{{ builder_repo }}"
+    version: "{{ builder_version }}"
+    dest: "/opt/dist/git/lighthouse-builder"
+    accept_hostkey: True
+    key_file: "/var/lib/jenkins/.ssh/github_rsa"
+    force: yes
+    bare: yes
+  when: "{{ package_builder_repo }}"
+
 - name: Clone lighthouse git repo in to workspaces
   git:
     repo: "{{ lighthouse_repo }}"
@@ -63,7 +74,7 @@
     - /opt/dist/workspaces/lighthouse-acceptance-test
   when: "{{ package_lighthouse_repo }}"
 
-- name: Clone builder git repo
+- name: Clone builder git repo in to workspaces
   git:
     repo: "{{ builder_repo }}"
     version: "{{ builder_version }}"
