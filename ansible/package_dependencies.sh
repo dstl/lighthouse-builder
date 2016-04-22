@@ -4,12 +4,14 @@ result=0
 lighthouse_ip="${LIGHTHOUSE_IP}"
 environment="${ENVIRONMENT}"
 inventory_file='/tmp/package-inventory'
+ssh_private_key_path="${SHH_PRIVATE_KEY_PATH}"
+ssh_user="${SSH_USER}"
 
 render_inventory() {
   sudo rm "$inventory_file"
   cat >$inventory_file << EOL
 [package-lighthouse]
-${lighthouse_ip} ansible_ssh_private_key_file=../secrets/preview.deploy.pem ansible_ssh_user=ec2-user
+${lighthouse_ip} ansible_ssh_private_key_file=${ssh_private_key_path} ansible_ssh_user=${ssh_user}
 
 [package-dependencies]
 localhost ansible_connection=local ansible_user=$(whoami)

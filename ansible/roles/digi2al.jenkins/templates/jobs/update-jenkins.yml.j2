@@ -58,6 +58,8 @@
             chmod 'u=rw,g=,o=' secrets/preview.deploy.pem
             export LIGHTHOUSE_IP="{{ lighthouse_ip }}"
             export ENVIRONMENT="{{ environment }}"
+            export SSH_PRIVATE_KEY_PATH="{{ lighthouse_ssh_key_path }}"
+            export SSH_USER="{{ lighthouse_ssh_user }}"
             cd ansible
             ./package_dependencies.sh
     wrappers:

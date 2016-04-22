@@ -1,0 +1,11 @@
+---
+environment: 'silver'
+secrets_location: '/opt/secrets'
+secrets_vars: '/opt/secrets/site_specific.yml'
+github_api_url: 'https://api.github.com'
+jenkins_update_target: '--silver'
+lighthouse_inventory_file: '/opt/secrets/silver.inventory'
+lighthouse_assets_path: '../secrets/bronze-assets'
+lighthouse_ci_static_src_path: 'files/ci-refresh'
+lighthouse_ci_static_dest_path: '/var/lib/www'
+notify_github: no
