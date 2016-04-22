@@ -52,9 +52,8 @@ of this repository.
 
 ### Create a keypair on AWS
 
-Follow [this helpful guide provided by Amazon](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
-in order to authenticate with AWS in the future, which is required for using
-Terraform.
+Follow [this helpful guide provided by Amazon][amzkeypair] in order to
+authenticate with AWS in the future, which is required for using Terraform.
 
 ### Install Terraform
 
@@ -245,3 +244,4 @@ The task which actually runs `nginx` and `uWSGI` using these new settings is
 [trfm]:https://www.terraform.io
 [trfmdl]:https://www.terraform.io/downloads.html
 [trfminst]:https://www.terraform.io/intro/getting-started/install.html
+[amzkeypair]:http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair
