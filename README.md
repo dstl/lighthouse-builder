@@ -171,6 +171,7 @@ responsible for describing how Vagrant and Ansible should be provisioning and
 setting up a new VM locally. It looks something like this:
 
 ```yaml
+
 ---
 - name: lighthouse-dev
   box: box-cutter/centos72
