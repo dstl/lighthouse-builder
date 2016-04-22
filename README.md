@@ -4,6 +4,30 @@
 
 Code for provision and deployment for various components of the dstl-lighthouse project
 
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Getting started](#getting-started)
+  - [Ensure SSH keys are set up for GitHub](#ensure-ssh-keys-are-set-up-for-github)
+  - [Clone the `lighthouse-builder` repo to your machine](#clone-the-lighthouse-builder-repo-to-your-machine)
+  - [Pull the `lighthouse-secrets` repo](#pull-the-lighthouse-secrets-repo)
+- [Provisioning](#provisioning)
+  - [Using Terraform to provision](#using-terraform-to-provision)
+    - [Create a keypair on AWS](#create-a-keypair-on-aws)
+    - [Install Terraform](#install-terraform)
+    - [Provision servers in AWS](#provision-servers-in-aws)
+    - [How to modify server details](#how-to-modify-server-details)
+- [Deploying](#deploying)
+  - [How to Bootstrap Jenkins](#how-to-bootstrap-jenkins)
+    - [Change the IP of the lighthouse host in site_specific](#change-the-ip-of-the-lighthouse-host-in-site_specific)
+    - [Run the bootstrap command](#run-the-bootstrap-command)
+  - [Update Jenkins](#update-jenkins)
+  - [Restart Jenkins](#restart-jenkins)
+- [Configuring your servers with `servers.yml`](#configuring-your-servers-with-serversyml)
+- [How is the Lighthouse server typically configured?](#how-is-the-lighthouse-server-typically-configured)
+  - [Development](#development)
+  - [Production](#production)
+
 ## Requirements
 
 * Vagrant
@@ -30,7 +54,7 @@ git clone git@github.com:dstl/lighthouse-builder.git
 cd lighthouse-builder
 ```
 
-## Pull the `lighthouse-secrets` repo
+### Pull the `lighthouse-secrets` repo
 
 The `lighthouse-secrets` repo is a private repo you should have access to.
 It's a git submodule of this repo and contains files needed for lighthouse to
@@ -42,7 +66,9 @@ pull down the repo into the `secrets` directory, which can be done like so:
 git submodule update --init
 ```
 
-## Using Terraform
+## Provisioning
+
+### Using Terraform to provision
 
 **Why would I use Terraform?** Terraform is used for provisioning cloud servers
 on Amazon Web Services (AWS). It may at first seem daunting, but it can be a lot
@@ -50,12 +76,12 @@ easier and more productive than doing it through the AWS UI. All the
 configuration for Lighthouse's AWS server is done in the `terraform` directory
 of this repository.
 
-### Create a keypair on AWS
+#### Create a keypair on AWS
 
 Follow [this helpful guide provided by Amazon][amzkeypair] in order to
 authenticate with AWS in the future, which is required for using Terraform.
 
-### Install Terraform
+#### Install Terraform
 
 [Terraform][trfm] makes provisioning of cloud servers easy for AWS.
 
@@ -70,7 +96,7 @@ manager, but it may be easier to download Terraform from the official
 website on the [Terraform download page][trfmdl]. For more info on installing
 and configuring terraform see [the guide to installing Terraform][trfminst]
 
-### Provision servers in AWS
+#### Provision servers in AWS
 
 All the configuration files are located in `terraform`, so get your shell into
 there first:
@@ -88,7 +114,7 @@ terraform apply
 Terraform will create the necessary resources in AWS. Check the AWS console and
 you should see 2 servers provisioned.
 
-### How to modify server details
+#### How to modify server details
 
 The `terraform.tfvars` file contains the variables used by Terraform config to
 change which network locations can access the Terraformed servers.
@@ -103,7 +129,9 @@ general, and is a good starting point for configuring new environments.
 
 ---
 
-## How to Bootstrap Jenkins
+## Deploying
+
+### How to Bootstrap Jenkins
 
 Once the VMs are created in AWS you will need to bootstrap Jenkins before we
 can get our CI pipeline running. By this point it is _vital_ that you have
@@ -123,7 +151,7 @@ rsync --recursive \
     --exclude-from "rsync_exclude.txt"
 ```
 
-### Change the IP of the lighthouse host in site_specific
+#### Change the IP of the lighthouse host in site_specific
 
 Edit the relevant site_specific.yml file. In this case we're hacking the
 changes into the `preview.site_specific.yml` file. We should have a separate set
@@ -136,7 +164,7 @@ vi preview.site-specific.yml
 
 * Copy the IP of the lighthouse app box from the aws console and set the `lighthouse_host` parameter.
 
-### Run the bootstrap command
+#### Run the bootstrap command
 
 ```bash
 ssh -i secrets/preview.deploy.pem centos@<jenkins-public-ip>
