@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 ---
 builder_repo: git@github.com:dstl/lighthouse-builder.git
 builder_version: origin/master

@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 ---
 - name: Ensure dist folder exists
   file:

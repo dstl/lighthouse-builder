@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 ---
 uwsgi_run_dir: '/etc/uwsgi'
 uwsgi_emperor_conf: '/etc/uwsgi/emperor.ini'

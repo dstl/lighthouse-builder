@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 ---
 # defaults file for playbook
 lighthouse_repo: "git@github.com:dstl/lighthouse.git"

@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 ---
 openldap_server_domain_name: lighthouse.dstl
 openldap_server_rootpw: dstl2016lighthouse

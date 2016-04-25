@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 ---
 - name: Rsync dependencies from remote server
   synchronize:

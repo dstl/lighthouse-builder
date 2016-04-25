@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 resource "aws_security_group" "copper_lockdown" {
   name = "copper_lockdown"
   description = "Prevent egress to everywhere"

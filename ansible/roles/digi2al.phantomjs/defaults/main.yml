@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 ---
 # phantomjs_version is used to check against the currently installed phantomjs
 # version. A perfect version match is required to skip the installation.
