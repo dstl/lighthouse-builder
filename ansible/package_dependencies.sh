@@ -4,7 +4,7 @@ result=0
 lighthouse_ip="${LIGHTHOUSE_IP}"
 environment="${ENVIRONMENT}"
 inventory_file='/tmp/package-inventory'
-ssh_private_key_path="${SHH_PRIVATE_KEY_PATH}"
+ssh_private_key_path="${SSH_PRIVATE_KEY_PATH}"
 ssh_user="${SSH_USER}"
 
 render_inventory() {
