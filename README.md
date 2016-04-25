@@ -18,7 +18,23 @@ Code for provision and deployment for various components of the dstl-lighthouse 
     - [Provision servers in AWS](#provision-servers-in-aws)
     - [How to modify server details](#how-to-modify-server-details)
 - [Deploying](#deploying)
-  - [How to Bootstrap Jenkins](#how-to-bootstrap-jenkins)
+  - [Choose an Environment](#choose-an-environment)
+    - [Criteria for choosing](#criteria-for-choosing)
+      - [Internet access or air-gapped?](#internet-access-or-air-gapped)
+      - [Preconfigured or Site Specific?](#preconfigured-or-site-specific)
+    - [Preview](#preview)
+    - [Copper](#copper)
+    - [Bronze](#bronze)
+    - [Silver](#silver)
+  - [Configure settings](#configure-settings)
+    - [Configure Preview](#configure-preview)
+    - [Configure Copper](#configure-copper)
+    - [Configure Bronze](#configure-bronze)
+    - [Configure Silver](#configure-silver)
+  - [Rsync dependencies](#rsync-dependencies)
+    - [Dependencies for Internet bootstrap](#dependencies-for-internet-bootstrap)
+    - [Dependencies for Airgapped deploy](#dependencies-for-airgapped-bootstrap)
+  - [Bootstrap Jenkins](#bootstrap-jenkins)
     - [Change the IP of the lighthouse host in site_specific](#change-the-ip-of-the-lighthouse-host-in-site_specific)
     - [Run the bootstrap command](#run-the-bootstrap-command)
   - [Update Jenkins](#update-jenkins)
@@ -127,11 +143,110 @@ IP addresses are able to access the Lighthouse server and the Lighthouse CI
 server. `redhat_preview.tf` is also where these two servers are configured in
 general, and is a good starting point for configuring new environments.
 
----
-
 ## Deploying
 
-### How to Bootstrap Jenkins
+Deployments in Lighthouse are performed by Jenkins using Ansible.
+
+It is important to understand the differences between the environments so you
+can choose which one to deploy using.
+
+**Steps to deploy**
+
+- [Choose an environment](#choose-an-environment)
+- [Configure settings](#configure-settings)
+- [Rsync dependencies](#rsync-dependencies)
+- [Bootstrap Jenkins](#bootstrap-jenkins)
+- [Update Jenkins](#update-jenkins)
+- [Restart Jenkins](#restart-jenkins)
+- [Trigger Lighthouse Deploy](#trigger-lighthouse-deploy)
+
+### Choose an Environment
+
+|               | Has Internet Access | No Internet Access |
+|---------------|---------------------|--------------------|
+| Preconfigured | [Preview](#preview) | [Copper](#copper)  |
+| Site Specific | [Bronze](#bronze)   | [Silver](#silver)  |
+
+#### Criteria for choosing
+
+##### Internet access or air-gapped?
+
+Lighthouse is designed to be deployed into multiple different networks, some
+airgapped and some with internet access. Whether you have internet access in
+your network decides which [environment you should use](#environment).
+
+##### Preconfigured or Site Specific?
+
+When deploying we have provided settings to "out-of-the-box" deploy to either
+a Internet or Airgapped network. Should you need to deploy to another network
+you can use [Site Specific settings instead](#site-specific-deploy). Whether you
+need to configure these settings in your network decides which
+[environment you should use](#environment).
+
+
+#### Preview
+
+- **Has** internet access.
+  Deploys using the internet and pulls all it's packages from public sources.
+- **Preconfigured** settings.
+  Requires only minimal [configuration before use](#configure-preview).
+
+Preview has been preconfigured to deploy in AWS. It uses the layout created by
+Terraform as defined in [terraform/preview.tf][previewtf]. You only need to
+[configure a few settings](#configure-preview) before you can use it.
+
+#### Copper
+
+- **No** internet access.
+  Requires all [dependencies to be packaged first](#package-dependencies).
+- **Preconfigured** settings.
+  Requires only minimal [configuration before use](#configure-copper).
+
+Copper has been configured to deploy to AWS. It uses the layout created by
+terraform as defined in [terraform/copper.tf][coppertf].
+
+Copper requires an Internet enabled environment to have it's
+[dependencies packaged](#package-dependencies) and these dependencies rsynced to
+it before it can [bootstrap without internet access](#airgapped-bootstrap).
+
+#### Bronze
+
+- **Has** internet access.
+  Deploys using the internet and pulls all it's packages from public sources.
+- **Site specific** settings.
+  Requires [configuring before use](#configure-bronze).
+
+Bronze is more flexible version of Preview. As such it needs some 
+[configuration before use](#configure-bronze).
+
+#### Silver
+
+- **No** internet access.
+  Requires all [dependencies to be packaged first](#package-dependencies).
+- **Site specific** settings.
+  Requires [configuring before use](#configure-silver).
+
+Silver is more flexible version of Copper. As such it needs some 
+[configuration before use](#configure-silver).
+
+Silver requires an Internet enabled environment to have it's
+[dependencies packaged](#package-dependencies) and these dependencies rsynced to
+it before it can [bootstrap without internet access](#airgapped-bootstrap).
+
+### Configure settings
+
+#### Configure Preview
+#### Configure Copper
+#### Configure Bronze
+#### Configure Silver
+
+### Rsync dependencies
+
+#### Dependencies for Internet bootstrap
+
+#### Dependencies for Airgapped deploy
+
+### Bootstrap Jenkins
 
 Once the VMs are created in AWS you will need to bootstrap Jenkins before we
 can get our CI pipeline running. By this point it is _vital_ that you have
@@ -274,3 +389,6 @@ The task which actually runs `nginx` and `uWSGI` using these new settings is
 [trfmdl]:https://www.terraform.io/downloads.html
 [trfminst]:https://www.terraform.io/intro/getting-started/install.html
 [amzkeypair]:http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair
+[previewtf]: https://github.com/dstl/lighthouse-builder/blob/master/terraform/preview.tf
+[coppertf]: https://github.com/dstl/lighthouse-builder/blob/master/terraform/copper.tf
+
