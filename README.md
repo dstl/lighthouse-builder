@@ -235,9 +235,51 @@ it before it can [bootstrap without internet access](#airgapped-bootstrap).
 
 ### Configure settings
 
+Settings need to be configured before [bootstrapping jenkins](#bootstrap-jenkins).
+What needs configured depends greatly on which environment you've chosen to run.
+
 #### Configure Preview
+
+- **In `secrets/preview.inventory` set the internal IP of lighthouse**
+
+    Use the Public IP of the lighthouse box created by terraform.
+
+        [lighthouse-app-server]
+        <public lighthouse ip> ansible_ssh_private_key_file=../secrets/preview.deploy.pem ansible_ssh_user=ec2-user
+
+- **In `secrets/preview.site_specific.yml` set the lighthouse ip**
+
+    Use the Public IP of the lighthouse box created by terraform.
+
+        lighthouse_ip: '<public lighthouse ip>'
+
+- **Commit those changes to master**
+  
+    Update jobs use master to update from so you need to commit these changes
+    otherwise they will be overwritten when you update jenkins.
+
 #### Configure Copper
+
+- **In `secrets/copper.inventory` set the internal IP of lighthouse**
+
+    Use the Public IP of the lighthouse box created by terraform.
+
+        [lighthouse-app-server]
+        <public lighthouse ip> ansible_ssh_private_key_file=../secrets/preview.deploy.pem ansible_ssh_user=ec2-user
+
+- **In `secrets/copper.site_specific.yml` set the lighthouse ip**
+
+    Use the Public IP of the lighthouse box created by terraform.
+
+        lighthouse_ip: '<public lighthouse ip>'
+
+- **Commit those changes to master**
+  
+    Update jobs use master to update from so you need to commit these changes
+    otherwise they will be overwritten when you update jenkins.
+
 #### Configure Bronze
+
 #### Configure Silver
 
 ### Rsync dependencies
