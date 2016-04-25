@@ -493,8 +493,8 @@ Internet enabled network.
 - **Rsync dependencies to the Copper or Silver jenkins VM**
 
         ~ > rsync -Pav -e 'ssh -i <ssh key path>' \
-                  <ssh user>@<jenkins ip>:/opt/dist/ \
-                  /tmp/dist/
+                  /tmp/dist/ \
+                  <ssh user>@<jenkins ip>:/opt/dist/
 
     where:
 
