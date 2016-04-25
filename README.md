@@ -280,6 +280,73 @@ What needs configured depends greatly on which environment you've chosen to run.
 
 #### Configure Bronze
 
+Bronze requires a number of files to be created in `/opt/secrets` on the VM you
+intend to bootstrap.
+
+- **If using RHEL Make sure your VM is registered**
+
+    Our deployments require unrestricted yum access. So ensuring your VM is
+    fully registered with RHEL guarantees we can install things from yum.
+
+- **Place an ssh private key that has rights to lighthouse**
+
+    We put ours in `/opt/secrets/ssh.pem`. Use that path anywhere you are asked
+    for `<ssh key path>` in this section.
+
+- **Create `/opt/secrets/site_specific.yml`**
+
+        lighthouse_hostname: '<lighthouse url>'
+        lighthouse_host: '<lighthouse url>'
+        jenkins_url: 'http://<jenkins url>:8080/'
+        lighthouse_ci_hostname: '<jenkins url>'
+        jenkins_internal_url: 'http://0.0.0.0:8080/'
+        github_token: '<github access token>'
+        lighthouse_ip: '<lighthouse public ip>'
+        lighthouse_secret_key: '<secret key>'
+        lighthouse_ssh_key_path: '<ssh key path>'
+        lighthouse_ssh_user: '<ssh user>'
+
+    where:
+
+    `<lighthouse url>`: The url you want users to access lighthouse over. Needs
+    to be defined in DNS.
+
+    `<jenkins url>`: The url you want to use to access jenkins. Needs to be
+    defined in DNS.
+
+    `<lighthouse ip>`: The IP of lighthouse that jenkins can use to ssh to.
+
+    `<github token>`: A github personal access token which has access to
+    lighthouse and lighthouse-builder.
+
+    `<secret key>`: Some long random string used for crypto.
+    Use `head -30 /dev/urandom | sha256sum` to generate a nice long random
+    string.
+
+    `<ssh key path>`: Path to the ssh private key that has `ssh` rights to the
+    lighthouse VM, e.g. `/opt/secrets/ssh.pem`
+
+    `<ssh user>`: The user that the `<ssh key path>` has to ssh in to lighthouse
+    as. In preview this is `ec2-user`.
+
+- **Create `/opt/secrets/bronze.inventory`**
+
+        [lighthouse-app-server]
+        <lighthouse ip> ansible_ssh_private_key_file=<ssh key path> ansible_ssh_user=<ssh user>
+
+        [copper:children]
+        lighthouse-app-server
+
+    where:
+
+    `<lighthouse ip>`: The IP of lighthouse that jenkins can use to ssh to.
+
+    `<ssh key path>`: Path to the ssh private key that has `ssh` rights to the
+    lighthouse VM, e.g. `/opt/secrets/ssh.pem`
+
+    `<ssh user>`: The user that the `<ssh key path>` has to ssh in to lighthouse
+    as. In preview this is `ec2-user`.
+
 #### Configure Silver
 
 ### Rsync dependencies
