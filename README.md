@@ -39,6 +39,8 @@ Code for provision and deployment for various components of the dstl-lighthouse 
     - [Run the bootstrap command](#run-the-bootstrap-command)
   - [Update Jenkins](#update-jenkins)
   - [Restart Jenkins](#restart-jenkins)
+- [Package dependencies](#package-dependencies)
+
 - [Configuring your servers with `servers.yml`](#configuring-your-servers-with-serversyml)
 - [How is the Lighthouse server typically configured?](#how-is-the-lighthouse-server-typically-configured)
   - [Development](#development)
@@ -334,7 +336,7 @@ intend to bootstrap.
         [lighthouse-app-server]
         <lighthouse ip> ansible_ssh_private_key_file=<ssh key path> ansible_ssh_user=<ssh user>
 
-        [copper:children]
+        [bronze:children]
         lighthouse-app-server
 
     where:
@@ -349,11 +351,159 @@ intend to bootstrap.
 
 #### Configure Silver
 
+Silver requires a number of files to be created in `/opt/secrets` on the VM you
+intend to bootstrap.
+
+- **If using RHEL Make sure your VM is registered**
+
+    Our deployments require unrestricted yum access. So ensuring your VM is
+    fully registered with RHEL guarantees we can install things from yum.
+
+- **Place an ssh private key that has rights to lighthouse**
+
+    We put ours in `/opt/secrets/ssh.pem`. Use that path anywhere you are asked
+    for `<ssh key path>` in this section.
+
+- **Create `/opt/secrets/site_specific.yml`**
+
+        lighthouse_hostname: '<lighthouse url>'
+        lighthouse_host: '<lighthouse url>'
+        jenkins_url: 'http://<jenkins url>:8080/'
+        lighthouse_ci_hostname: '<jenkins url>'
+        jenkins_internal_url: 'http://0.0.0.0:8080/'
+        github_token: '<github access token>'
+        lighthouse_ip: '<lighthouse public ip>'
+        lighthouse_secret_key: '<secret key>'
+        lighthouse_ssh_key_path: '<ssh key path>'
+        lighthouse_ssh_user: '<ssh user>'
+
+    where:
+
+    `<lighthouse url>`: The url you want users to access lighthouse over. Needs
+    to be defined in DNS.
+
+    `<jenkins url>`: The url you want to use to access jenkins. Needs to be
+    defined in DNS.
+
+    `<lighthouse ip>`: The IP of lighthouse that jenkins can use to ssh to.
+
+    `<github token>`: A github personal access token which has access to
+    lighthouse and lighthouse-builder.
+
+    `<secret key>`: Some long random string used for crypto.
+    Use `head -30 /dev/urandom | sha256sum` to generate a nice long random
+    string.
+
+    `<ssh key path>`: Path to the ssh private key that has `ssh` rights to the
+    lighthouse VM, e.g. `/opt/secrets/ssh.pem`
+
+    `<ssh user>`: The user that the `<ssh key path>` has to ssh in to lighthouse
+    as. In preview this is `ec2-user`.
+
+- **Create `/opt/secrets/silver.inventory`**
+
+        [lighthouse-app-server]
+        <lighthouse ip> ansible_ssh_private_key_file=<ssh key path> ansible_ssh_user=<ssh user>
+
+        [silver:children]
+        lighthouse-app-server
+
+    where:
+
+    `<lighthouse ip>`: The IP of lighthouse that jenkins can use to ssh to.
+
+    `<ssh key path>`: Path to the ssh private key that has `ssh` rights to the
+    lighthouse VM, e.g. `/opt/secrets/ssh.pem`
+
+    `<ssh user>`: The user that the `<ssh key path>` has to ssh in to lighthouse
+    as. In preview this is `ec2-user`.
+
 ### Rsync dependencies
 
-#### Dependencies for Internet bootstrap
+#### Dependencies for Internet deploy
+
+Preview and Bronze both pull dependencies from the public internet. As such the
+only thing they need to start the bootstrap is the [lighthouse-builder] repo.
+
+- **Clone the `lighthouse-builder` repo to your machine**
+
+        ~ > git clone git@github.com:dstl/lighthouse-builder.git
+
+- **Ensure `lighthouse-secrets` repo is checked out**
+
+        ~ > cd lighthouse-builder
+        ~/lighthouse-builder > git submodule update --init
+
+- **Rsync the lighthouse-builder repo to the jenkins VM**
+
+        ~ > rsync -Pav -e 'ssh -i <ssh key path>' ~/lighthouse-builder/ /tmp/boostrap/
+
+    where:
+
+    `<ssh key path>` is the path to an ssh private key that can ssh in to the
+    jenkins VM. For preview we use `secrets/preview.deploy.pem`.
+
+    we assume you have checked out lighthouse-builder to `~/lighthouse-builder`.
 
 #### Dependencies for Airgapped deploy
+
+Copper and Silver both require full dependencies to be packaged on an existing
+Internet enabled network.
+
+- **Perform a full deploy to a Preview or Bronze environment**
+
+    This is a full deploy, so it may take a while.
+
+- **Package the dependencies on your Preview or Bronze**
+
+    Follow the [guide to package dependencies](#package-dependencies).
+
+- **Rsync dependencies from the Preview or Bronze jenkins VM**
+
+        ~ > rsync -Pav -e 'ssh -i <ssh key path>' \
+                  <ssh user>@<jenkins ip>:/opt/dist/ \
+                  /tmp/dist/
+
+    where:
+
+    `<ssh key path>` is the path to an ssh private key that can ssh in to the
+    jenkins VM. For preview we use `secrets/preview.deploy.pem`.
+
+    `<ssh user>` is the user that `<ssh key path>` has to login as on jenkins.
+
+    `<jenkins ip>` is the public IP of the jenkins VM.
+
+- **Create the folder `/opt/dist` in the Copper or Silver jenkins VM**
+
+        ~ > ssh -i <ssh key path>' <ssh user>@<target ip>
+        <ssh user>@<target ip> > sudo mkdir /opt/dist/
+        <ssh user>@<target ip> > sudo chmod <ssh user>:<ssh user> /opt/dist/
+        <ssh user>@<target ip> > exit
+        ~ >
+
+    where:
+
+    `<ssh key path>` is the path to an ssh private key that can ssh in to the
+    jenkins VM. For preview we use `secrets/preview.deploy.pem`.
+
+    `<ssh user>` is the user that `<ssh key path>` has to login as on jenkins.
+
+    `<target ip>` is the public IP of the Copper or Silver jenkins VM.
+
+- **Rsync dependencies to the Copper or Silver jenkins VM**
+
+        ~ > rsync -Pav -e 'ssh -i <ssh key path>' \
+                  <ssh user>@<jenkins ip>:/opt/dist/ \
+                  /tmp/dist/
+
+    where:
+
+    `<ssh key path>` is the path to an ssh private key that can ssh in to the
+    jenkins VM. For preview we use `secrets/preview.deploy.pem`.
+
+    `<ssh user>` is the user that `<ssh key path>` has to login as on jenkins.
+
+    `<jenkins ip>` is the public IP of the jenkins VM.
 
 ### Bootstrap Jenkins
 
@@ -415,6 +565,8 @@ bootstrap command") and run:
 ```bash
 (centos@ci) > sudo service jenkins restart
 ```
+
+## Package dependencies
 
 ## Configuring your servers with `servers.yml`
 
@@ -500,4 +652,5 @@ The task which actually runs `nginx` and `uWSGI` using these new settings is
 [amzkeypair]:http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair
 [previewtf]: https://github.com/dstl/lighthouse-builder/blob/master/terraform/preview.tf
 [coppertf]: https://github.com/dstl/lighthouse-builder/blob/master/terraform/copper.tf
+[lighthouse-builder]: https://github.com/dstl/lighthouse-builder
 
