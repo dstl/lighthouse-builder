@@ -295,6 +295,12 @@ intend to bootstrap.
     We put ours in `/opt/secrets/ssh.pem`. Use that path anywhere you are asked
     for `<ssh key path>` in this section.
 
+- **Place a github ssh keypair in `/opt/secrets/ssh_rsa`**
+
+    This ssh keypair is used to clone repos from github. The files need to be
+    placed in `/opt/secrets/ssh_rsa` and `/opt/secrets/ssh_rsa.pub` and be owned
+    by the `<ssh user>` you will use to bootstrap jenkins.
+
 - **Create `/opt/secrets/site_specific.yml`**
 
         lighthouse_hostname: '<lighthouse url>'
