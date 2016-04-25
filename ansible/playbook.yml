@@ -43,6 +43,7 @@
   roles:
     - digi2al.dependencies
 - hosts: package-dependencies
+  sudo: true
   vars_files:
     - vars/jenkins.yml
     - vars/package_dependencies.yml
