@@ -36,6 +36,11 @@ read_args() {
         use_dist=true
         extra_pip_args="--find-links=/opt/dist/pypi --no-index"
         shift;;
+      --silver)
+        environment='silver'
+        use_dist=true
+        extra_pip_args="--find-links=/opt/dist/pypi --no-index"
+        shift;;
       --jenkins)
         app='jenkins'
         shift;;

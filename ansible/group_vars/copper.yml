@@ -2,19 +2,21 @@
 environment: 'copper'
 secrets_location: '../secrets'
 secrets_vars: '../secrets/copper.site_specific.yml'
-jenkins_url: 'http://ci.copper.lighthouse.pw:8080/'
 github_api_url: 'https://api.github.com'
 jenkins_update_target: '--copper'
-lighthouse_host: 'www.copper.lighthouse.pw'
 lighthouse_inventory_file: '../secrets/copper.inventory'
-lighthouse_hostname: 'www.copper.lighthouse.pw'
 lighthouse_assets_path: '../secrets/copper-assets'
-lighthouse_ci_hostname: 'ci.copper.lighthouse.pw'
 lighthouse_ci_static_src_path: 'files/ci-refresh'
 lighthouse_ci_static_dest_path: '/var/lib/www'
-jenkins_internal_url: 'http://0.0.0.0:8080/'
 
 notify_github: no
 
 distribute_dependencies: yes
 lighthouse_internet_access: '/bin/false'
+
+# Settings that are configured in site_specific in silver
+jenkins_url: 'http://ci.copper.lighthouse.pw:8080/'
+lighthouse_host: 'www.copper.lighthouse.pw'
+lighthouse_hostname: 'www.copper.lighthouse.pw'
+lighthouse_ci_hostname: 'ci.copper.lighthouse.pw'
+jenkins_internal_url: 'http://0.0.0.0:8080/'
