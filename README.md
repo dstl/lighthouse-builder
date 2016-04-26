@@ -36,8 +36,11 @@ Code for provision and deployment for various components of the dstl-lighthouse 
     - [Dependencies for Airgapped bootstrap](#dependencies-for-airgapped-bootstrap)
   - [Bootstrap Jenkins](#bootstrap-jenkins)
     - [Bootstrap an Internet enabled deploy](#bootstrap-an-internet-enabled-deploy)
-      - [Prerequisites](#prerequisites)
+      - [Prerequisites for internet deploy](#prerequisites-for-internet-deploy)
       - [Bootstrap from /tmp/bootstrap](#bootstrap-from-tmpbootstrap)
+    - [Bootstrap an Airgapped deploy](#bootstrap-an-airgapped-deploy)
+      - [Prerequisites for Airgapped deploy](#prerequisites-for-airgapped-deploy)
+      - [Bootstrap from /opt/dist/bootstrap](#bootstrap-from-optdistbootstrap)
   - [Update Jenkins](#update-jenkins)
   - [Restart Jenkins](#restart-jenkins)
 - [Package dependencies](#package-dependencies)
@@ -515,7 +518,7 @@ Internet enabled network.
 
 #### Bootstrap an Internet enabled deploy
 
-##### Prerequisites
+##### Prerequisites for internet deploy
 
 Before doing this be sure you have:
 
@@ -528,7 +531,7 @@ Before doing this be sure you have:
 
 We assume you have this repo rsynced to `/tmp/bootstrap` in the target VM. If
 not follow the guide to 
-[rsync dependencies for Internet deploy](#dependencies-for-internet-bootstrap)
+[rsync dependencies for Internet deploy](#dependencies-for-internet-bootstrap).
 
 Run the following commands to `ssh` in to the target VM and perform the
 bootstrap.
@@ -544,6 +547,51 @@ where:
 
 `<environment>` is the environment you have chosen to deploy, either of
 [preview](#preview) or [bronze](#bronze). Read the guide on 
+[choosing an environment](#choosing-an-environment) to decide which to use.
+
+`<target ip>` is the IP of the target VM you want to bootstrap in to a Jenkins VM.
+
+`<ssh key path>` is the path on your local machine to an ssh private key with
+ssh rights to the target VM.
+
+`<ssh user>` is the user that has rights to ssh in to the target VM
+
+The bootstrap takes a few minutes. Once complete you will have a fully built
+jenkins instance available at `<jenkins ip>`. Next you should 
+[update jenkins](#update-jenkins) and [restart jenkins](#restart-jenkins) before
+trying any deploys.
+
+#### Bootstrap an Airgapped deploy
+
+##### Prerequisites for Airgapped deploy
+
+Before doing this be sure you have:
+
+- [Provisioned your VMs](#provisioning)
+- [Rsynced dependencies for Airgapped deploy](#dependencies-for-airgapped-bootstrap)
+- Configured a [Copper](#configure-copper) or [Silver](#configure-silver)
+  environment
+
+##### Bootstrap from /opt/dist/bootstrap
+
+We assume you have all dependencies rsynced to `/opt/dist` in the target VM. If
+not follow the guide to 
+[rsync dependencies for Airgapped deploy](#dependencies-for-airgapped-bootstrap).
+
+Run the following commands to `ssh` in to the target VM and perform the
+bootstrap.
+
+```bash
+~ > ssh -i <ssh key path> <ssh user>@<target ip>
+# You should now be in the Jenkins VM through SSH
+(<ssh user>@<target ip>) > cd /opt/dist/bootstrap/ansible
+(<ssh user>@<target ip>) > ./bootstrap.sh --<environment>
+```
+
+where:
+
+`<environment>` is the environment you have chosen to deploy, either of
+[copper](#copper) or [silver](#silver). Read the guide on 
 [choosing an environment](#choosing-an-environment) to decide which to use.
 
 `<target ip>` is the IP of the target VM you want to bootstrap in to a Jenkins VM.
