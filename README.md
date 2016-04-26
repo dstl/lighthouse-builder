@@ -33,14 +33,14 @@ Code for provision and deployment for various components of the dstl-lighthouse 
     - [Configure Silver](#configure-silver)
   - [Rsync dependencies](#rsync-dependencies)
     - [Dependencies for Internet bootstrap](#dependencies-for-internet-bootstrap)
-    - [Dependencies for Airgapped deploy](#dependencies-for-airgapped-bootstrap)
+    - [Dependencies for Airgapped bootstrap](#dependencies-for-airgapped-bootstrap)
   - [Bootstrap Jenkins](#bootstrap-jenkins)
-    - [Change the IP of the lighthouse host in site_specific](#change-the-ip-of-the-lighthouse-host-in-site_specific)
-    - [Run the bootstrap command](#run-the-bootstrap-command)
+    - [Bootstrap an Internet enabled deploy](#bootstrap-an-internet-enabled-deploy)
+      - [Prerequisites](#prerequisites)
+      - [Bootstrap from /tmp/bootstrap](#bootstrap-from-tmpbootstrap)
   - [Update Jenkins](#update-jenkins)
   - [Restart Jenkins](#restart-jenkins)
 - [Package dependencies](#package-dependencies)
-
 - [Configuring your servers with `servers.yml`](#configuring-your-servers-with-serversyml)
 - [How is the Lighthouse server typically configured?](#how-is-the-lighthouse-server-typically-configured)
   - [Development](#development)
@@ -426,7 +426,7 @@ intend to bootstrap.
 
 ### Rsync dependencies
 
-#### Dependencies for Internet deploy
+#### Dependencies for Internet bootstrap
 
 Preview and Bronze both pull dependencies from the public internet. As such the
 only thing they need to start the bootstrap is the [lighthouse-builder] repo.
@@ -451,7 +451,7 @@ only thing they need to start the bootstrap is the [lighthouse-builder] repo.
 
     we assume you have checked out lighthouse-builder to `~/lighthouse-builder`.
 
-#### Dependencies for Airgapped deploy
+#### Dependencies for Airgapped bootstrap
 
 Copper and Silver both require full dependencies to be packaged on an existing
 Internet enabled network.
@@ -513,48 +513,50 @@ Internet enabled network.
 
 ### Bootstrap Jenkins
 
-Once the VMs are created in AWS you will need to bootstrap Jenkins before we
-can get our CI pipeline running. By this point it is _vital_ that you have
-pulled down the `lighthouse-secrets` repo.
+#### Bootstrap an Internet enabled deploy
 
-Get the public IP of the Jenkins server from the AWS console. This IP will be
-referred to as `jenkins-public-ip` in the following commands.
+##### Prerequisites
 
-First step is to get this repo on to the Jenkins server from AWS. Rsync is the
-suggested method. From the root of this repo, run the following.
+Before doing this be sure you have:
 
-```bash
-rsync --recursive \
-    -e 'ssh -i secrets/preview.deploy.pem' \
-    . \
-    centos@<jenkins-public-ip>:/tmp/bootstrap \
-    --exclude-from "rsync_exclude.txt"
-```
+- [Provisioned your VMs](#provisioning)
+- [Rsynced dependencies for Internet deploy](#dependencies-for-internet-bootstrap)
+- Configured a [Preview](#configure-preview) or [Bronze](#configure-bronze)
+  environment
 
-#### Change the IP of the lighthouse host in site_specific
+##### Bootstrap from /tmp/bootstrap
 
-Edit the relevant site_specific.yml file. In this case we're hacking the
-changes into the `preview.site_specific.yml` file. We should have a separate set
-of files for a new AWS instance.
+We assume you have this repo rsynced to `/tmp/bootstrap` in the target VM. If
+not follow the guide to 
+[rsync dependencies for Internet deploy](#dependencies-for-internet-bootstrap)
+
+Run the following commands to `ssh` in to the target VM and perform the
+bootstrap.
 
 ```bash
-cd /tmp/bootstrap
-vi preview.site-specific.yml
-```
-
-* Copy the IP of the lighthouse app box from the aws console and set the `lighthouse_host` parameter.
-
-#### Run the bootstrap command
-
-```bash
-ssh -i secrets/preview.deploy.pem centos@<jenkins-public-ip>
+~ > ssh -i <ssh key path> <ssh user>@<target ip>
 # You should now be in the Jenkins VM through SSH
-(centos@ci) > cd /tmp/bootstrap/ansible
-(centos@ci) > ./bootstrap.sh --preview
+(<ssh user>@<target ip>) > cd /tmp/bootstrap/ansible
+(<ssh user>@<target ip>) > ./bootstrap.sh --<environment>
 ```
 
-The bootstrap takes a few minutes. Then jenkins should be available at
-[ci.lighthouse.pw].
+where:
+
+`<environment>` is the environment you have chosen to deploy, either of
+[preview](#preview) or [bronze](#bronze). Read the guide on 
+[choosing an environment](#choosing-an-environment) to decide which to use.
+
+`<target ip>` is the IP of the target VM you want to bootstrap in to a Jenkins VM.
+
+`<ssh key path>` is the path on your local machine to an ssh private key with
+ssh rights to the target VM.
+
+`<ssh user>` is the user that has rights to ssh in to the target VM
+
+The bootstrap takes a few minutes. Once complete you will have a fully built
+jenkins instance available at `<jenkins ip>`. Next you should 
+[update jenkins](#update-jenkins) and [restart jenkins](#restart-jenkins) before
+trying any deploys.
 
 ### Update Jenkins
 
