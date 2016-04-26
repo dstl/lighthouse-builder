@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 resource "aws_instance" "redhat-jenkins-ci" {
     ami = "${var.rhel_box}"
     instance_type = "t2.micro"

@@ -1,5 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+# (c) Crown Owned Copyright, 2016. Dstl.
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 Vagrant.require_version ">= 1.6.0"

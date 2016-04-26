@@ -1,4 +1,5 @@
 #!/bin/bash
+# (c) Crown Owned Copyright, 2016. Dstl.
 
 for DIST in CentOS Redhat
 do
