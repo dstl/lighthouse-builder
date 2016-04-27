@@ -19,3 +19,4 @@
     - { src: '{{ secrets_location }}/ssh_rsa.pub', mode: 'u=rw,g=,o=',   dest: 'github_rsa.pub' }
     - { src: 'ssh_config',  mode: 'u=rw,g=r,o=r', dest: 'config' }
     - { src: 'ssh_hosts',   mode: 'u=rw,g=r,o=r', dest: 'known_hosts' }
+  when: "not {{ distribute_dependencies }}"
