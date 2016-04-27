@@ -43,8 +43,19 @@ Code for provision and deployment for various components of the dstl-lighthouse 
       - [Bootstrap from /opt/dist/bootstrap](#bootstrap-from-optdistbootstrap)
   - [Update Jenkins](#update-jenkins)
   - [Restart Jenkins](#restart-jenkins)
+  - [Deploy Lighthouse](#deploy-lighthouse)
 - [Package dependencies](#package-dependencies)
+  - [Overview of `/opt/dist`](#overview-of-optdist)
+  - [Steps to collecting dependencies](#steps-to-collecting-dependencies)
+- [Jenkins jobs](#jenkins-jobs)
+  - [Build Lighthouse Job](#build-lighthouse-job)
+  - [Build Lighthouse PRs job](#build-lighthouse-prs-job)
+  - [Deploy Lighthouse job](#deploy-lighthouse-job)
+  - [Acceptance Test Lighthouse job](#acceptance-test-lighthouse-job)
+  - [Package Dependencies job](#package-dependencies-job)
+  - [Update Jenkins job](#update-jenkins-job)
 - [Configuring your servers with `servers.yml`](#configuring-your-servers-with-serversyml)
+- [How does logging work?](#how-does-logging-work)
 - [How is the Lighthouse server typically configured?](#how-is-the-lighthouse-server-typically-configured)
   - [Development](#development)
   - [Production](#production)
@@ -163,7 +174,7 @@ can choose which one to deploy using.
 - [Bootstrap Jenkins](#bootstrap-jenkins)
 - [Update Jenkins](#update-jenkins)
 - [Restart Jenkins](#restart-jenkins)
-- [Trigger Lighthouse Deploy](#trigger-lighthouse-deploy)
+- [Trigger Lighthouse Deploy](#deploy-lighthouse)
 
 ### Choose an Environment
 
@@ -178,15 +189,15 @@ can choose which one to deploy using.
 
 Lighthouse is designed to be deployed into multiple different networks, some
 airgapped and some with internet access. Whether you have internet access in
-your network decides which [environment you should use](#environment).
+your network decides which [environment you should use](#choose-an-environment).
 
 ##### Preconfigured or Site Specific?
 
 When deploying we have provided settings to "out-of-the-box" deploy to either
 a Internet or Airgapped network. Should you need to deploy to another network
-you can use [Site Specific settings instead](#site-specific-deploy). Whether you
-need to configure these settings in your network decides which
-[environment you should use](#environment).
+you can use Site Specific settings instead by using a [Bronze](#bronze) or
+[Silver](#silver) evironment. Whether you need to configure these settings in
+your network decides which [environment you should use](#choose-an-environment).
 
 
 #### Preview
@@ -212,7 +223,8 @@ terraform as defined in [terraform/copper.tf][coppertf].
 
 Copper requires an Internet enabled environment to have it's
 [dependencies packaged](#package-dependencies) and these dependencies rsynced to
-it before it can [bootstrap without internet access](#airgapped-bootstrap).
+the target VM before it can
+[bootstrap without internet access](#bootstrap-an-airgapped-deploy).
 
 #### Bronze
 
@@ -547,7 +559,7 @@ where:
 
 `<environment>` is the environment you have chosen to deploy, either of
 [preview](#preview) or [bronze](#bronze). Read the guide on 
-[choosing an environment](#choosing-an-environment) to decide which to use.
+[choosing an environment](#choose-an-environment) to decide which to use.
 
 `<target ip>` is the IP of the target VM you want to bootstrap in to a Jenkins VM.
 
@@ -622,7 +634,95 @@ bootstrap command") and run:
 (centos@ci) > sudo service jenkins restart
 ```
 
+### Deploy Lighthouse
+
+Once you have a fully working jenkins deploy, either Internet enabled or
+Airgapped, the last step is to actually deploy the Lighthouse app.
+
+To do this simply trigger a [Build Lighthouse job](#build-lighthouse-job) from
+the Jenkins job list. This will, if it completes cleanly, trigger a full deploy
+to the VM you defined when [configuring jenkins](#configure-settings).
+
 ## Package dependencies
+
+To bootstrap Jenkins in a network that is airgapped we first need to collect all
+the dependencies needed in bootstrapping and deploying.
+
+### Overview of `/opt/dist`
+
+Once [dependencies are collected](#steps-to-collecting-dependencies) are ready
+you will have them all collected in `/opt/dist` on the Jenkins VM:
+
+* **`/opt/dist/bootstrap`**
+
+  The [lighthouse-builder] repo fully checked out and ready to be used to
+  bootstrap Jenkins on your airgapped VM.
+
+* **`/opt/dist/git`**
+
+  The [lighthouse] and [lighthouse-builder] repos bare cloned so you can develop in
+  the airgapped network.
+
+* **`/opt/dist/jpi`**
+
+  The Jenkins plugins that are installed by the [digi2al.jenkins][jnknsrole]
+  ansible role.
+
+* **`/opt/dist/pypi`**
+
+  The Python libraries that are installed either by [lighthouse] or the
+  [ansible roles]. This includes Python 3 and Python 2.7 libraries.
+
+* **`/opt/dist/tars`**
+
+  The [digi2al.phantomjs role][phntmjsrole] installs phantomjs from a tarball.
+  This tarball is packaged in `/opt/dist/tars`.
+
+* **`/opt/dist/workspaces`**
+
+  Workspaces precreated for each of the Jenkins jobs. By checking out the
+  workspaces we avoid the problems of checking out submodules and ensuring those
+  submodules checkout from `/opt/dist`.
+
+* **`/opt/dist/yum`**
+
+  The numerous RPMs that are required to provision and configure both Jenkins
+  and [lighthouse].
+
+### Steps to collecting dependencies
+
+The steps to this are:
+
+* **Deploy a full Internet enabled environment**
+
+  To collect the dependencies that are required to deploy the full environment
+  we need a complete deployed environment. This environment will have all the
+  dependencies already installed and so we can easily collect them.
+
+  Follow the guide to
+  [Bootstrap an Internet enabled deploy](#bootstrap-an-internet-enabled-deploy).
+
+* **Run the Package Dependencies job**
+  
+  To collect dependencies from a fully deployed environment trigger the jenkins
+  job "Package Dependencies". This job will:
+
+  * SSH in to Lighthouse VM and collect installed *RPMs* and
+    *PyPi Python libraries* to a folder in `/opt/dist` on the VM
+  * Rsync the dependencies from the Lighthouse VM to `/opt/dist` on the
+    Jenkins VM
+  * Collect all installed *RPMs*, *PyPi libraries*, *Git repos* and
+    *Jenkins plugins* to `/opt/dist` on the Jenkins VM
+  * Pull a copy of this repo to `/opt/dist/bootstrap` so you can bootstrap
+    Jenkins in the airgapped environment
+
+* **Move the dependencies to the Airgapped Jenkins VM**
+  
+  In bootstrapping an airgapped environment we need to get the `/opt/dist`
+  folder on to the target Jenkins VM. Our preferred transport mechanism is Rsync
+  using a developer laptop as the bridge. Rsyncing between two environments using
+  a laptop as the bridge is covered in the guide to
+  [dependencies for an Airgapped bootstrap](#dependencies-for-airgapped-bootstrap).
 
 ## Configuring your servers with `servers.yml`
 
@@ -651,6 +751,77 @@ Most of those yaml items are self-explanatory, but the important part is the
 `groups` key. This contains a list of Ansible groups which this VM will fall
 under, and thus determines which "plays" to run from the `playbook.yml` file
 specified above.
+
+## Jenkins jobs
+
+### Build Lighthouse job
+
+The Build Lighthouse job is used to ensure the correctness of the latest
+deployable code of Lighthouse. It checks out the [lighthouse] repo and runs
+Python unit tests using the script in [`bin/jenkins.sh`][jenkinsscript].
+
+**With internet access** this job will download all dependencies from PyPi
+and use them in running the tests. This is controlled by the ansible variable
+`lighthouse_internet_access: yes`, which is the default.
+
+**Without internet access** this job will use `/opt/dist/pypi` to fetch
+dependencies from. This is controlled by the ansible variable
+`lighthouse_internet_access: no`, which is defined in the
+[digi2al.dependencies][depsrole] role.
+
+It will trigger the [Deploy Lighthouse job](#deploy-lighthouse-job) if it passes.
+
+### Build Lighthouse PRs job
+
+The Build Lighthouse PRs job is identical to the Build Lighthouse job except it
+will build branches other than master. This way we have the
+[Build Lighthouse job](#build-lighthouse-job) to guarantee master is green while
+this job flicks depending on the success of the different pull requests.
+
+It will not trigger the [Deploy Lighthouse job](#deploy-lighthouse-job) if it
+passes.
+
+### Deploy Lighthouse job
+
+The Deploy Lighthouse job checks out the [lighthouse-builder] repo and runs an
+ansible playbook to deploy lighthouse. It uses the `lighthouse-app-server` group
+defined in [`ansible/playbook.yml`][playbook] to perform the deploy.
+
+**In Preview or Bronze** this job will download dependencies from the public
+internet. This is controlled using the `distribute_dependencies: no` ansible var,
+which is the default value.
+
+**In Copper or Silver** this job will rsync dependencies from `/opt/dist` on the
+Jenkins VM to `/opt/dist` on the Lighthouse VM. All dependencies will then be
+consumed from `/opt/dist`.
+
+It will trigger the [Acceptance Test Lighthouse job](#acceptance-test-lighthouse-job)
+if it passes.
+
+### Acceptance Test Lighthouse job
+
+The Acceptance Test job checks out the [lighthouse] repo and runs the splinter
+tests from [lighthouse/acceptancetests][accept] against the deployed instance of
+lighthouse. This will prove that deployment was successful.
+
+### Package Dependencies job
+
+The Package Dependencies job runs two ansible plays, `package-lighthouse` and
+`package-dependencies`, defined in [`ansible/playbook.yml`][playbook] by
+checking out the [lighthouse-builder] repo and running
+[`ansible/package-dependencies.sh`][pkgdepsscript].
+
+Running this job will collect all dependencies needed to deploy lighthouse to
+an airgapped network. See the guide on [Packaging](#package-dependencies) for
+more about how this works.
+
+### Update Jenkins job
+
+The Update Jenkins job checks out the [lighthouse-builder] repo and runs an
+ansible play, `jenkins`, defined in [`ansible/playbook.yml`][playbook].
+
+Running this play will update Jenkins to the latest settings as defined by the
+`jenkins` play.
 
 ## How does logging work?
 
@@ -701,7 +872,7 @@ The task which actually runs `nginx` and `uWSGI` using these new settings is
 `service.yml`.
 
 [ghssh]:https://help.github.com/articles/generating-an-ssh-key/
-[provaws]:#provision-server-in-aws
+[provaws]:#provision-servers-in-aws
 [trfm]:https://www.terraform.io
 [trfmdl]:https://www.terraform.io/downloads.html
 [trfminst]:https://www.terraform.io/intro/getting-started/install.html
@@ -709,4 +880,12 @@ The task which actually runs `nginx` and `uWSGI` using these new settings is
 [previewtf]: https://github.com/dstl/lighthouse-builder/blob/master/terraform/preview.tf
 [coppertf]: https://github.com/dstl/lighthouse-builder/blob/master/terraform/copper.tf
 [lighthouse-builder]: https://github.com/dstl/lighthouse-builder
-
+[lighthouse]: https://github.com/dstl/lighthouse
+[jnknsrole]: https://github.com/dstl/lighthouse-builder/tree/master/ansible/roles/digi2al.jenkins
+[ansible roles]: https://github.com/dstl/lighthouse-builder/tree/master/ansible/roles
+[phntmjsrole]: https://github.com/dstl/lighthouse-builder/tree/master/ansible/roles/digi2al.phantomjs
+[depsrole]: https://github.com/dstl/lighthouse-builder/tree/master/ansible/roles/digi2al.dependencies
+[playbook]: https://github.com/dstl/lighthouse-builder/tree/master/ansible/playbook.yml
+[accept]: https://github.com/dstl/lighthouse/tree/master/acceptancetests
+[pkgdepsscript]: https://github.com/dstl/lighthouse-builder/blob/master/ansible/package_dependencies.sh
+[jenkinsscript]: https://github.com/dstl/lighthouse/blob/master/bin/jenkins.sh
