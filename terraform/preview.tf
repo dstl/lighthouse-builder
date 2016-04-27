@@ -18,6 +18,7 @@ resource "aws_security_group" "allow_office_ip" {
         "${var.office_ip}/32",
         "${var.client_ip}/32",
         "${var.robs_ip}/32",
+        "${var.gareth_ip}/32",
         "${var.amazon_internal_ip_range}/16",
         "${var.jenkins_ip}/32",
         "${var.github_ip}/22"

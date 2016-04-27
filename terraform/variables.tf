@@ -1,6 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 variable "office_ip" {}
 variable "client_ip" {}
+variable "gareth_ip" {}
 variable "jenkins_ip" {}
 variable "copper_jenkins_ip" {}
 variable "copper_lighthouse_ip" {}
