@@ -192,6 +192,25 @@ Most of those yaml items are self-explanatory, but the important part is the
 under, and thus determines which "plays" to run from the `playbook.yml` file
 specified above.
 
+## How does logging work?
+
+Logging is done via uWSGI, and is configured in the Jinja2 template
+`ansible/roles/dstl.lighthouse/templates/wsgi.ini.j2`. You should see this line:
+
+```
+daemonize={{ uwsgi_log_dir }}/lighthouse.log
+```
+
+When Ansible sets up uWSGI (using
+`ansible/roles/digi2al.python/tasks/uwsgi.yml`), it'll use the `uwsgi_log_dir`
+variable to point the logs at a specified location. The default, which is
+configured in `ansible/roles/digi2al.python/defaults/main.yml`, is
+`'/var/log/uwsgi'`
+
+If you need to change the log location, your best bet is to do it on an
+environmental level by changing the appropriate environment `.site_specific.yml`
+file in the secrets folder.
+
 ## How is the Lighthouse server typically configured?
 
 ### Development
