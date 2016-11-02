@@ -1,5 +1,14 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 ---
+- name: jenkins
+  box: box-cutter/centos72
+  host: jenkins.dev
+  ip: 10.1.1.11
+  ram: 1024
+  playbook: playbook.yml
+  groups:
+    - vagrant
+    - jenkins
 - name: lighthouse-dev
   box: box-cutter/centos72
   host: lighthouse.dev
