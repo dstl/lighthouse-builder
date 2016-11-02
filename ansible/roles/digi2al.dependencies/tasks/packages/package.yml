@@ -16,7 +16,7 @@
     - createrepo
 
 - name: Collect installed package names
-  shell: 'rpm -qa --queryformat "%{name}\n" | sort | grep --invert-match "gpg-pubkey" > {{ remote_repo_location }}/pkg_list'
+  shell: 'rpm -qa --queryformat "%{name}-%{version}\n" | sort | grep --invert-match "gpg-pubkey" > {{ remote_repo_location }}/pkg_list'
 
 - name: Download all installed RPMs
   shell: "yumdownloader --destdir {{ remote_repo_location }}/yum $(<{{ remote_repo_location }}/pkg_list)"
