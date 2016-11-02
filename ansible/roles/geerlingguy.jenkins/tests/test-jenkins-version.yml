@@ -1,8 +1,6 @@
----
-- hosts: all
-
+- hosts: localhost
   vars:
-    jenkins_http_port: 8081
+    jenkins_version: 1.644
 
   roles:
     - geerlingguy.java
