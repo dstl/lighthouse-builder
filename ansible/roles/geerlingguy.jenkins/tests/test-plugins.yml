@@ -2,7 +2,8 @@
 - hosts: all
 
   vars:
-    jenkins_http_port: 8081
+    jenkins_plugins:
+      - ant
 
   roles:
     - geerlingguy.java
