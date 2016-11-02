@@ -1,5 +1,6 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 ---
+- src: geerlingguy.git
 - src: geerlingguy.jenkins
 - src: git@github.com:openstack/ansible-role-jenkins-job-builder.git
   scm: git
