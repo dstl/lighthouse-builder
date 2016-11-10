@@ -50,7 +50,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vf.vmx["allowNested"] = "TRUE"
       end
       srv.vm.synced_folder "../.", "/vagrant"
-      srv.vm.synced_folder "/opt/dist", "/opt/dist"
       srv.vm.provision "ansible" do |ansible|
         ansible.playbook = server["playbook"]
         ansible.groups = groups
