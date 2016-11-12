@@ -14,15 +14,7 @@ resource "aws_security_group" "allow_office_ip" {
       from_port = 0
       to_port = 65535
       protocol = "tcp"
-      cidr_blocks = [
-        "${var.office_ip}/32",
-        "${var.client_ip}/32",
-        "${var.robs_ip}/32",
-        "${var.gareth_ip}/32",
-        "${var.amazon_internal_ip_range}/16",
-        "${var.jenkins_ip}/32",
-        "${var.github_ip}/22"
-      ]
+      cidr_blocks = ["0.0.0.0/0"]
   }
   # Full internet access
   egress {
