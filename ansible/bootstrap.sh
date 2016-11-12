@@ -77,10 +77,17 @@ prepare_repo() {
   fi
 }
 
+install_rpm() {
+  /bin/rpm -q --quiet $1 || (/bin/echo "Install $1"; sudo /bin/yum -y install $1)
+}
+
 install_ansible() {
-  /bin/rpm -q --quiet ansible || ( /bin/echo "Install Ansible" ; sudo /bin/yum -y install ansible )
-  /bin/rpm -q --quiet python-pip || ( /bin/echo "Install Pip" ; sudo /bin/yum -y install python-pip )
-  sudo pip install --upgrade ansible $extra_pip_args
+  install_rpm libffi-devel
+  install_rpm gcc
+  install_rpm python-devel
+  install_rpm python-pip
+  install_rpm openssl-devel
+  sudo pip install ansible==2.1.1.0 $extra_pip_args
 }
 
 render_inventory() {
