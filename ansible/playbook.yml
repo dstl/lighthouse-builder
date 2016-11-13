@@ -4,6 +4,7 @@
   vars_files:
     - vars/jenkins.yml
     - "{{ secrets_vars }}"
+    - ../secrets/all.secrets.yml
   roles:
     - digi2al.dependencies
     - digi2al.migration

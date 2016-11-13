@@ -14,7 +14,7 @@
 ---
 - name: Check jenkins
   delay: " {{ jenkins_job_builder_handler_check_delay }}"
-  shell: "curl --head --silent {{ jenkins_job_builder_config_jenkins_url }}"
+  shell: "curl --head --silent {{ jenkins_job_builder_config_jenkins_url }} --user {{ jenkins_job_builder_config_jenkins_user }}:{{ jenkins_job_builder_config_jenkins_password }}"
   register: result
   retries: "{{ jenkins_job_builder_handler_check_retries }}"
   until: result.stdout.find('200 OK') != -1

@@ -1,12 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <hudson>
-  <disabledAdministrativeMonitors/>
+  <disabledAdministrativeMonitors>
+    <string>jenkins.security.s2m.MasterKillSwitchWarning</string>
+  </disabledAdministrativeMonitors>
   <version>1.0</version>
   <numExecutors>2</numExecutors>
   <mode>NORMAL</mode>
   <useSecurity>true</useSecurity>
-  <authorizationStrategy class="hudson.security.AuthorizationStrategy$Unsecured"/>
-  <securityRealm class="hudson.security.SecurityRealm$None"/>
+  <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
+    <denyAnonymousReadAccess>true</denyAnonymousReadAccess>
+  </authorizationStrategy>
+  <securityRealm class="hudson.security.HudsonPrivateSecurityRealm">
+    <disableSignup>true</disableSignup>
+    <enableCaptcha>false</enableCaptcha>
+  </securityRealm>
   <disableRememberMe>false</disableRememberMe>
   <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
   <workspaceDir>${ITEM_ROOTDIR}/workspace</workspaceDir>
