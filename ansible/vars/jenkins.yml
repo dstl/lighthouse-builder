@@ -3,7 +3,7 @@
 builder_repo: git@github.com:dstl/lighthouse-builder.git
 builder_version: origin/master
 
-jenkins_user: jenkins
+jenkins_user: 'jenkins'
 jenkins_plugins:
   - icon-shim
   - scm-api
@@ -23,6 +23,9 @@ jenkins_plugins:
 git_packages:
   - git2u
 
+jenkins_admin_username: '{{ jenkins_user }}'
+jenkins_admin_password: '{{ jenkins_pass }}'
+
 jenkins_job_builder_config_jenkins_url: http://localhost:8080
 jenkins_job_builder_file_jobs_src: ''
 jenkins_job_builder_user_name: '{{ jenkins_user }}'
@@ -30,6 +33,8 @@ jenkins_job_builder_user_group: '{{ jenkins_user }}'
 jenkins_job_builder_file_jobs_group: '{{ jenkins_user }}'
 jenkins_job_builder_file_jobs_owner: '{{ jenkins_user }}'
 jenkins_job_builder_install_method: 'pip'
+jenkins_job_builder_config_jenkins_user: '{{ jenkins_user }}'
+jenkins_job_builder_config_jenkins_password: '{{ jenkins_pass }}'
 
 jenkins_pypi_dist_location: '/opt/dist/pypi'
 
