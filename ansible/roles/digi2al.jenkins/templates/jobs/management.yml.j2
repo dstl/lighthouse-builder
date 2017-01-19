@@ -24,6 +24,7 @@
 
             ssh -tt -i $SSH_PRIVATE_KEY_PATH \
               $SSH_USER@$LIGHTHOUSE_IP \
+              -o StrictHostKeyChecking=no \
               -o IdentitiesOnly=yes << EOF
 
               sudo su - lighthouse
@@ -37,7 +38,135 @@
     wrappers:
         - ansicolor
 
+- job:
+    name: 'backup-db'
+    description: 'Backup the lighthouse DB to jenkins'
+    display-name: 'Backup DB'
+    properties:
+        - build-discarder:
+            num-to-keep: 5
+            artifact-num-to-keep: 5
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/update-jenkins
+{% else %}
+    scm:
+        - git:
+            url: {{ builder_repo }}
+            branches:
+                - "origin/master"
+            submodule:
+                recursive: true
+{% endif %}
+    builders:
+        - shell: |
+            export SSH_USER="{{ lighthouse_ssh_user }}"
+            export SSH_PRIVATE_KEY_PATH="{{ lighthouse_ssh_key_path }}"
+            export LIGHTHOUSE_IP="{{ lighthouse_ip }}"
+            SSH_CMD="ssh -i $SSH_PRIVATE_KEY_PATH -o IdentitiesOnly=yes -o StrictHostKeyChecking=no"
+            cd ansible
+
+            chmod 'u=rw,g=,o=' $SSH_PRIVATE_KEY_PATH
+
+            $SSH_CMD -tt \
+              $SSH_USER@$LIGHTHOUSE_IP << EOF
+
+              # Create Backup directory, writeable by lighthouse
+              sudo mkdir -p /tmp/backups
+              sudo chmod o+w /tmp/backups
+              sudo rm /tmp/backups/db.json
+
+              # Become lighthouse and prepare environment
+              sudo su - lighthouse
+              source virtualenv/bin/activate
+              cd app
+
+              # Backup database
+              python manage.py dumpdata > /tmp/backups/db.json
+
+              exit $?
+              exit $?
+            EOF
+
+            # Rsync backup to jenkins
+            rsync -avz \
+              -e "$SSH_CMD" \
+              $SSH_USER@$LIGHTHOUSE_IP:/tmp/backups/db.json \
+              ../db.json
+    wrappers:
+        - ansicolor
+    publishers:
+      - archive:
+          artifacts: 'db.json'
+          allow-empty: false
+          only-if-success: true
+
+- job:
+    name: 'restore-db'
+    description: 'Restore the lighthouse DB from a backup'
+    display-name: 'Restore DB'
+    parameters:
+        - file:
+            name: db.json
+            description: "Upload DB backup"
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/update-jenkins
+{% else %}
+    scm:
+        - git:
+            url: {{ builder_repo }}
+            branches:
+                - "origin/master"
+            submodule:
+                recursive: true
+{% endif %}
+    builders:
+        - shell: |
+            export SSH_USER="{{ lighthouse_ssh_user }}"
+            export SSH_PRIVATE_KEY_PATH="{{ lighthouse_ssh_key_path }}"
+            export LIGHTHOUSE_IP="{{ lighthouse_ip }}"
+            SSH_CMD="ssh -i $SSH_PRIVATE_KEY_PATH -o IdentitiesOnly=yes -o StrictHostKeyChecking=no"
+            cd ansible
+
+            chmod 'u=rw,g=,o=' $SSH_PRIVATE_KEY_PATH
+
+
+            $SSH_CMD -tt \
+              $SSH_USER@$LIGHTHOUSE_IP << EOF
+
+              # Create Backup directory, writeable by lighthouse
+              sudo mkdir -p /tmp/backups
+              sudo chmod o+w /tmp/backups
+              sudo rm /tmp/backups/db.json
+
+              exit $?
+            EOF
+
+            # Rsync backup to jenkins
+            rsync -avz \
+              -e "$SSH_CMD" \
+              ../db.json \
+              $SSH_USER@$LIGHTHOUSE_IP:/tmp/backups/db.json
+
+            $SSH_CMD -tt \
+              $SSH_USER@$LIGHTHOUSE_IP << EOF
+
+              # Become lighthouse and prepare environment
+              sudo su - lighthouse
+              source virtualenv/bin/activate
+              cd app
+
+              # Restore database
+              python manage.py loaddata /tmp/backups/db.json
+
+              exit $?
+              exit $?
+            EOF
+
+    wrappers:
+        - ansicolor
+
 - project:
     name: management
     jobs:
         - 'rebuild-index'
+        - 'backup-db'
