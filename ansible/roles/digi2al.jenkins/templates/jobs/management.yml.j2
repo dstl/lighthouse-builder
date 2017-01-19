@@ -70,21 +70,28 @@
             $SSH_CMD -tt \
               $SSH_USER@$LIGHTHOUSE_IP << EOF
 
+              # Create Backup directory, writeable by lighthouse
+              sudo mkdir -p /tmp/backups
+              sudo chmod o+w /tmp/backups
+              sudo rm /tmp/backups/db.json
+
+              # Become lighthouse and prepare environment
               sudo su - lighthouse
               source virtualenv/bin/activate
               cd app
-              python manage.py dumpdata > /tmp/db.json
+
+              # Backup database
+              python manage.py dumpdata > /tmp/backups/db.json
 
               exit $?
-
-              sudo chown {{ lighthouse_ssh_user }} /tmp/db.json
               exit $?
             EOF
 
+            # Rsync backup to jenkins
             rsync -avz \
               -e "$SSH_CMD" \
-              $SSH_USER@$LIGHTHOUSE_IP:/tmp/db.json \
-              ./db.json
+              $SSH_USER@$LIGHTHOUSE_IP:/tmp/backups/db.json \
+              ../db.json
     wrappers:
         - ansicolor
     publishers:
