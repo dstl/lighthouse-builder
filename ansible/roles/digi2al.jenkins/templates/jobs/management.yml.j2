@@ -24,6 +24,7 @@
 
             ssh -tt -i $SSH_PRIVATE_KEY_PATH \
               $SSH_USER@$LIGHTHOUSE_IP \
+              -o StrictHostKeyChecking=no \
               -o IdentitiesOnly=yes << EOF
 
               sudo su - lighthouse
