@@ -24,6 +24,7 @@
 
             ssh -tt -i $SSH_PRIVATE_KEY_PATH \
               $SSH_USER@$LIGHTHOUSE_IP \
+              -o StrictHostKeyChecking=no \
               -o IdentitiesOnly=yes << EOF
 
               sudo su - lighthouse
@@ -61,13 +62,13 @@
             export SSH_USER="{{ lighthouse_ssh_user }}"
             export SSH_PRIVATE_KEY_PATH="{{ lighthouse_ssh_key_path }}"
             export LIGHTHOUSE_IP="{{ lighthouse_ip }}"
+            SSH_CMD="ssh -i $SSH_PRIVATE_KEY_PATH -o IdentitiesOnly=yes -o StrictHostKeyChecking=no"
             cd ansible
 
             chmod 'u=rw,g=,o=' $SSH_PRIVATE_KEY_PATH
 
-            ssh -tt -i $SSH_PRIVATE_KEY_PATH \
-              $SSH_USER@$LIGHTHOUSE_IP \
-              -o IdentitiesOnly=yes << EOF
+            $SSH_CMD -tt \
+              $SSH_USER@$LIGHTHOUSE_IP << EOF
 
               sudo su - lighthouse
               source virtualenv/bin/activate
@@ -81,7 +82,7 @@
             EOF
 
             rsync -avz \
-              -e "ssh -i $SSH_PRIVATE_KEY_PATH -o IdentitiesOnly=yes" \
+              -e "$SSH_CMD" \
               $SSH_USER@$LIGHTHOUSE_IP:/tmp/db.json \
               ./db.json
     wrappers:
