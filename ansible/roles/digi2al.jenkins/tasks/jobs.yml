@@ -7,6 +7,7 @@
   with_items:
     - "update-jenkins.yml"
     - "lighthouse.yml"
+    - "management.yml"
 - name: "Force jobs to reload"
   command: /bin/true
   notify:

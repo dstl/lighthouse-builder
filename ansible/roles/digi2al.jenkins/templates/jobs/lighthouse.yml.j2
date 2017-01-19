@@ -45,9 +45,6 @@
 {% endif %}
     triggers:
         - github
-        - reverse:
-            jobs: 'update-jenkins'
-            result: 'success'
     builders:
 {% if notify_github %}
         - github-notifier

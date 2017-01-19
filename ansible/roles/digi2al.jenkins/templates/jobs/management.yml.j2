@@ -1,0 +1,43 @@
+- job:
+    name: 'rebuild-index'
+    description: 'Rebuilds the whoosh search index'
+    display-name: 'Rebuild search index'
+{% if distribute_dependencies %}
+    workspace: /opt/dist/workspaces/update-jenkins
+{% else %}
+    scm:
+        - git:
+            url: {{ builder_repo }}
+            branches:
+                - "origin/master"
+            submodule:
+                recursive: true
+{% endif %}
+    builders:
+        - shell: |
+            export SSH_USER="{{ lighthouse_ssh_user }}"
+            export SSH_PRIVATE_KEY_PATH="{{ lighthouse_ssh_key_path }}"
+            export LIGHTHOUSE_IP="{{ lighthouse_ip }}"
+            cd ansible
+
+            chmod 'u=rw,g=,o=' $SSH_PRIVATE_KEY_PATH
+
+            ssh -tt -i $SSH_PRIVATE_KEY_PATH \
+              $SSH_USER@$LIGHTHOUSE_IP \
+              -o IdentitiesOnly=yes << EOF
+
+              sudo su - lighthouse
+              source virtualenv/bin/activate
+              cd app
+              python manage.py rebuild_index --noinput
+
+              exit $?
+              exit $?
+            EOF
+    wrappers:
+        - ansicolor
+
+- project:
+    name: management
+    jobs:
+        - 'rebuild-index'
