@@ -4,6 +4,7 @@
   service:
     name: emperor
     state: restarted
+    enabled: yes
 - name: reload systemd
   shell: systemctl daemon-reload
   sudo: true
@@ -11,3 +12,4 @@
   service:
     name: nginx
     state: restarted
+    enabled: yes
